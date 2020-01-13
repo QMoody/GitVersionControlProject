@@ -151,9 +151,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseMarker: {fileID: 7483026693698934659, guid: f8c375c6f4cbc4a4eb0d10abbbc87bac,
     type: 3}
-  planeX: 10
-  planeZ: 10
-  heightScale: 3
+  randNoiseLoc: 1
+  customRandNoise: 0
+  planeX: 20
+  planeZ: 20
+  heightScale: 5
+  noisePlaneScale: 1
+  setRandomValue: 0.45873
+  randNum: 0
 --- !u!4 &700565929
 Transform:
   m_ObjectHideFlags: 0
@@ -162,7 +167,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 700565927}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.8022404, y: -4.401318, z: -4.05187}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -335,10 +340,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.24130352, y: 0.40385488, z: -0.11132555, w: 0.8753745}
+  m_LocalPosition: {x: -1.93, y: 6.68, z: -2.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30.823002, y: 49.533, z: 0}
