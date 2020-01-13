@@ -153,6 +153,7 @@ MonoBehaviour:
     type: 3}
   randNoiseLoc: 1
   customRandNoise: 0
+  randStartPoint: 1
   planeX: 20
   planeZ: 20
   heightScale: 5
