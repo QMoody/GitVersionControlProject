@@ -30,13 +30,16 @@ public class Noise : MonoBehaviour
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
 
     // Make this into a function that can be repeated without starting function
+
+    public bool autoUpdate;
+
     private void Update()
     {
         if (Input.GetKeyDown("r"))
             GenerateNoiseField();
     }
 
-    private void GenerateNoiseField()
+    public void GenerateNoiseField()
     {
         if (markerObject != null)
             for (int x = 0; x < planeX; x++)
