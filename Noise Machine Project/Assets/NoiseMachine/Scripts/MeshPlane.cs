@@ -15,31 +15,40 @@ public class MeshPlane : MonoBehaviour
     public float width = 2;
     public float length = 2;
 
+    Vector3[] verts;
+
+    MeshFilter m_meshFilter;
+    MeshRenderer m_meshRenderer;
+    MeshCollider m_meshCollider;
+
     void Start()
     {
         if (!GetComponent<MeshFilter>())
         {
             transform.gameObject.AddComponent<MeshFilter>();
         }
+        m_meshFilter = GetComponent<MeshFilter>();
 
         if (!GetComponent<MeshRenderer>())
         {
             transform.gameObject.AddComponent<MeshRenderer>();
         }
+        m_meshRenderer = GetComponent<MeshRenderer>();
 
         if (!GetComponent<MeshCollider>())
         {
             transform.gameObject.AddComponent<MeshCollider>();
         }
+        m_meshCollider = GetComponent<MeshCollider>();
 
         if (m_textureMaterial == null)
         {
             m_textureMaterial = new Material(Shader.Find("Diffuse"));
         }
 
-        Mesh m = new Mesh();
-        m.name = "NewPlane";
-        m.vertices = new Vector3[]
+        Mesh m_mesh = new Mesh();
+        m_mesh.name = "NewPlane";
+        m_mesh.vertices = new Vector3[]
         {
              new Vector3(-width, 0.01f, length),
              new Vector3(width, 0.01f, length),
@@ -47,7 +56,7 @@ public class MeshPlane : MonoBehaviour
              new Vector3(-width, 0.01f, -length)
         };
 
-        m.uv = new Vector2[]
+        m_mesh.uv = new Vector2[]
         {
              new Vector2 (0, 0),
              new Vector2 (0, 1),
@@ -55,35 +64,35 @@ public class MeshPlane : MonoBehaviour
              new Vector2 (1, 0)
         };
 
-        m.triangles = new int[] { 0, 1, 2, 0, 2, 3 };
-        m.RecalculateNormals();       
+        m_mesh.triangles = new int[] { 0, 1, 2, 0, 2, 3 };
+        m_mesh.RecalculateNormals();       
 
-        GetComponent<MeshFilter>().mesh = m;
-        GetComponent<MeshCollider>().sharedMesh = m;
-        GetComponent<MeshRenderer>().material = m_textureMaterial;
+        m_meshFilter.mesh = m_mesh;
+        m_meshCollider.sharedMesh = m_mesh;
+        m_meshRenderer.material = m_textureMaterial;
+        verts = m_meshFilter.mesh.vertices;
 
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (Editable == false)
-            return;
-        if (!GetComponent<MeshFilter>())
-        {
-            Debug.LogError("Mesh does not contain Mesh Filter!");
-            return;
-        }
+            return;        
 
-        Vector3[] verts = GetComponent<MeshFilter>().mesh.vertices;
-        verts = new Vector3[]
+        Vector3[] newVerts = new Vector3[]
         {
              p1.position,
              p2.position,
              p3.position,
              p4.position,
         };
-       
-        GetComponent<MeshFilter>().mesh.vertices = verts;
-        GetComponent<MeshCollider>().sharedMesh.vertices = verts;
+
+        if (verts == newVerts)
+            return;
+
+        verts = newVerts;
+        m_meshFilter.mesh.vertices = verts;
+        m_meshCollider.sharedMesh = null;
+        m_meshCollider.sharedMesh = m_meshFilter.mesh;
     }
 }
