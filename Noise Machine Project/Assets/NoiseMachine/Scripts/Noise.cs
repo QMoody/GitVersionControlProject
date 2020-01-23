@@ -18,6 +18,9 @@ public class Noise : MonoBehaviour
     public float noisePlaneScale; // 1 - normal scale / <1 - larger scale / >1 smaller scale
     public float setRandomValue;
 
+    [Header("Mesh Plane Variabels")]
+
+
     [Header("Output Variabels")] // Do not edit in inspector
     public float randNum;
 
@@ -33,10 +36,16 @@ public class Noise : MonoBehaviour
 
     public bool autoUpdate;
 
+    private void Start()
+    {
+        FieldSetup();
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown("r"))
             GenerateNoiseField();
+
     }
 
     public void GenerateNoiseField()
@@ -68,5 +77,54 @@ public class Noise : MonoBehaviour
                 GameObject markerTmp = Instantiate(noiseMarker, new Vector3(x, noiseYValue, z), Quaternion.Euler(0, 0, 0));
                 markerObject[x,z] = markerTmp;
             }
+    }
+
+    private void FieldSetup()
+    {
+        MeshFilter mFilter = GetComponent<MeshFilter>();
+
+        Mesh mesh = new Mesh();
+        mFilter.mesh = mesh;
+
+        Vector3[] vertices = new Vector3[4]
+        {
+            new Vector3(0, 0, 0),
+            new Vector3(1, 0, 0),
+            new Vector3(0, 1, 0),
+            new Vector3(1, 1, 0)
+        };
+        mesh.vertices = vertices;
+
+        int[] tris = new int[6]
+        {
+            // lower left triangle
+            0, 2, 1,
+            // upper right triangle
+            2, 3, 1
+        };
+        mesh.triangles = tris;
+
+        Vector3[] normals = new Vector3[4]
+        {
+            -Vector3.forward,
+            -Vector3.forward,
+            -Vector3.forward,
+            -Vector3.forward
+        };
+        mesh.normals = normals;
+
+        Vector2[] uv = new Vector2[4]
+        {
+            new Vector2(0, 0),
+            new Vector2(1, 0),
+            new Vector2(0, 1),
+            new Vector2(1, 1)
+        };
+        mesh.uv = uv;
+    }
+
+    private void CreateFieldMesh()
+    {
+
     }
 }
