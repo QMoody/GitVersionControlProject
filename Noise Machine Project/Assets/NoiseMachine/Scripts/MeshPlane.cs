@@ -8,7 +8,7 @@ public class MeshPlane : MonoBehaviour
     //Modified Scripted by Matej Vanco https://youtu.be/c-pqEHR1jnw
     public bool Editable = false;
 
-    public Transform p1, p2, p3, p4;
+    //public List<Transform> points;
 
     public Material m_textureMaterial;
 
@@ -60,7 +60,7 @@ public class MeshPlane : MonoBehaviour
         {
              new Vector2 (0, 0),
              new Vector2 (0, 1),
-             new Vector2(1, 1),
+             new Vector2 (1, 1),
              new Vector2 (1, 0)
         };
 
@@ -72,20 +72,33 @@ public class MeshPlane : MonoBehaviour
         m_meshRenderer.material = m_textureMaterial;
         verts = m_meshFilter.mesh.vertices;
 
+        for (int v = 0; v < m_mesh.vertices.Length; v++)
+        {
+            GameObject p = new GameObject();
+            p.name = ("p" + (v+1));
+            p.transform.position = m_mesh.vertices[v]+transform.position;
+            p.transform.parent = this.gameObject.transform;
+        }
+
     }
 
     void FixedUpdate()
     {
         if (Editable == false)
-            return;        
+            return;
 
-        Vector3[] newVerts = new Vector3[]
+        if (verts.Length != transform.childCount)
         {
-             p1.position,
-             p2.position,
-             p3.position,
-             p4.position,
-        };
+            Debug.LogError("Vertices GameObject does not equal verts array");
+            return;
+        }
+
+        Vector3[] newVerts = new Vector3[transform.childCount];
+
+        for (int v = 0; v < transform.childCount; v++)
+        {
+            newVerts[v] = transform.GetChild(v).transform.position;
+        }
 
         if (verts == newVerts)
             return;
@@ -94,5 +107,16 @@ public class MeshPlane : MonoBehaviour
         m_meshFilter.mesh.vertices = verts;
         m_meshCollider.sharedMesh = null;
         m_meshCollider.sharedMesh = m_meshFilter.mesh;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (gameObject.transform.childCount != 0)
+        {
+            for (int v = 0; v < verts.Length; v++)
+            {
+                Gizmos.DrawIcon(transform.GetChild(v).transform.position, "Assets/NoiseMachine/Textures/Circle.png", false);
+            }
+        }
     }
 }
