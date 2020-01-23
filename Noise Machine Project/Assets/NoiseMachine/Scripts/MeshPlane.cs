@@ -53,7 +53,8 @@ public class MeshPlane : MonoBehaviour
              new Vector3(-width, 0.01f, length),
              new Vector3(width, 0.01f, length),
              new Vector3(width, 0.01f, -length),
-             new Vector3(-width, 0.01f, -length)
+             new Vector3(-width, 0.01f, -length),
+             new Vector3(0, 0.01f, 0)
         };
 
         m_mesh.uv = new Vector2[]
@@ -61,10 +62,16 @@ public class MeshPlane : MonoBehaviour
              new Vector2 (0, 0),
              new Vector2 (0, 1),
              new Vector2 (1, 1),
-             new Vector2 (1, 0)
+             new Vector2 (1, 0),
+             new Vector2 (.5f,.5f)
         };
 
-        m_mesh.triangles = new int[] { 0, 1, 2, 0, 2, 3 };
+        m_mesh.triangles = new int[] {
+            0, 1, 4,
+            1, 2, 4,
+            2, 3, 4,
+            3, 0, 4
+        };
         m_mesh.RecalculateNormals();       
 
         m_meshFilter.mesh = m_mesh;
