@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 public class MeshPlane : MonoBehaviour
 {
 
@@ -16,7 +18,7 @@ public class MeshPlane : MonoBehaviour
 
     public float width = 2;
     public float length = 2;
-    [Range(1, 2)]
+    [Range(1, 5)]
     public int n_Subdivides;
 
     Vector3[] verts;
@@ -27,22 +29,8 @@ public class MeshPlane : MonoBehaviour
 
     void Start()
     {
-        if (!GetComponent<MeshFilter>())
-        {
-            transform.gameObject.AddComponent<MeshFilter>();
-        }
         m_meshFilter = GetComponent<MeshFilter>();
-
-        if (!GetComponent<MeshRenderer>())
-        {
-            transform.gameObject.AddComponent<MeshRenderer>();
-        }
         m_meshRenderer = GetComponent<MeshRenderer>();
-
-        if (!GetComponent<MeshCollider>())
-        {
-            transform.gameObject.AddComponent<MeshCollider>();
-        }
         m_meshCollider = GetComponent<MeshCollider>();
 
         if (m_textureMaterial == null)
@@ -50,54 +38,37 @@ public class MeshPlane : MonoBehaviour
             m_textureMaterial = new Material(Shader.Find("Diffuse"));
         }
 
+        CreateShape();
+        UpdateMesh();
+    }   
+
+    private void CreateShape()
+    {
         Mesh m_mesh = new Mesh();
         m_mesh.name = "NewPlane";
 
-        int n_Verts = Mathf.RoundToInt(Mathf.Pow((n_Subdivides+1), 2));
+        int n_Verts = Mathf.RoundToInt(Mathf.Pow((n_Subdivides + 1), 2));
         verts = new Vector3[n_Verts];
-        Vector3[,] verticeMatrix = new Vector3[n_Subdivides+1, n_Subdivides+1];
+        Vector3[,] verticeMatrix = new Vector3[n_Subdivides + 1, n_Subdivides + 1];
         float widthSpace = width / n_Subdivides; //this is the length inbetween each vertice
         float lengthSpace = length / n_Subdivides;
+        Vector2[] uv = new Vector2[n_Verts];
 
-        int orderInArray = 0;
-        for (int x = 0; x < n_Subdivides+1; x++)
-            for (int z = 0; z < n_Subdivides+1; z++)
+        int i = 0;
+        for (int x = 0; x < n_Subdivides + 1; x++)
+            for (int z = 0; z < n_Subdivides + 1; z++)
             {
-                verticeMatrix[x, z] = new Vector3(widthSpace * z, 0.01f, lengthSpace * x);                
-                verts[orderInArray] = verticeMatrix[x, z];
-                orderInArray++;
+                verticeMatrix[x, z] = new Vector3(widthSpace * z, 0.01f, lengthSpace * x);
+                verts[i] = verticeMatrix[x, z];
+                uv[i] = new Vector2((float)x / n_Subdivides, (float)z / n_Subdivides);
+                i++;
             }
 
         m_mesh.vertices = verts;
-
-        //m_mesh.vertices = new Vector3[]
-        //{
-        //     new Vector3(-width, 0.01f, length),
-        //     new Vector3(width, 0.01f, length),
-        //     new Vector3(width, 0.01f, -length),
-        //     new Vector3(-width, 0.01f, -length),
-        //};
-
-        //m_mesh.uv = new Vector2[n_Verts];
-        //orderInArray = 0;
-        //Vector2[,] uvMatrix = new Vector2[n_Subdivides, n_Subdivides];
-        //for (int x = 0; x < n_Subdivides; x++)
-        //    for (int z = 0; z < n_Subdivides; z++)
-        //    {
-        //        uvMatrix[x, z] = new Vector2(x / n_Subdivides / 2, z / n_Subdivides / 2);
-        //        m_mesh.uv[orderInArray] = uvMatrix[x, z];
-        //        orderInArray++;
-        //    }
-
-        //m_mesh.uv = new Vector2[]
-        //{
-        //     new Vector2 (0, 0),
-        //     new Vector2 (0, 1),
-        //     new Vector2 (1, 1),
-        //     new Vector2 (1, 0),
-        //};
+        m_mesh.uv = uv;
 
         int[] triangles = new int[n_Subdivides * n_Subdivides * 6];
+
         for (int ti = 0, vi = 0, y = 0; y < n_Subdivides; y++, vi++)
         {
             for (int x = 0; x < n_Subdivides; x++, ti += 6, vi++)
@@ -109,47 +80,9 @@ public class MeshPlane : MonoBehaviour
             }
         }
 
-        //int n_Triangles = Mathf.RoundToInt(Mathf.Pow(n_Subdivides, 2) * 2);
-        //List<int> triangles = new List<int>(n_Triangles);
-        //List<int> triangle1 = new List<int> { 0, 2, 1 };
-        //List<int> triangle2 = new List<int> { 2, 3, 1 };
-        //for (int t = 0; t < n_Triangles + 1; t++)
-        //{
-        //    List<int> triangle = new List<int> { 0, 2, 1 };
-        //    triangles.AddRange(triangle);
-        //}
-        //    triangles.AddRange(triangle1);
-        //triangles.AddRange(triangle2);
-
         m_mesh.triangles = triangles;
 
-        //int[,,] trisMatrix = new int[n_Verts, n_Verts, n_Verts];
-        //for (int x = 0; x < n_Subdivides + 1; x++)
-        //{
-
-        //    for (int y = 0; y < n_Subdivides + 1; y++)
-        //    {
-
-        //        for (int z = 0; z < n_Subdivides + 1; z++)
-        //        {
-        //            trisMatrix[x, y, z] = x;
-        //        }
-        //    }
-        //}
-
-        //m_mesh.triangles = new int[] {
-        //    0, 1, 2,
-        //    2, 1, 3,
-        //};
-
         m_mesh.RecalculateNormals();
-        
-        //m_mesh.normals = new Vector3[n_Verts];
-        //for (int v = 0; v < n_Verts; v++)
-        //{
-        //    m_mesh.normals[v] = Vector3.up;
-        //}
-
 
         m_meshFilter.mesh = m_mesh;
         m_meshCollider.sharedMesh = m_mesh;
@@ -159,18 +92,14 @@ public class MeshPlane : MonoBehaviour
         for (int v = 0; v < m_mesh.vertices.Length; v++)
         {
             GameObject p = new GameObject();
-            p.name = ("p" + v );
+            p.name = ("p" + v);
             p.transform.position = m_mesh.vertices[v] + transform.position;
             p.transform.parent = this.gameObject.transform;
         }
-
     }
 
-    void FixedUpdate()
+    private void UpdateMesh()
     {
-        if (Editable == false)
-            return;
-
         if (verts.Length != transform.childCount)
         {
             Debug.LogError("Vertices GameObject does not equal verts array");
@@ -191,6 +120,13 @@ public class MeshPlane : MonoBehaviour
         m_meshFilter.mesh.vertices = verts;
         m_meshCollider.sharedMesh = null;
         m_meshCollider.sharedMesh = m_meshFilter.mesh;
+    }
+
+    void FixedUpdate()
+    {
+        if (Editable == false)
+            return;
+        UpdateMesh();
     }
 
     private void OnDrawGizmos()
