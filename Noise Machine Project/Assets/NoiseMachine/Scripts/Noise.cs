@@ -19,7 +19,7 @@ public class Noise : MonoBehaviour
     public float setRandomValue;
 
     [Header("Mesh Plane Variabels")]
-
+    int tmpVM;
 
     [Header("Output Variabels")] // Do not edit in inspector
     public float randNum;
@@ -38,7 +38,7 @@ public class Noise : MonoBehaviour
 
     private void Start()
     {
-        FieldSetup();
+        //FieldSetup();
     }
 
     private void Update()
@@ -69,6 +69,8 @@ public class Noise : MonoBehaviour
         else
             startPoint = 0;
 
+        Vector3[] tmpPoints = new Vector3[4];
+
         for (int x = 0; x < planeX; x++)
             for (int z = 0; z < planeZ; z++)
             {
@@ -76,10 +78,19 @@ public class Noise : MonoBehaviour
                 float noiseYValue = Mathf.PerlinNoise(fracCord.x, fracCord.y) * heightScale; // Height scale will change the noise intensity
                 GameObject markerTmp = Instantiate(noiseMarker, new Vector3(x, noiseYValue, z), Quaternion.Euler(0, 0, 0));
                 markerObject[x,z] = markerTmp;
+
+                if (x < 2 && z < 2)
+                {
+                    tmpPoints[tmpVM] = new Vector3(x, noiseYValue, z);
+                    tmpVM += 1;
+                }
             }
+
+        tmpVM = 0;
+        FieldSetup(tmpPoints[0], tmpPoints[1], tmpPoints[2], tmpPoints[3]);
     }
 
-    private void FieldSetup()
+    private void FieldSetup(Vector3 tmp1, Vector3 tmp2, Vector3 tmp3, Vector3 tmp4)
     {
         MeshFilter mFilter = GetComponent<MeshFilter>();
 
@@ -88,10 +99,10 @@ public class Noise : MonoBehaviour
 
         Vector3[] vertices = new Vector3[4]
         {
-            new Vector3(0, 0, 0),
-            new Vector3(1, 0, 0),
-            new Vector3(0, 1, 0),
-            new Vector3(1, 1, 0)
+            tmp3,
+            tmp4,
+            tmp1,
+            tmp2
         };
         mesh.vertices = vertices;
 
