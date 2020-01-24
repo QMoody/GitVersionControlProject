@@ -8,7 +8,7 @@ public class Noise : MonoBehaviour
     [Header("Objects & Scripts")]
     public GameObject noiseMarker;
 
-    [Header("Noise Plane Variabels")]
+    [Header("Create Noise Plane Variables")]
     public bool randNoiseLoc;
     public bool customRandNoise; // Use if you want to set custom random value
     public bool randStartPoint;
@@ -18,16 +18,21 @@ public class Noise : MonoBehaviour
     public float noisePlaneScale; // 1 - normal scale / <1 - larger scale / >1 smaller scale
     public float setRandomValue;
 
-    [Header("Mesh Plane Variabels")]
-    int tmpVM;
+    [Header("Change Noise Plane Variables")]
+    public bool randWaveMov;
+    public float waveSpeed;
+    public int wavePoints; //add this
 
-    [Header("Output Variabels")] // Do not edit in inspector
+    [Header("Output Variables")] // Do not edit in inspector
     public float randNum;
+    public float startPoint;
 
-    [Header("Hidden Variabels")]
+    [Header("Hidden Variables")]
     private GameObject[,] markerObject;
     private bool noiseFieldGenerated;
-    private float startPoint;
+    private Vector2 planeSetXY;
+    private float randWaveGoal;
+    private float startWaveGoal;
     #endregion
 
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
@@ -46,6 +51,7 @@ public class Noise : MonoBehaviour
         if (Input.GetKeyDown("r"))
             GenerateNoiseField();
 
+        FieldWave();
     }
 
     public void GenerateNoiseField()
@@ -69,8 +75,6 @@ public class Noise : MonoBehaviour
         else
             startPoint = 0;
 
-        Vector3[] tmpPoints = new Vector3[4];
-
         for (int x = 0; x < planeX; x++)
             for (int z = 0; z < planeZ; z++)
             {
@@ -78,64 +82,35 @@ public class Noise : MonoBehaviour
                 float noiseYValue = Mathf.PerlinNoise(fracCord.x, fracCord.y) * heightScale; // Height scale will change the noise intensity
                 GameObject markerTmp = Instantiate(noiseMarker, new Vector3(x, noiseYValue, z), Quaternion.Euler(0, 0, 0));
                 markerObject[x,z] = markerTmp;
-
-                if (x < 2 && z < 2)
-                {
-                    tmpPoints[tmpVM] = new Vector3(x, noiseYValue, z);
-                    tmpVM += 1;
-                }
             }
 
-        tmpVM = 0;
-        FieldSetup(tmpPoints[0], tmpPoints[1], tmpPoints[2], tmpPoints[3]);
+        planeSetXY = new Vector2(planeX, planeZ);
+        randWaveGoal = Random.Range(-1.000f, 1.000f);
+        noiseFieldGenerated = true;
     }
 
-    private void FieldSetup(Vector3 tmp1, Vector3 tmp2, Vector3 tmp3, Vector3 tmp4)
+    public void FieldWave()
     {
-        MeshFilter mFilter = GetComponent<MeshFilter>();
+        float step = Time.deltaTime * waveSpeed;
 
-        Mesh mesh = new Mesh();
-        mFilter.mesh = mesh;
+        if (randNum == randWaveGoal)
+            randWaveGoal = Random.Range(-1.000f, 1.000f);
 
-        Vector3[] vertices = new Vector3[4]
+        if (noiseFieldGenerated == true)
         {
-            tmp3,
-            tmp4,
-            tmp1,
-            tmp2
-        };
-        mesh.vertices = vertices;
+            if (randWaveMov == true)
+            {
+                randNum = Mathf.MoveTowards(randNum, randWaveGoal, step);
 
-        int[] tris = new int[6]
-        {
-            // lower left triangle
-            0, 2, 1,
-            // upper right triangle
-            2, 3, 1
-        };
-        mesh.triangles = tris;
+                for (int x = 0; x < planeX; x++)
+                    for (int z = 0; z < planeZ; z++)
+                    {
+                        Vector2 fracCord = new Vector2((x + startPoint) / (planeX / noisePlaneScale) / randNum, (z + startPoint) / (planeZ / noisePlaneScale) / randNum);
+                        float noiseYValue = Mathf.PerlinNoise(fracCord.x, fracCord.y) * heightScale;
 
-        Vector3[] normals = new Vector3[4]
-        {
-            -Vector3.forward,
-            -Vector3.forward,
-            -Vector3.forward,
-            -Vector3.forward
-        };
-        mesh.normals = normals;
-
-        Vector2[] uv = new Vector2[4]
-        {
-            new Vector2(0, 0),
-            new Vector2(1, 0),
-            new Vector2(0, 1),
-            new Vector2(1, 1)
-        };
-        mesh.uv = uv;
-    }
-
-    private void CreateFieldMesh()
-    {
-
+                        markerObject[x, z].transform.position = new Vector3(markerObject[x, z].transform.position.x, noiseYValue, markerObject[x, z].transform.position.z);
+                    }
+            }
+        }
     }
 }

@@ -161,7 +161,11 @@ MonoBehaviour:
   heightScale: 5
   noisePlaneScale: 1
   setRandomValue: 0.45873
+  randWaveMov: 0
+  waveSpeed: 1
+  wavePoints: 0
   randNum: 0.16061223
+  startPoint: 0
   autoUpdate: 0
 --- !u!4 &700565929
 Transform:
