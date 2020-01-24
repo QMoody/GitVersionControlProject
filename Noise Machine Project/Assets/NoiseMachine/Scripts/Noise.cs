@@ -16,7 +16,7 @@ public class Noise : MonoBehaviour
     public int planeZ;
     public float heightScale;
     public float noisePlaneScale; // 1 - normal scale / <1 - larger scale / >1 smaller scale
-    public float setRandomValue;
+    public Vector2 setRandomValue;
 
     [Header("Change Noise Plane Variables")]
     public bool randWaveMov;
@@ -24,14 +24,14 @@ public class Noise : MonoBehaviour
     public int wavePoints; //add this
 
     [Header("Output Variables")] // Do not edit in inspector
-    public float randNum;
-    public float startPoint;
+    public Vector2 randNum;
+    public Vector2 startPoint;
 
     [Header("Hidden Variables")]
     private GameObject[,] markerObject;
     private bool noiseFieldGenerated;
     private Vector2 planeSetXY;
-    private float randWaveGoal;
+    private Vector2 randWaveGoal;
     private float startWaveGoal;
     #endregion
 
@@ -64,28 +64,44 @@ public class Noise : MonoBehaviour
         markerObject = new GameObject[planeX, planeZ];
 
         if (randNoiseLoc == true)
-            randNum = Random.Range(-1.000f, 1.000f);
+        {
+            randNum.x = Random.Range(-1.000f, 1.000f);
+            randNum.y = Random.Range(-1.000f, 1.000f);
+        }
         else if (customRandNoise == true)
-            randNum = setRandomValue;
+        {
+            randNum.x = setRandomValue.x;
+            randNum.y = setRandomValue.y;
+        }
         else
-            randNum = 1;
+        {
+            randNum.x = 1;
+            randNum.y = 1;
+        }
 
         if (randStartPoint == true)
-            startPoint = Random.Range(-1.000f, 1.000f);
+        {
+            startPoint.x = Random.Range(-1.000f, 1.000f);
+            startPoint.y = Random.Range(-1.000f, 1.000f);
+        }
         else
-            startPoint = 0;
+        {
+            startPoint.x = 0;
+            startPoint.y = 0;
+        }
 
         for (int x = 0; x < planeX; x++)
             for (int z = 0; z < planeZ; z++)
             {
-                Vector2 fracCord = new Vector2((x + startPoint) / (planeX / noisePlaneScale) / randNum, (z + startPoint) / (planeZ / noisePlaneScale) / randNum); // Whole numbers return same Y value // Same values will always return same noise heights
+                Vector2 fracCord = new Vector2((x + startPoint.x) / (planeX / noisePlaneScale) / randNum.x, (z + startPoint.y) / (planeZ / noisePlaneScale) / randNum.y); // Whole numbers return same Y value // Same values will always return same noise heights
                 float noiseYValue = Mathf.PerlinNoise(fracCord.x, fracCord.y) * heightScale; // Height scale will change the noise intensity
                 GameObject markerTmp = Instantiate(noiseMarker, new Vector3(x, noiseYValue, z), Quaternion.Euler(0, 0, 0));
                 markerObject[x,z] = markerTmp;
             }
 
         planeSetXY = new Vector2(planeX, planeZ);
-        randWaveGoal = Random.Range(-1.000f, 1.000f);
+        randWaveGoal.x = Random.Range(-1.000f, 1.000f);
+        randWaveGoal.y = Random.Range(-1.000f, 1.000f);
         noiseFieldGenerated = true;
     }
 
@@ -93,19 +109,23 @@ public class Noise : MonoBehaviour
     {
         float step = Time.deltaTime * waveSpeed;
 
-        if (randNum == randWaveGoal)
-            randWaveGoal = Random.Range(-1.000f, 1.000f);
+        if (randNum.x == randWaveGoal.x)
+            randWaveGoal.x = Random.Range(-1.000f, 1.000f);
+
+        if (randNum.y == randWaveGoal.y)
+            randWaveGoal.y = Random.Range(-1.000f, 1.000f);
 
         if (noiseFieldGenerated == true)
         {
             if (randWaveMov == true)
             {
-                randNum = Mathf.MoveTowards(randNum, randWaveGoal, step);
+                randNum.x = Mathf.MoveTowards(randNum.x, randWaveGoal.x, step);
+                randNum.y = Mathf.MoveTowards(randNum.y, randWaveGoal.y, step);
 
                 for (int x = 0; x < planeX; x++)
                     for (int z = 0; z < planeZ; z++)
                     {
-                        Vector2 fracCord = new Vector2((x + startPoint) / (planeX / noisePlaneScale) / randNum, (z + startPoint) / (planeZ / noisePlaneScale) / randNum);
+                        Vector2 fracCord = new Vector2((x + startPoint.x) / (planeX / noisePlaneScale) / randNum.x, (z + startPoint.y) / (planeZ / noisePlaneScale) / randNum.y);
                         float noiseYValue = Mathf.PerlinNoise(fracCord.x, fracCord.y) * heightScale;
 
                         markerObject[x, z].transform.position = new Vector3(markerObject[x, z].transform.position.x, noiseYValue, markerObject[x, z].transform.position.z);
