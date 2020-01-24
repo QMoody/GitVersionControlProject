@@ -17,7 +17,7 @@ public class MeshPlane : MonoBehaviour
 
     public float width = 2;
     public float length = 2;
-    [Range(1, 5)]
+    [Range(1, 20)]
     public int n_Subdivides;
 
     Vector3[] verts;

@@ -158,8 +158,12 @@ MonoBehaviour:
   planeZ: 20
   heightScale: 5
   noisePlaneScale: 1
-  setRandomValue: 0.45873
-  randNum: 0
+  setRandomValue: {x: 0, y: 0}
+  randWaveMov: 0
+  waveSpeed: 0
+  wavePoints: 0
+  randNum: {x: 0, y: 0}
+  startPoint: {x: 0, y: 0}
   autoUpdate: 0
 --- !u!4 &700565929
 Transform:
@@ -564,8 +568,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdce44450c6cbcb46a367586ef368b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Editable: 0
+  Editable: 1
   m_textureMaterial: {fileID: 2100000, guid: 38210e87a6521f145b29ef0dec16e66a, type: 2}
-  width: 5
-  length: 5
-  n_Subdivides: 5
+  width: 40
+  length: 40
+  n_Subdivides: 20
