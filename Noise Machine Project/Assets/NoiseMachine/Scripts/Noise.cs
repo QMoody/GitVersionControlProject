@@ -42,11 +42,6 @@ public class Noise : MonoBehaviour
 
     public bool autoUpdate;
 
-    private void Start()
-    {
-        //FieldSetup();
-    }
-
     private void Update()
     {
         if (Input.GetKeyDown("r"))
@@ -106,7 +101,7 @@ public class Noise : MonoBehaviour
         MapDisplay display = FindObjectOfType<MapDisplay>();
 
         // the display will draw the noiseMap but it needs the values
-        display.DrawNoiseMap(noiseMap);
+        //display.DrawNoiseMap(noiseMap);
         planeSetXY = new Vector2(planeX, planeZ);
         
         randWaveGoal.x = Random.Range(-1.000f, 1.000f);
@@ -119,10 +114,10 @@ public class Noise : MonoBehaviour
         float step = Time.deltaTime * waveSpeed;
 
         if (randNum.x == randWaveGoal.x)
-            randWaveGoal.x = Random.Range(-1.000f, 1.000f);
+            randWaveGoal.y = Random.Range(-4.000f, 4.000f);
 
         if (randNum.y == randWaveGoal.y)
-            randWaveGoal.y = Random.Range(-1.000f, 1.000f);
+            randWaveGoal.y = Random.Range(-4.000f, 4.000f);
 
         if (noiseFieldGenerated == true)
         {
