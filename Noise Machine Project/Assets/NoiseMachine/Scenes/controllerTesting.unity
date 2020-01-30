@@ -252,6 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   board: {fileID: 120147569}
   player: {fileID: 1460076981}
+  gravity: 10
 --- !u!65 &120147572
 BoxCollider:
   m_ObjectHideFlags: 0
