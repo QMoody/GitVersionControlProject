@@ -17,8 +17,11 @@ public class Steer : MonoBehaviour
 
     void Turn()
     {
+        if (player.transform.localEulerAngles.x > 0) //stops player from riding up the hill
+        {
             //turns based on mouse position on screen
-            board.transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, (Mathf.Atan2(Input.mousePosition.x - Screen.width/2, Screen.height)*180/Mathf.PI), transform.localEulerAngles.z);
+            board.transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, (Mathf.Atan2(Input.mousePosition.x - Screen.width / 2, Screen.height) * 180 / Mathf.PI), transform.localEulerAngles.z);
+        }
     }
 
     void Fall()
