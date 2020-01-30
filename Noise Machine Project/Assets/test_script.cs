@@ -6,12 +6,11 @@ public class test_script : MonoBehaviour
 {
     // Start is called before the first frame update
 
-        //hello
+    //hello
 
-        //goodbye
+    //goodbye
 
-    void Start()
-    {
-        
-    }
+}
+
+
 
