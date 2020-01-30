@@ -29,7 +29,7 @@ public class Noise : MonoBehaviour
 
     [Header("Hidden Variables")]
     private GameObject[,] markerObject;
-    private float[,] noiseMap; // noiseMap will be an array of floats that matches the transform of markerobjects to produce a value
+    public float[,] noiseMap; // noiseMap will be an array of floats that matches the transform of markerobjects to produce a value
     private bool noiseFieldGenerated;
     private Vector2 planeSetXY;
     private Vector2 randWaveGoal;
@@ -86,7 +86,7 @@ public class Noise : MonoBehaviour
             startPoint.y = 0;
         }
 
-        //noiseMap = new float[mapWidth?, mapHeight?];
+        noiseMap = new float[planeX, planeZ];
 
         for (int x = 0; x < planeX; x++)
             for (int z = 0; z < planeZ; z++)
@@ -95,7 +95,7 @@ public class Noise : MonoBehaviour
                 float noiseYValue = Mathf.PerlinNoise(fracCord.x, fracCord.y) * heightScale; // Height scale will change the noise intensity
                 GameObject markerTmp = Instantiate(noiseMarker, new Vector3(x, noiseYValue, z), Quaternion.Euler(0, 0, 0));
                 markerObject[x,z] = markerTmp;
-                //noiseMap[x?, y?] = noiseYValue?;
+                noiseMap[x,z] = noiseYValue;
             }
 
         MapDisplay display = FindObjectOfType<MapDisplay>();
