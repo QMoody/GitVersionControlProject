@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/NoiseMachine/Scenes/controllerTesting.unity
+    guid: 876e9769ce3630848ae54e48670797af
   m_configObjects: {}

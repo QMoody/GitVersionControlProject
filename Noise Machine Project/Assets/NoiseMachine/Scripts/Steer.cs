@@ -29,5 +29,4 @@ public class Steer : MonoBehaviour
         //falls down the mountain in the direction the board is facing
         player.transform.position += transform.forward * (Time.deltaTime * gravity);
     }
-
 }
