@@ -102,6 +102,7 @@ public class MeshPlane : MonoBehaviour
         }
 
         markers = new GameObject[transform.childCount / 2, transform.childCount / 2];
+
         for (int y = 0; y < n_Subdivides+1; y++)
         {
             for (int x = 0; x < n_Subdivides+1 / 2; x++)
@@ -122,8 +123,9 @@ public class MeshPlane : MonoBehaviour
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
-            {                
-                markers[y, x].transform.position = new Vector3(markers[y, x].transform.position.x, noiseMap[y, x], markers[y, x].transform.position.z);
+            {
+                Vector3 markerTem = markers[y, x].transform.position;
+                markers[y, x].transform.position = new Vector3(markerTem.x, noiseMap[y, x], markerTem.z);
                 newHeight[y * height + x] = noiseMap[y, x];
             }
         }
