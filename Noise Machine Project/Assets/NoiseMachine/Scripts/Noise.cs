@@ -30,7 +30,7 @@ public class Noise : MonoBehaviour
 
     [Header("Hidden Variables")]
     private GameObject[,] markerObject;
-    private float[,] noiseMap; // noiseMap will be an array of floats that matches the transform of markerobjects to produce a value
+    public float[,] noiseMap; // noiseMap will be an array of floats that matches the transform of markerobjects to produce a value
     private bool noiseFieldGenerated;
     private Vector2 randWaveGoal;
     #endregion
