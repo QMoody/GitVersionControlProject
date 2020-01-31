@@ -10,6 +10,7 @@ public class MeshPlane : MonoBehaviour
     //Modified Scripted by Matej Vanco https://youtu.be/c-pqEHR1jnw
     //Add https://catlikecoding.com/unity/tutorials/procedural-grid/
     public bool Editable = false;
+    public bool Stay = true;
 
     //public List<Transform> points;
 
@@ -21,16 +22,19 @@ public class MeshPlane : MonoBehaviour
     public int n_Subdivides;
 
     Vector3[] verts;
+    GameObject[,] markers;
 
     MeshFilter m_meshFilter;
     MeshRenderer m_meshRenderer;
     MeshCollider m_meshCollider;
+    public Noise m_noise;
 
     void Start()
     {
         m_meshFilter = GetComponent<MeshFilter>();
         m_meshRenderer = GetComponent<MeshRenderer>();
         m_meshCollider = GetComponent<MeshCollider>();
+        m_noise = GetComponent<Noise>();
 
         if (m_textureMaterial == null)
         {
@@ -41,7 +45,7 @@ public class MeshPlane : MonoBehaviour
         UpdateMesh();
     }   
 
-    private void CreateShape()
+    public void CreateShape()
     {
         Mesh m_mesh = new Mesh();
         m_mesh.name = "NewPlane";
@@ -87,6 +91,8 @@ public class MeshPlane : MonoBehaviour
         m_meshRenderer.material = m_textureMaterial;
         verts = m_meshFilter.mesh.vertices;
 
+        
+
         for (int v = 0; v < m_mesh.vertices.Length; v++)
         {
             GameObject p = new GameObject();
@@ -95,9 +101,37 @@ public class MeshPlane : MonoBehaviour
             p.transform.parent = this.gameObject.transform;
         }
 
+        markers = new GameObject[transform.childCount / 2, transform.childCount / 2];
+
+        for (int y = 0; y < n_Subdivides+1; y++)
+        {
+            for (int x = 0; x < n_Subdivides+1 / 2; x++)
+            {
+                markers[y, x] = transform.GetChild(y * (n_Subdivides+1) + x).gameObject;
+            }
+        }
     }
 
-    private void UpdateMesh()
+    public void ApplyNoiseMap(float[,] noiseMap)
+    {
+        int width = noiseMap.GetLength(0);
+        int height = noiseMap.GetLength(1);
+
+        
+        float[] newHeight = new float[height * width];
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Vector3 markerTem = markers[y, x].transform.position;
+                markers[y, x].transform.position = new Vector3(markerTem.x, noiseMap[y, x], markerTem.z);
+                newHeight[y * height + x] = noiseMap[y, x];
+            }
+        }
+    }
+
+    public void UpdateMesh()
     {
 
         if (verts.Length != transform.childCount)
@@ -127,6 +161,16 @@ public class MeshPlane : MonoBehaviour
         if (Editable == false)
             return;
         UpdateMesh();
+    }
+
+    public void DestroyMesh()
+    {
+        m_meshFilter.mesh = null;
+        m_meshCollider.sharedMesh = null;
+        foreach (Transform child in transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
     }
 
     private void OnDrawGizmos()

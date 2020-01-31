@@ -29,7 +29,7 @@ public class Noise : MonoBehaviour
 
     [Header("Hidden Variables")]
     private GameObject[,] markerObject;
-    private float[,] noiseMap; // noiseMap will be an array of floats that matches the transform of markerobjects to produce a value
+    public float[,] noiseMap; // noiseMap will be an array of floats that matches the transform of markerobjects to produce a value
     private bool noiseFieldGenerated;
     private Vector2 planeSetXY;
     private Vector2 randWaveGoal;
@@ -52,12 +52,15 @@ public class Noise : MonoBehaviour
 
     public void GenerateNoiseField()
     {
-        if (markerObject != null)
-            for (int x = 0; x < planeX; x++)
-                for (int z = 0; z < planeZ; z++)
-                    Destroy(markerObject[x, z]);
+        if (GetComponent<MeshPlane>() == null)
+        {
+            if (markerObject != null)
+                for (int x = 0; x < planeX; x++)
+                    for (int z = 0; z < planeZ; z++)
+                        Destroy(markerObject[x, z]);
 
-        markerObject = new GameObject[planeX, planeZ];
+            markerObject = new GameObject[planeX, planeZ];
+        }
 
         if (randNoiseLoc == true)
         {
@@ -86,18 +89,21 @@ public class Noise : MonoBehaviour
             startPoint.y = 0;
         }
 
-        //noiseMap = new float[mapWidth?, mapHeight?];
+        noiseMap = new float[planeX, planeZ];
 
         for (int x = 0; x < planeX; x++)
             for (int z = 0; z < planeZ; z++)
             {
                 Vector2 fracCord = new Vector2((x + startPoint.x) / (planeX / noisePlaneScale) / randNum.x, (z + startPoint.y) / (planeZ / noisePlaneScale) / randNum.y); // Whole numbers return same Y value // Same values will always return same noise heights
-                float noiseYValue = Mathf.PerlinNoise(fracCord.x, fracCord.y) * heightScale; // Height scale will change the noise intensity
-                GameObject markerTmp = Instantiate(noiseMarker, new Vector3(x, noiseYValue, z), Quaternion.Euler(0, 0, 0));
-                markerObject[x,z] = markerTmp;
-                //noiseMap[x?, y?] = noiseYValue?;
-            }
+                float noiseYValue = Mathf.PerlinNoise(fracCord.x, fracCord.y) * heightScale; // Height scale will change the noise intensity                
+                noiseMap[x, z] = noiseYValue;
 
+                if (GetComponent<MeshPlane>() == null)
+                {
+                    GameObject markerTmp = Instantiate(noiseMarker, new Vector3(x, noiseYValue, z), Quaternion.Euler(0, 0, 0));
+                    markerObject[x, z] = markerTmp;
+                }
+            }
         MapDisplay display = FindObjectOfType<MapDisplay>();
 
         // the display will draw the noiseMap but it needs the values

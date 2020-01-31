@@ -475,6 +475,7 @@ GameObject:
   - component: {fileID: 1569419754}
   - component: {fileID: 1569419753}
   - component: {fileID: 1569419752}
+  - component: {fileID: 1569419757}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -569,7 +570,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Editable: 1
+  Stay: 1
   m_textureMaterial: {fileID: 2100000, guid: 38210e87a6521f145b29ef0dec16e66a, type: 2}
   width: 40
   length: 40
   n_Subdivides: 20
+  m_noise: {fileID: 0}
+--- !u!114 &1569419757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569419751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6abbb27c033984b9e6b53f3a21a2db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseMarker: {fileID: 7483026693698934659, guid: f8c375c6f4cbc4a4eb0d10abbbc87bac,
+    type: 3}
+  randNoiseLoc: 1
+  customRandNoise: 0
+  randStartPoint: 1
+  planeX: 20
+  planeZ: 20
+  heightScale: 5
+  noisePlaneScale: 1
+  setRandomValue: {x: 0, y: 0}
+  randWaveMov: 0
+  waveSpeed: 0
+  wavePoints: 0
+  randNum: {x: 0, y: 0}
+  startPoint: {x: 0, y: 0}
+  autoUpdate: 0
