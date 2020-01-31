@@ -7,7 +7,7 @@ public class Steer : MonoBehaviour
     public GameObject board;
     public GameObject player;
 
-    public float gravity;
+    public float maxSpeed;
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -27,6 +27,7 @@ public class Steer : MonoBehaviour
     void Fall()
     {
         //falls down the mountain in the direction the board is facing
-        player.transform.position += transform.forward * (Time.deltaTime * gravity);
+        player.transform.position += transform.forward * (Time.deltaTime * (player.transform.localEulerAngles.x/90) * maxSpeed);
+        print(player.transform.localEulerAngles.x / 90); //testing gravity scaling (simulates picking up speed)
     }
 }
