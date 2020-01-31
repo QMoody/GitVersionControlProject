@@ -16,7 +16,7 @@ public class Noise : MonoBehaviour
     public int planeZ;
     public float planeScale;
     //public float heightScale;
-    public float perlinScale;
+    [Range(0.0f, 10.0f)] public float perlinFreq;
     public Vector2 setRandomValue;
 
     [Header("Change Noise Plane Variables")]
@@ -41,7 +41,7 @@ public class Noise : MonoBehaviour
 
     public float GetPerlinValue(int x, int z)
     {
-        Vector2 fracCord = new Vector2((float)x / planeX, (float)z / planeZ);
+        Vector2 fracCord = new Vector2(perlinFreq * x / planeX, perlinFreq * z / planeZ);
         return Mathf.PerlinNoise(fracCord.x, fracCord.y);
     }
 
@@ -65,45 +65,23 @@ public class Noise : MonoBehaviour
                     Destroy(markerObject[x, z]);
         */
 
-        markerObject = new GameObject[planeX, planeZ];
+        if (noiseFieldGenerated == false)
+        {
+            markerObject = new GameObject[planeX, planeZ];
 
-        /*
-        if (randNoiseLoc == true)
-        {
-            randNum.x = Random.Range(-1.000f, 1.000f);
-            randNum.y = Random.Range(-1.000f, 1.000f);
-        }
-        else if (customRandNoise == true)
-        {
-            randNum.x = setRandomValue.x;
-            randNum.y = setRandomValue.y;
-        }
-        else
-        {
-            randNum.x = 1;
-            randNum.y = 1;
-        }
+            for (int x = 0; x < planeX; x++)
+                for (int z = 0; z < planeZ; z++)
+                {
+                    GameObject markerTmp = Instantiate(noiseMarker, new Vector3(x * planeScale, GetPerlinValue(x, z), z * planeScale), Quaternion.Euler(0, 0, 0));
+                    markerObject[x, z] = markerTmp;
+                }
 
-        if (randStartPoint == true)
-        {
-            startPoint.x = Random.Range(-1.000f, 1.000f);
-            startPoint.y = Random.Range(-1.000f, 1.000f);
+            noiseFieldGenerated = true;
         }
-        else
+        else if (noiseFieldGenerated == true)
         {
-            startPoint.x = 0;
-            startPoint.y = 0;
+            UpdateField();
         }
-        */
-
-        for (int x = 0; x < planeX; x++)
-            for (int z = 0; z < planeZ; z++)
-            {
-                GameObject markerTmp = Instantiate(noiseMarker, new Vector3(x * planeScale, GetPerlinValue(x, z), z * planeScale), Quaternion.Euler(0, 0, 0));
-                markerObject[x, z] = markerTmp;
-            }
-
-        noiseFieldGenerated = true;
     }
 
     public void FieldWave()

@@ -156,7 +156,7 @@ MonoBehaviour:
   planeX: 60
   planeZ: 60
   planeScale: 0.2
-  perlinScale: 0
+  perlinFreq: 1
   setRandomValue: {x: 0, y: 0}
   autoUpdate: 0
   waveSpeed: 1
