@@ -153,20 +153,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseMarker: {fileID: 7483026693698934659, guid: f8c375c6f4cbc4a4eb0d10abbbc87bac,
     type: 3}
-  randNoiseLoc: 1
-  customRandNoise: 0
-  randStartPoint: 1
-  planeX: 20
-  planeZ: 20
-  heightScale: 5
-  noisePlaneScale: 1
+  planeX: 60
+  planeZ: 60
+  planeScale: 0.2
+  perlinFreq: 1
   setRandomValue: {x: 0, y: 0}
-  randWaveMov: 1
+  autoUpdate: 0
   waveSpeed: 1
   wavePoints: 0
   randNum: {x: 0, y: 0}
   startPoint: {x: 0, y: 0}
-  autoUpdate: 0
 --- !u!4 &700565929
 Transform:
   m_ObjectHideFlags: 0
