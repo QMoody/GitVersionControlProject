@@ -9,30 +9,21 @@ public class Noise : MonoBehaviour
     public GameObject noiseMarker;
 
     [Header("Create Noise Plane Variables")]
-    //public bool randNoiseLoc;
-    //public bool customRandNoise; // Use if you want to set custom random value
-    //public bool randStartPoint;
     public int planeX;
     public int planeZ;
     public float planeScale;
-    //public float heightScale;
     [Range(0.0f, 10.0f)] public float perlinFreq;
     public Vector2 setRandomValue;
 
     [Header("Change Noise Plane Variables")]
     public bool autoUpdate;
-    public float waveSpeed;
-    public int wavePoints; //add this
 
-    [Header("Output Variables")] // Do not edit in inspector
-    public Vector2 randNum;
-    public Vector2 startPoint;
+    //[Header("Output Variables")] // Do not edit in inspector
 
     [Header("Hidden Variables")]
     private GameObject[,] markerObject;
     public float[,] noiseMap; // noiseMap will be an array of floats that matches the transform of markerobjects to produce a value
     private bool noiseFieldGenerated;
-    private Vector2 randWaveGoal;
     #endregion
 
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
@@ -50,10 +41,8 @@ public class Noise : MonoBehaviour
         if (Input.GetKeyDown("r"))
             GenerateNoiseField();
 
-        if (autoUpdate == true)
+        if (autoUpdate == true && noiseFieldGenerated == true)
             UpdateField();
-
-        FieldWave();
     }
 
     public void GenerateNoiseField()
@@ -78,21 +67,10 @@ public class Noise : MonoBehaviour
 
             noiseFieldGenerated = true;
         }
-        else if (noiseFieldGenerated == true)
+        else if (noiseFieldGenerated == true && autoUpdate == false)
         {
             UpdateField();
         }
-    }
-
-    public void FieldWave()
-    {
-        float step = Time.deltaTime * waveSpeed;
-
-        if (randNum.x > randWaveGoal.x - 0.01f && randNum.x < randWaveGoal.x + 0.01f)
-            randWaveGoal.y = Random.Range(-1.000f, 1.000f);
-
-        if (randNum.y > randWaveGoal.y - 0.01f && randNum.y < randWaveGoal.y + 0.01f)
-            randWaveGoal.y = Random.Range(-1.000f, 1.000f);
     }
 
     void UpdateField()

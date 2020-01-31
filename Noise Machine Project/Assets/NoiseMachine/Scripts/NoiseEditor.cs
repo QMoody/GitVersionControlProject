@@ -5,6 +5,7 @@ using UnityEditor;
 [CustomEditor (typeof (Noise))]
 public class NoiseEditor : Editor
 {
+    /*
     public override void OnInspectorGUI()
     {
             Noise noiseGen = (Noise)target;
@@ -20,6 +21,6 @@ public class NoiseEditor : Editor
             {
                 noiseGen.GenerateNoiseField();
             }
-        
     }
+    */
 }
