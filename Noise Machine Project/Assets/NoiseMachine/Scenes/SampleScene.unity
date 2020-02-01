@@ -158,7 +158,7 @@ MonoBehaviour:
   planeScale: 0.2
   perlinFreq: 1
   setRandomValue: {x: 0, y: 0}
-  autoUpdate: 1
+  autoUpdate: 0
 --- !u!4 &700565929
 Transform:
   m_ObjectHideFlags: 0

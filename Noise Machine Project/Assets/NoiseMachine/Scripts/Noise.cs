@@ -20,6 +20,12 @@ public class Noise : MonoBehaviour
 
     //[Header("Output Variables")] // Do not edit in inspector
 
+    [Header("Mesh Variables")]
+    Mesh mesh;
+
+    Vector3[,] verticesMatrix;
+    Vector3[] verts;
+
     [Header("Hidden Variables")]
     private GameObject[,] markerObject;
     public float[,] noiseMap; // noiseMap will be an array of floats that matches the transform of markerobjects to produce a value
@@ -28,7 +34,10 @@ public class Noise : MonoBehaviour
 
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
 
-    // Make this into a function that can be repeated without starting function
+    private void Start()
+    {
+
+    }
 
     public float GetPerlinValue(int x, int z)
     {
@@ -47,23 +56,18 @@ public class Noise : MonoBehaviour
 
     public void GenerateNoiseField()
     {
-        /*
-        if (markerObject != null)
-            for (int x = 0; x < planeX; x++)
-                for (int z = 0; z < planeZ; z++)
-                    Destroy(markerObject[x, z]);
-        */
-
         if (noiseFieldGenerated == false)
         {
-            markerObject = new GameObject[planeX, planeZ];
+            //markerObject = new GameObject[planeX, planeZ];
 
-            for (int x = 0; x < planeX; x++)
-                for (int z = 0; z < planeZ; z++)
-                {
-                    GameObject markerTmp = Instantiate(noiseMarker, new Vector3(x * planeScale, GetPerlinValue(x, z), z * planeScale), Quaternion.Euler(0, 0, 0));
-                    markerObject[x, z] = markerTmp;
-                }
+            //for (int x = 0; x < planeX; x++)
+            //    for (int z = 0; z < planeZ; z++)
+            //    {
+            //        GameObject markerTmp = Instantiate(noiseMarker, new Vector3(x * planeScale, GetPerlinValue(x, z), z * planeScale), Quaternion.Euler(0, 0, 0));
+            //        markerObject[x, z] = markerTmp;
+            //    }
+
+            FieldSetup();
 
             noiseFieldGenerated = true;
         }
@@ -75,10 +79,125 @@ public class Noise : MonoBehaviour
 
     void UpdateField()
     {
+        int i = 0;
+        for (int x = 0; x < planeX; x++)
+            for (int z = 0; z < planeZ; z++)
+            {
+                verticesMatrix[x, z] = new Vector3(x * planeScale, GetPerlinValue(x, z), z * planeScale);
+                verts[i] = verticesMatrix[x, z];
+                i++;
+            }
+
+        mesh.vertices = verts;
+
+        /*
         for (int x = 0; x < planeX; x++)
             for (int z = 0; z < planeZ; z++)
             {
                 markerObject[x, z].transform.position = new Vector3(markerObject[x, z].transform.position.x, GetPerlinValue(x, z), markerObject[x, z].transform.position.z);
             }
+            */
     }
+
+    private void FieldSetup()
+    {
+        MeshFilter mFilter = GetComponent<MeshFilter>();
+
+        mesh = new Mesh();
+        mFilter.mesh = mesh;
+
+        verts = new Vector3[planeX * planeZ];
+        verticesMatrix = new Vector3[planeX, planeZ];
+
+        int i = 0;
+        for (int x = 0; x < planeX; x++)
+            for (int z = 0; z < planeZ; z++)
+            {
+                verticesMatrix[x, z] = new Vector3(x * planeScale, GetPerlinValue(x, z), z * planeScale);
+                verts[i] = verticesMatrix[x, z];
+                i++;
+            }
+
+        mesh.vertices = verts;
+
+        int[] tris = new int[(planeX - 1) * (planeZ - 1) * 6];
+        int g = 0;
+        for (int x = 0; x < planeX - 1; x++)
+            for (int z = 0; z < planeZ - 1; z++)
+            {
+
+                tris[g + 0] = planeZ * x + z;
+                tris[g + 1] = planeZ * x + z + 1;
+                tris[g + 2] = planeZ * (x + 1) + z;
+
+                tris[g + 3] = planeZ * x + z + 1;
+                tris[g + 4] = planeZ * (x + 1) + z + 1;
+                tris[g + 5] = planeZ * (x + 1) + z;
+
+                g += 6;
+            }
+
+        mesh.triangles = tris;
+
+        Vector3[] normals = new Vector3[planeX * planeZ];
+        for (int k = 0; k < normals.Length; k++)
+            normals[k] = Vector3.forward;
+
+        mesh.normals = normals;
+
+        Vector2[] uv = new Vector2[4]
+        {
+            new Vector2(0, 0),
+            new Vector2(1, 0),
+            new Vector2(0, 1),
+            new Vector2(1, 1)
+        };
+        mesh.uv = uv;
+    }
+
+    /*
+    private void FieldSetup()
+    {
+        MeshFilter mFilter = GetComponent<MeshFilter>();
+
+        Mesh mesh = new Mesh();
+        mFilter.mesh = mesh;
+
+        Vector3[] vertices = new Vector3[4]
+        {
+            new Vector3(0, 0, 0),
+            new Vector3(1, 0, 0),
+            new Vector3(0, 0, 1),
+            new Vector3(1, 0, 1)
+        };
+        mesh.vertices = vertices;
+
+        int[] tris = new int[6]
+        {
+            // lower left triangle
+            0, 2, 1,
+            // upper right triangle
+            2, 3, 1
+        };
+        mesh.triangles = tris;
+
+        Vector3[] normals = new Vector3[4]
+        {
+            -Vector3.forward,
+            -Vector3.forward,
+            -Vector3.forward,
+            -Vector3.forward
+        };
+        mesh.normals = normals;
+
+        Vector2[] uv = new Vector2[4]
+        {
+            new Vector2(0, 0),
+            new Vector2(1, 0),
+            new Vector2(0, 1),
+            new Vector2(1, 1)
+        };
+        mesh.uv = uv;
+    }
+    */
 }
