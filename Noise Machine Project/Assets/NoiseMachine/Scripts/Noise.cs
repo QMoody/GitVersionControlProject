@@ -7,6 +7,9 @@ public class Noise : MonoBehaviour
     #region Variables
     [Header("Objects & Scripts")]
     public GameObject noiseMarker;
+    public Material textureMat;
+    MeshRenderer m_meshRenderer;
+    MeshCollider m_meshCollider;
 
     [Header("Create Noise Plane Variables")]
     public int planeX;
@@ -36,7 +39,8 @@ public class Noise : MonoBehaviour
 
     private void Start()
     {
-
+        m_meshRenderer = GetComponent<MeshRenderer>();
+        m_meshCollider = GetComponent<MeshCollider>();
     }
 
     public float GetPerlinValue(int x, int z)
@@ -108,6 +112,7 @@ public class Noise : MonoBehaviour
 
         verts = new Vector3[planeX * planeZ];
         verticesMatrix = new Vector3[planeX, planeZ];
+        Vector2[] uv = new Vector2[verts.Length];
 
         int i = 0;
         for (int x = 0; x < planeX; x++)
@@ -115,10 +120,12 @@ public class Noise : MonoBehaviour
             {
                 verticesMatrix[x, z] = new Vector3(x * planeScale, GetPerlinValue(x, z), z * planeScale);
                 verts[i] = verticesMatrix[x, z];
+                uv[i] = new Vector2((float)x / planeX, (float)z / planeZ);
                 i++;
             }
 
         mesh.vertices = verts;
+        mesh.uv = uv;
 
         int[] tris = new int[(planeX - 1) * (planeZ - 1) * 6];
         int g = 0;
@@ -145,6 +152,7 @@ public class Noise : MonoBehaviour
 
         mesh.normals = normals;
 
+        /*
         Vector2[] uv = new Vector2[4]
         {
             new Vector2(0, 0),
@@ -153,6 +161,8 @@ public class Noise : MonoBehaviour
             new Vector2(1, 1)
         };
         mesh.uv = uv;
+        */
+        m_meshRenderer.material = textureMat;
     }
 
     /*

@@ -6,7 +6,6 @@ using System.Linq;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 public class MeshPlane : MonoBehaviour
 {
-
     //Modified Scripted by Matej Vanco https://youtu.be/c-pqEHR1jnw
     //Add https://catlikecoding.com/unity/tutorials/procedural-grid/
     public bool Editable = false;
@@ -90,8 +89,6 @@ public class MeshPlane : MonoBehaviour
         m_meshCollider.sharedMesh = m_mesh;
         m_meshRenderer.material = m_textureMaterial;
         verts = m_meshFilter.mesh.vertices;
-
-        
 
         for (int v = 0; v < m_mesh.vertices.Length; v++)
         {

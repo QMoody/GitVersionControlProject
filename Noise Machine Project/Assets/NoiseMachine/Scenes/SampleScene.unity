@@ -153,6 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noiseMarker: {fileID: 7483026693698934659, guid: f8c375c6f4cbc4a4eb0d10abbbc87bac,
     type: 3}
+  textureMat: {fileID: 2100000, guid: 38210e87a6521f145b29ef0dec16e66a, type: 2}
   planeX: 60
   planeZ: 60
   planeScale: 0.2
