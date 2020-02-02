@@ -16,7 +16,6 @@ public class Noise : MonoBehaviour
     public int planeZ;
     public float planeScale;
     [Range(0.0f, 10.0f)] public float perlinFreq;
-    public Vector2 setRandomValue;
 
     [Header("Change Noise Plane Variables")]
     public bool autoUpdate;
@@ -25,12 +24,10 @@ public class Noise : MonoBehaviour
 
     [Header("Mesh Variables")]
     Mesh mesh;
-
     Vector3[,] verticesMatrix;
     Vector3[] verts;
 
     [Header("Hidden Variables")]
-    private GameObject[,] markerObject;
     public float[,] noiseMap; // noiseMap will be an array of floats that matches the transform of markerobjects to produce a value
     private bool noiseFieldGenerated;
     #endregion
@@ -62,15 +59,6 @@ public class Noise : MonoBehaviour
     {
         if (noiseFieldGenerated == false)
         {
-            //markerObject = new GameObject[planeX, planeZ];
-
-            //for (int x = 0; x < planeX; x++)
-            //    for (int z = 0; z < planeZ; z++)
-            //    {
-            //        GameObject markerTmp = Instantiate(noiseMarker, new Vector3(x * planeScale, GetPerlinValue(x, z), z * planeScale), Quaternion.Euler(0, 0, 0));
-            //        markerObject[x, z] = markerTmp;
-            //    }
-
             FieldSetup();
 
             noiseFieldGenerated = true;
@@ -151,63 +139,6 @@ public class Noise : MonoBehaviour
             normals[k] = Vector3.forward;
 
         mesh.normals = normals;
-
-        /*
-        Vector2[] uv = new Vector2[4]
-        {
-            new Vector2(0, 0),
-            new Vector2(1, 0),
-            new Vector2(0, 1),
-            new Vector2(1, 1)
-        };
-        mesh.uv = uv;
-        */
         m_meshRenderer.material = textureMat;
     }
-
-    /*
-    private void FieldSetup()
-    {
-        MeshFilter mFilter = GetComponent<MeshFilter>();
-
-        Mesh mesh = new Mesh();
-        mFilter.mesh = mesh;
-
-        Vector3[] vertices = new Vector3[4]
-        {
-            new Vector3(0, 0, 0),
-            new Vector3(1, 0, 0),
-            new Vector3(0, 0, 1),
-            new Vector3(1, 0, 1)
-        };
-        mesh.vertices = vertices;
-
-        int[] tris = new int[6]
-        {
-            // lower left triangle
-            0, 2, 1,
-            // upper right triangle
-            2, 3, 1
-        };
-        mesh.triangles = tris;
-
-        Vector3[] normals = new Vector3[4]
-        {
-            -Vector3.forward,
-            -Vector3.forward,
-            -Vector3.forward,
-            -Vector3.forward
-        };
-        mesh.normals = normals;
-
-        Vector2[] uv = new Vector2[4]
-        {
-            new Vector2(0, 0),
-            new Vector2(1, 0),
-            new Vector2(0, 1),
-            new Vector2(1, 1)
-        };
-        mesh.uv = uv;
-    }
-    */
 }
