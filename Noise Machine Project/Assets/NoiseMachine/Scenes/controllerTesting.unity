@@ -201,7 +201,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1460076982}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 25, y: 0, z: 0}
 --- !u!1 &120147569
 GameObject:
@@ -222,7 +222,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &120147570
 Transform:
   m_ObjectHideFlags: 0
@@ -233,10 +233,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -3, z: 0}
   m_LocalScale: {x: 1, y: 0.1, z: 3}
-  m_Children:
-  - {fileID: 1420729875}
+  m_Children: []
   m_Father: {fileID: 1460076982}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &120147571
 MonoBehaviour:
@@ -639,10 +638,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1420729874}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 10.463581, z: 0}
-  m_LocalScale: {x: 1, y: 10, z: 0.33333334}
+  m_LocalPosition: {x: 0, y: 348.78604, z: 0}
+  m_LocalScale: {x: 333.33334, y: 333.33334, z: 333.33334}
   m_Children: []
-  m_Father: {fileID: 120147570}
+  m_Father: {fileID: 2776828030012430398}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1420729876
@@ -742,9 +741,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1460076981}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 31.3, z: -40.9}
+  m_LocalPosition: {x: 0, y: 31.3, z: -40.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 2776828030012430398}
   - {fileID: 120147570}
   - {fileID: 10667404}
   m_Father: {fileID: 0}
@@ -869,14 +869,45 @@ GameObject:
   m_Component:
   - component: {fileID: 2776828030012430398}
   - component: {fileID: 3249591552845457117}
+  - component: {fileID: 2441161398368230348}
   - component: {fileID: 6669673783708333707}
+  - component: {fileID: 2441161398368230347}
   m_Layer: 0
   m_Name: Raft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
+--- !u!64 &2441161398368230347
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2441161398368230346}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 5302568919011541938, guid: da83ced8562cbaf468bde1c5d317e324, type: 3}
+--- !u!114 &2441161398368230348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2441161398368230346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6083e105bd5b0bd4fbb375bfd5a2cbb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  board: {fileID: 2441161398368230346}
+  player: {fileID: 1460076981}
+  maxSpeed: 50
 --- !u!4 &2776828030012430398
 Transform:
   m_ObjectHideFlags: 0
@@ -885,11 +916,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2441161398368230346}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.416496, y: 30.312729, z: -38.842457}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_LocalPosition: {x: 0, y: -3, z: 0}
+  m_LocalScale: {x: 0.003, y: 0.003, z: 0.003}
+  m_Children:
+  - {fileID: 1420729875}
+  m_Father: {fileID: 1460076982}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3249591552845457117
 MeshFilter:
