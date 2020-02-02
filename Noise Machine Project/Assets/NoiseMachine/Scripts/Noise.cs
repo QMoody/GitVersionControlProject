@@ -51,7 +51,7 @@ public class Noise : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("r"))
+        //if (Input.GetKeyDown("r"))
             GenerateNoiseField();
 
         if (autoUpdate == true && noiseFieldGenerated == true)
@@ -106,9 +106,11 @@ public class Noise : MonoBehaviour
     private void FieldSetup()
     {
         MeshFilter mFilter = GetComponent<MeshFilter>();
+        
 
         mesh = new Mesh();
         mFilter.mesh = mesh;
+       
 
         verts = new Vector3[planeX * planeZ];
         verticesMatrix = new Vector3[planeX, planeZ];
@@ -162,7 +164,9 @@ public class Noise : MonoBehaviour
         };
         mesh.uv = uv;
         */
-        m_meshRenderer.material = textureMat;
+        m_meshCollider.sharedMesh = mesh;
+        
+        //m_meshRenderer.material = textureMat;
     }
 
     /*
