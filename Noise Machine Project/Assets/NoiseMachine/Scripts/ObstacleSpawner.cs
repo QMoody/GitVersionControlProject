@@ -26,15 +26,15 @@ public class ObstacleSpawner : MonoBehaviour
         currentDistance = player.transform.position.z;
         distanceAtLastObstacle = player.transform.position.z; 
         StartCoroutine(ObstacleTimer(3)); //start spawning obstacles after 3 seconds;
-        treeWidth = treePrefab.GetComponent<BoxCollider>().size.x;
+        treeWidth = treePrefab.GetComponent<Collider>().bounds.size.x;
         lenghtOfPlayArea = Mathf.Abs(right - left);
         spacing = lenghtOfPlayArea / treeWidth;
     }
 
     void SpawnObstacle()
     {
-        float randomPoint = roundUp(Random.Range(left, right), treeWidth);
-        transform.position = new Vector3(randomPoint, transform.position.y, transform.position.z);
+        float randomPoint = roundUp(Random.Range(left, right), treeWidth); //obstacles will have even spacing between them equal to their width, meaning a 2u wide tree can only spawn on a multibale of 2.
+        transform.position = new Vector3(randomPoint, transform.position.y, transform.position.z); // The spawner moves to that location
 
         RaycastHit hit;        
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 2000)) //Cast a Raycast to see if any colliders are under that point.
@@ -92,6 +92,7 @@ public class ObstacleSpawner : MonoBehaviour
             distanceAtLastObstacle = player.transform.position.z; //track where the player's distance now 
             yield return new WaitForSeconds(0.5f); // buffer to wait
             yield return new WaitUntil(()=>distanceSinceLastObstacle>=spawnRate); // wait untill the diffrence is greater than the spawn rate or when the player goes far enough 
+            DespawnObstacles();
         }
     }
 }
