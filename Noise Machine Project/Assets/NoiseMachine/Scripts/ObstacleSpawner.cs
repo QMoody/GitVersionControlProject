@@ -10,10 +10,19 @@ public class ObstacleSpawner : MonoBehaviour
     public float left;
     public float right;
     public Vector3 offsetFromPlayer;
+    public float spawnRate;
+    public float spawnAcceleration;
+    private float currentDistance;
+    private float distanceAtLastObstacle;
+    private float distanceSinceLastObstacle;
+    private bool canSpawnObstacle;
 
     private void Start()
     {
         treePrefabs = new List<GameObject>(0);
+        currentDistance = player.transform.position.z;
+        distanceAtLastObstacle = player.transform.position.z; 
+        StartCoroutine(ObstacleTimer(3)); //start spawning obstacles after 3 seconds;
     }
 
     void SpawnObstacle()
@@ -34,16 +43,34 @@ public class ObstacleSpawner : MonoBehaviour
         {
             SpawnObstacle();
         }
-        transform.position = new Vector3(transform.position.x, player.transform.position.y + offsetFromPlayer.y, player.transform.position.z + offsetFromPlayer.z);
+        transform.position = new Vector3(transform.position.x, player.transform.position.y + offsetFromPlayer.y, player.transform.position.z + offsetFromPlayer.z);//move with the player
 
-        for(int t = 0; t < treePrefabs.Count; t++) // for every tree in the list
+        currentDistance = player.transform.position.z; //track the player's distance down the hill
+        distanceSinceLastObstacle = currentDistance - distanceAtLastObstacle; // track the diffrence between the distance the player had last time an obstacle was spawned and now
+    }
+
+    void DespawnObstacles()
+    {
+        for (int t = 0; t < treePrefabs.Count; t++) // for every tree in the list
         {
-            float distanceAway = (transform.position.z - treePrefabs[t].transform.position.z ); //calculate the distance way
-            if (distanceAway> offsetFromPlayer.z * 1.5) // if it's far behind the player
+            float distanceAway = (transform.position.z - treePrefabs[t].transform.position.z); //calculate the distance way
+            if (distanceAway > offsetFromPlayer.z * 1.5) // if it's far behind the player
             {
                 Destroy(treePrefabs[t]); //DESTROY IT
                 treePrefabs.Remove(treePrefabs[t]); //and remove the null refrence.
             }
+        }
+    }
+
+    IEnumerator ObstacleTimer(float time)
+    {
+        yield return new WaitForSeconds(time);
+        while (true)
+        {
+            SpawnObstacle(); 
+            distanceAtLastObstacle = player.transform.position.z; //track where the player's distance now 
+            yield return new WaitForSeconds(0.5f); // buffer to wait
+            yield return new WaitUntil(()=>distanceSinceLastObstacle>=spawnRate); // wait untill the diffrence is greater than the spawn rate or when the player goes far enough 
         }
     }
 }
