@@ -918,6 +918,8 @@ MonoBehaviour:
   left: -5
   right: 5
   offsetFromPlayer: {x: 0, y: 5, z: 5}
+  spawnRate: 3
+  spawnAcceleration: 0
 --- !u!4 &2051711156
 Transform:
   m_ObjectHideFlags: 0
