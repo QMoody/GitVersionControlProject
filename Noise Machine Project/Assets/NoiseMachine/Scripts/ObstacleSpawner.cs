@@ -9,6 +9,7 @@ public class ObstacleSpawner : MonoBehaviour
     private List<GameObject> treePrefabs;
     public float left;
     public float right;
+    private float treeWidth;
     public Vector3 offsetFromPlayer;
     public float spawnRate;
     public float spawnAcceleration;
@@ -16,6 +17,8 @@ public class ObstacleSpawner : MonoBehaviour
     private float distanceAtLastObstacle;
     private float distanceSinceLastObstacle;
     private bool canSpawnObstacle;
+    private float lenghtOfPlayArea;
+    private float spacing;
 
     private void Start()
     {
@@ -23,11 +26,15 @@ public class ObstacleSpawner : MonoBehaviour
         currentDistance = player.transform.position.z;
         distanceAtLastObstacle = player.transform.position.z; 
         StartCoroutine(ObstacleTimer(3)); //start spawning obstacles after 3 seconds;
+        treeWidth = treePrefab.GetComponent<BoxCollider>().size.x;
+        lenghtOfPlayArea = Mathf.Abs(right - left);
+        spacing = lenghtOfPlayArea / treeWidth;
     }
 
     void SpawnObstacle()
     {
-        transform.position = new Vector3(Random.Range(left, right), transform.position.y, transform.position.z);
+        float randomPoint = roundUp(Random.Range(left, right), treeWidth);
+        transform.position = new Vector3(randomPoint, transform.position.y, transform.position.z);
 
         RaycastHit hit;        
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 2000)) //Cast a Raycast to see if any colliders are under that point.
@@ -35,6 +42,20 @@ public class ObstacleSpawner : MonoBehaviour
            treePrefabs.Add(Instantiate(treePrefab, transform.position+transform.TransformDirection(Vector3.down)*hit.distance, Quaternion.identity)); //Instantiate an obstacle right on the surrface of that collider and add them to the list
         }
         
+    }
+    float roundUp(float numToRound, float multiple)
+    {
+        if (multiple == 0)
+            return numToRound;
+
+        float remainder = Mathf.Abs(numToRound) % multiple;
+        if (remainder == 0)
+            return numToRound;
+
+        if (numToRound < 0)
+            return -(Mathf.Abs(numToRound) - remainder);
+        else
+            return numToRound + multiple - remainder;
     }
 
     private void Update()
