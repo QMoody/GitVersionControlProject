@@ -60,10 +60,10 @@ public class ObstacleSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (Input.anyKeyDown)
-        {
-            SpawnObstacle();
-        }
+        //if (Input.anyKeyDown)
+        //{
+        //    SpawnObstacle();
+        //}
         transform.position = new Vector3(transform.position.x, player.transform.position.y + offsetFromPlayer.y, player.transform.position.z + offsetFromPlayer.z);//move with the player
 
         currentDistance = player.transform.position.z; //track the player's distance down the hill
