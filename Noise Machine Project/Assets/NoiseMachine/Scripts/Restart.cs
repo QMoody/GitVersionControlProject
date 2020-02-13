@@ -13,7 +13,7 @@ public class Restart : MonoBehaviour
             //end run
             //display score
             //reload scene
-            SceneManager.LoadScene("controllerTesting");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
