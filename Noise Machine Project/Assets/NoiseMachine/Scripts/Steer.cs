@@ -8,6 +8,13 @@ public class Steer : MonoBehaviour
     public GameObject player;
 
     public float maxSpeed;
+    public Rigidbody m_rb;
+
+    private void Start()
+    {
+        m_rb = transform.parent.GetComponent<Rigidbody>();
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -27,7 +34,8 @@ public class Steer : MonoBehaviour
     void Fall()
     {
         //falls down the mountain in the direction the board is facing
-        player.transform.position += transform.forward * (Time.deltaTime * (player.transform.localEulerAngles.x/90) * maxSpeed);
-        print(player.transform.localEulerAngles.x / 90); //testing gravity scaling (simulates picking up speed)
+        m_rb.AddForce(transform.forward * (Time.deltaTime * (player.transform.localEulerAngles.x/90) * maxSpeed),ForceMode.Impulse);
+        //print(player.transform.localEulerAngles.x / 90); //testing gravity scaling (simulates picking up speed)
     }
+    
 }
