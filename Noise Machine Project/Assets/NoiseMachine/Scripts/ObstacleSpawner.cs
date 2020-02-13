@@ -24,8 +24,9 @@ public class ObstacleSpawner : MonoBehaviour
     {
         treePrefabs = new List<GameObject>(0);
         currentDistance = player.transform.position.z;
-        distanceAtLastObstacle = player.transform.position.z; 
-        StartCoroutine(ObstacleTimer(3)); //start spawning obstacles after 3 seconds;
+        distanceAtLastObstacle = player.transform.position.z;
+        BuildLevel();
+        StartCoroutine(ObstacleTimer(0.01f)); //start spawning obstacles after 3 seconds;
         treeWidth = treePrefab.GetComponent<Collider>().bounds.size.x;
         lenghtOfPlayArea = Mathf.Abs(right - left);
         spacing = lenghtOfPlayArea / treeWidth;
@@ -56,6 +57,16 @@ public class ObstacleSpawner : MonoBehaviour
             return -(Mathf.Abs(numToRound) - remainder);
         else
             return numToRound + multiple - remainder;
+    }
+
+    private void BuildLevel()
+    {
+        int prePlacedObsticals = (int)(offsetFromPlayer.z / spawnRate);
+        for (int i = 0; i < prePlacedObsticals; i++)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, spawnRate * i);
+            SpawnObstacle();                
+        }
     }
 
     private void Update()
@@ -90,7 +101,7 @@ public class ObstacleSpawner : MonoBehaviour
         {
             SpawnObstacle(); 
             distanceAtLastObstacle = player.transform.position.z; //track where the player's distance now 
-            yield return new WaitForSeconds(0.5f); // buffer to wait
+            yield return new WaitForSeconds(0.01f); // buffer to wait
             yield return new WaitUntil(()=>distanceSinceLastObstacle>=spawnRate); // wait untill the diffrence is greater than the spawn rate or when the player goes far enough 
             DespawnObstacles();
         }
