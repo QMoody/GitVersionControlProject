@@ -8,7 +8,7 @@ public class Steer : MonoBehaviour
     public GameObject player;
 
     public float maxSpeed;
-    public Rigidbody m_rb;
+    private Rigidbody m_rb;
 
     private void Start()
     {
