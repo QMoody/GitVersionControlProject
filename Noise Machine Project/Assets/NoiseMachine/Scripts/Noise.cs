@@ -6,12 +6,13 @@ public class Noise : MonoBehaviour
 {
     #region Variables
     [Header("Objects & Scripts")]
-    public GameObject noiseMarker;
     public Material textureMat;
     MeshRenderer m_meshRenderer;
     MeshCollider m_meshCollider;
 
     [Header("Create Noise Plane Variables")]
+    //public float planePosX;
+    //public float planePosZ;
     public int planeX;
     public int planeZ;
     public float planeScale;
@@ -75,26 +76,28 @@ public class Noise : MonoBehaviour
         for (int x = 0; x < planeX; x++)
             for (int z = 0; z < planeZ; z++)
             {
-                verticesMatrix[x, z] = new Vector3(x * planeScale, GetPerlinValue(x, z), z * planeScale);
-                verts[i] = verticesMatrix[x, z];
+                SetVerticies(i, x, z);
                 i++;
             }
 
         mesh.vertices = verts;
+        m_meshCollider.sharedMesh = mesh;
+    }
 
-        /*
-        for (int x = 0; x < planeX; x++)
-            for (int z = 0; z < planeZ; z++)
-            {
-                markerObject[x, z].transform.position = new Vector3(markerObject[x, z].transform.position.x, GetPerlinValue(x, z), markerObject[x, z].transform.position.z);
-            }
-            */
+    private void SetVerticies(int i, int x, int z)
+    {
+        int xf = x + (int)transform.position.x * 2;
+        int zf = z + (int)transform.position.z * 2;
+        verticesMatrix[x, z] = new Vector3(x * planeScale, GetPerlinValue(xf, zf), z * planeScale);
+        verts[i] = verticesMatrix[x, z];
+
+        if (noiseFieldGenerated == false)
+            Debug.Log("Value: " + xf + " / " + zf);
     }
 
     private void FieldSetup()
     {
         MeshFilter mFilter = GetComponent<MeshFilter>();
-        
 
         mesh = new Mesh();
         mFilter.mesh = mesh;
@@ -108,8 +111,7 @@ public class Noise : MonoBehaviour
         for (int x = 0; x < planeX; x++)
             for (int z = 0; z < planeZ; z++)
             {
-                verticesMatrix[x, z] = new Vector3(x * planeScale, GetPerlinValue(x, z), z * planeScale);
-                verts[i] = verticesMatrix[x, z];
+                SetVerticies(i, x, z);
                 uv[i] = new Vector2((float)x / planeX, (float)z / planeZ);
                 i++;
             }
@@ -142,21 +144,7 @@ public class Noise : MonoBehaviour
 
         mesh.normals = normals;
 
-
-        /*
-        Vector2[] uv = new Vector2[4]
-        {
-            new Vector2(0, 0),
-            new Vector2(1, 0),
-            new Vector2(0, 1),
-            new Vector2(1, 1)
-        };
-        mesh.uv = uv;
-        */
         m_meshCollider.sharedMesh = mesh;
-        
-
         m_meshRenderer.material = textureMat;
-
     }
 }
