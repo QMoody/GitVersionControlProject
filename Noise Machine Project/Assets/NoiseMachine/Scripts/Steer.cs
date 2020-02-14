@@ -9,10 +9,12 @@ public class Steer : MonoBehaviour
 
     public float maxSpeed;
     private Rigidbody m_rb;
+    private Vector3 angle;
 
     private void Start()
     {
         m_rb = transform.parent.GetComponent<Rigidbody>();
+        angle = new Vector3();
     }
 
     // Update is called once per frame
@@ -20,21 +22,23 @@ public class Steer : MonoBehaviour
     {
         Turn();
         Fall();
+        player.transform.localEulerAngles = angle;
     }
 
     void Turn()
     {
-        if (player.transform.localEulerAngles.x > 0) //stops player from riding up the hill
+        if (player.transform.eulerAngles.x > 0 ) //stops player from riding up the hill
         {
             //turns based on mouse position on screen
-            board.transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, (Mathf.Atan2(Input.mousePosition.x - Screen.width / 2, Screen.height) * 180 / Mathf.PI), transform.localEulerAngles.z);
+           angle = new Vector3(board.transform.localEulerAngles.x, (Mathf.Atan2(Input.mousePosition.x - Screen.width / 2, Screen.height) * 180 / Mathf.PI), board.transform.localEulerAngles.z);
+           
         }
     }
 
     void Fall()
     {
         //falls down the mountain in the direction the board is facing
-        m_rb.AddForce(transform.forward * (Time.deltaTime * (player.transform.localEulerAngles.x/90) * maxSpeed),ForceMode.Impulse);
+        //m_rb.AddForce(transform.forward * (Time.deltaTime * (player.transform.localEulerAngles.x/90) * maxSpeed),ForceMode.Impulse);
         //print(player.transform.localEulerAngles.x / 90); //testing gravity scaling (simulates picking up speed)
     }
     

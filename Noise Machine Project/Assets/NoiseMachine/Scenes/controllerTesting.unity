@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 527291937}
   m_Layer: 0
   m_Name: Noise
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -386,8 +386,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a6abbb27c033984b9e6b53f3a21a2db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noiseMarker: {fileID: 7483026693698934659, guid: f8c375c6f4cbc4a4eb0d10abbbc87bac,
-    type: 3}
   textureMat: {fileID: 2100000, guid: 38210e87a6521f145b29ef0dec16e66a, type: 2}
   planeX: 60
   planeZ: 60
@@ -415,7 +413,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 527291932}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 71f564447a86e0a448a9a86d5be46227, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -591,5 +589,16 @@ PrefabInstance:
       propertyPath: maxSpeed
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 2332397347198828799, guid: e19a459a4f6e68b46a3342fefa4f6538,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 125793323208989315, guid: e19a459a4f6e68b46a3342fefa4f6538,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 71f564447a86e0a448a9a86d5be46227,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e19a459a4f6e68b46a3342fefa4f6538, type: 3}
