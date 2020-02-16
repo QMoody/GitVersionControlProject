@@ -25,6 +25,14 @@ public class Steer : MonoBehaviour
         player.transform.localEulerAngles = angle;
     }
 
+    private void Update()
+    {
+        if (Input.GetAxis("Fire1")>=.01)
+        {
+            Break();
+        }
+    }
+
     void Turn()
     {
         if (player.transform.eulerAngles.x > 0 ) //stops player from riding up the hill
@@ -33,6 +41,14 @@ public class Steer : MonoBehaviour
            angle = new Vector3(board.transform.localEulerAngles.x, (Mathf.Atan2(Input.mousePosition.x - Screen.width / 2, Screen.height) * 180 / Mathf.PI), board.transform.localEulerAngles.z);
            
         }
+    }
+
+    private void Break()
+    {
+        m_rb.drag = 20;
+        //Vector3 breakForce = -m_rb.velocity * Time.deltaTime;
+        //m_rb.AddRelativeForce(breakForce*10, ForceMode.Impulse);
+        //print(breakForce);
     }
 
     void Fall()
