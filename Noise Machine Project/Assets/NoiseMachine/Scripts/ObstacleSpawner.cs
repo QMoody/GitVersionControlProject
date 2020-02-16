@@ -7,8 +7,10 @@ public class ObstacleSpawner : MonoBehaviour
     public GameObject treePrefab;
     public GameObject player;
     private List<GameObject> treePrefabs;
-    public float left;
-    public float right;
+    public Transform leftMarker;
+    public Transform rightMarker;
+    private float left;
+    private float right;
     private float treeWidth;
     public Vector3 offsetFromPlayer;
     public float spawnRate;
@@ -25,6 +27,8 @@ public class ObstacleSpawner : MonoBehaviour
         treePrefabs = new List<GameObject>(0);
         currentDistance = player.transform.position.z;
         distanceAtLastObstacle = player.transform.position.z;
+        left = leftMarker.position.x;
+        right = rightMarker.position.x;
         BuildLevel();
         StartCoroutine(ObstacleTimer(0.01f)); //start spawning obstacles after 3 seconds;
         treeWidth = treePrefab.GetComponent<Collider>().bounds.size.x;

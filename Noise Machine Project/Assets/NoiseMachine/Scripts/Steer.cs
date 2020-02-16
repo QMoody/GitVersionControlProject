@@ -29,7 +29,7 @@ public class Steer : MonoBehaviour
     {
         if (Input.GetAxis("Fire1")>=.01)
         {
-            Break();
+            //Break();
         }
     }
 
