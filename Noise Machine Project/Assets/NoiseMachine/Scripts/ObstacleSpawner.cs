@@ -38,7 +38,7 @@ public class ObstacleSpawner : MonoBehaviour
 
     void SpawnObstacle()
     {
-        float randomPoint = roundUp(Random.Range(left, right), treeWidth); //obstacles will have even spacing between them equal to their width, meaning a 2u wide tree can only spawn on a multibale of 2.
+        float randomPoint = PublicFunction.RoundUp(Random.Range(left, right), treeWidth); //obstacles will have even spacing between them equal to their width, meaning a 2u wide tree can only spawn on a multibale of 2.
         transform.position = new Vector3(randomPoint, transform.position.y, transform.position.z); // The spawner moves to that location
 
         RaycastHit hit;        
@@ -48,20 +48,7 @@ public class ObstacleSpawner : MonoBehaviour
         }
         
     }
-    float roundUp(float numToRound, float multiple)
-    {
-        if (multiple == 0)
-            return numToRound;
-
-        float remainder = Mathf.Abs(numToRound) % multiple;
-        if (remainder == 0)
-            return numToRound;
-
-        if (numToRound < 0)
-            return -(Mathf.Abs(numToRound) - remainder);
-        else
-            return numToRound + multiple - remainder;
-    }
+    
 
     private void BuildLevel()
     {
@@ -109,5 +96,23 @@ public class ObstacleSpawner : MonoBehaviour
             yield return new WaitUntil(()=>distanceSinceLastObstacle>=spawnRate); // wait untill the diffrence is greater than the spawn rate or when the player goes far enough 
             DespawnObstacles();
         }
+    }
+}
+
+public class PublicFunction
+{
+    public static float RoundUp(float numToRound, float multiple)
+    {
+        if (multiple == 0)
+            return numToRound;
+
+        float remainder = Mathf.Abs(numToRound) % multiple;
+        if (remainder == 0)
+            return numToRound;
+
+        if (numToRound < 0)
+            return -(Mathf.Abs(numToRound) - remainder);
+        else
+            return numToRound + multiple - remainder;
     }
 }

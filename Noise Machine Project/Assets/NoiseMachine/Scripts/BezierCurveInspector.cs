@@ -154,7 +154,7 @@ public class BezierSplineInspector : Editor
 
     private void DrawSelectedPointInspector()
     {
-        GUILayout.Label("Selected Point");
+        GUILayout.Label("Selected Point" + selectedIndex.ToString());
         EditorGUI.BeginChangeCheck();
         Vector3 point = EditorGUILayout.Vector3Field("Position", spline.GetControlPoint(selectedIndex));
         if (EditorGUI.EndChangeCheck())
