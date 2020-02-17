@@ -1676,17 +1676,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   points:
-  - {x: 1, y: 0, z: 0}
-  - {x: 2, y: 0, z: 0}
-  - {x: 3, y: 0, z: 0}
-  - {x: 4, y: 0, z: 0}
-  - {x: 5, y: 0, z: 0}
-  - {x: 6, y: 0, z: 0}
-  - {x: 7, y: 0, z: 0}
-  - {x: 8, y: 0, z: 0}
-  - {x: 9, y: 0, z: 0}
-  - {x: 10, y: 0, z: 0}
-  modes: 02000000020000000200000002000000
+  - {x: 0.06680977, y: 0, z: 1.0207742}
+  - {x: -0.026603699, y: 0, z: 1.6850241}
+  - {x: 0.097566724, y: 0, z: 1.8283405}
+  - {x: -0.010544777, y: 0, z: 2.5749164}
+  - {x: -0.11865628, y: 0, z: 3.3214922}
+  - {x: -0.056304127, y: 0, z: 3.2182574}
+  - {x: -0.09084216, y: 0, z: 4.0844345}
+  - {x: -0.12538019, y: 0, z: 4.9506116}
+  - {x: -0.08009341, y: 0, z: 5.0078354}
+  - {x: -0.15182325, y: 0, z: 5.821367}
+  modes: 01000000010000000100000001000000
 --- !u!4 &862360976
 Transform:
   m_ObjectHideFlags: 0
@@ -3507,11 +3507,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spline: {fileID: 862360975}
-  StartPoint: {fileID: 95979064}
+  startPoint: {fileID: 95979064}
   leftMarker: {fileID: 74025045}
   rightMarker: {fileID: 1882062256}
-  xSpacing: 3
-  zSpacing: 10
+  xSpacing: 2
+  zSpacing: 20
 --- !u!1 &2082325023
 GameObject:
   m_ObjectHideFlags: 0
@@ -3539,7 +3539,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2082325023}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 128.68}
+  m_LocalPosition: {x: 0, y: -0, z: 129.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1866852697}
