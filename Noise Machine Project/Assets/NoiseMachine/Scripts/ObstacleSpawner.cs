@@ -14,6 +14,7 @@ public class ObstacleSpawner : MonoBehaviour
     private float treeWidth;
     public Vector3 offsetFromPlayer;
     public float spawnRate;
+    public int objectsPerSpawn;
     public float spawnAcceleration;
     private float currentDistance;
     private float distanceAtLastObstacle;
@@ -41,10 +42,25 @@ public class ObstacleSpawner : MonoBehaviour
         float randomPoint = PublicFunction.RoundUp(Random.Range(left, right), treeWidth); //obstacles will have even spacing between them equal to their width, meaning a 2u wide tree can only spawn on a multibale of 2.
         transform.position = new Vector3(randomPoint, transform.position.y, transform.position.z); // The spawner moves to that location
 
-        RaycastHit hit;        
+        RaycastHit hit;
+        RaycastHit capsuleHit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 2000)) //Cast a Raycast to see if any colliders are under that point.
         {
-           treePrefabs.Add(Instantiate(treePrefab, transform.position+transform.TransformDirection(Vector3.down)*hit.distance, Quaternion.identity)); //Instantiate an obstacle right on the surrface of that collider and add them to the list
+            if (Physics.CapsuleCast(transform.position, hit.point + transform.TransformDirection(Vector3.down)*2, 2, transform.TransformDirection(Vector3.down), out capsuleHit, 10))
+            {
+                Debug.Log(capsuleHit.point+","+capsuleHit.normal);
+                if (capsuleHit.collider.gameObject.layer == 8)
+                {
+                    Debug.Log("Hit Path at " + transform.position);
+                    return;
+                }
+                if (capsuleHit.collider.gameObject.tag == "Obstacle")
+                {
+                    Debug.Log("Hit another Obstacleat " + transform.position);
+                    return;
+                }                
+            }
+            treePrefabs.Add(Instantiate(treePrefab, transform.position + transform.TransformDirection(Vector3.down)*hit.distance, Quaternion.identity)); //Instantiate an obstacle right on the surrface of that collider and add them to the list
         }
         
     }
@@ -56,7 +72,10 @@ public class ObstacleSpawner : MonoBehaviour
         for (int i = 0; i < prePlacedObsticals; i++)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, spawnRate * i);
-            SpawnObstacle();                
+            for(int t = 0; t <= objectsPerSpawn - 1; t++)
+            {
+                SpawnObstacle();
+            }              
         }
     }
 
@@ -90,7 +109,10 @@ public class ObstacleSpawner : MonoBehaviour
         yield return new WaitForSeconds(time);
         while (true)
         {
-            SpawnObstacle(); 
+            for (int t = 0; t <= objectsPerSpawn-1; t++)
+            {
+                SpawnObstacle();
+            }
             distanceAtLastObstacle = player.transform.position.z; //track where the player's distance now 
             yield return new WaitForSeconds(0.01f); // buffer to wait
             yield return new WaitUntil(()=>distanceSinceLastObstacle>=spawnRate); // wait untill the diffrence is greater than the spawn rate or when the player goes far enough 
@@ -115,4 +137,19 @@ public class PublicFunction
         else
             return numToRound + multiple - remainder;
     }
+
+    //public static Vector3 RoundUp(Vector3 numToRound, float multiple)
+    //{
+    //    if (multiple == 0)
+    //        return numToRound;
+
+    //    Vector3 remainder = new Vector3(Mathf.Abs(numToRound.x) % multiple, Mathf.Abs(numToRound.y) % multiple, Mathf.Abs(numToRound.z) % multiple);
+    //    if (remainder == Vector3.zero)
+    //        return numToRound;
+
+    //    if (numToRound < Vector3.zero)
+    //        return -(new Vector3(Mathf.Abs(numToRound.x) - remainder.x, Mathf.Abs(numToRound.y) - remainder.y, Mathf.Abs(numToRound.z) - remainder.z);
+    //    else
+    //        return numToRound + multiple - remainder;
+    //}
 }
