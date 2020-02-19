@@ -66,7 +66,7 @@ public class Noise : MonoBehaviour
         }
         else if (noiseFieldGenerated == true && autoUpdate == false)
         {
-            UpdateField();
+            //UpdateField();
         }
     }
 
@@ -79,6 +79,8 @@ public class Noise : MonoBehaviour
                 SetVerticies(i, x, z);
                 i++;
             }
+
+        Debug.Log("Updated field");
 
         mesh.vertices = verts;
         m_meshCollider.sharedMesh = mesh;

@@ -51,7 +51,7 @@ MonoBehaviour:
   planeZ: 41
   planeScale: 0.5
   perlinFreq: 8.5
-  autoUpdate: 1
+  autoUpdate: 0
 --- !u!33 &7197938629862694550
 MeshFilter:
   m_ObjectHideFlags: 0
