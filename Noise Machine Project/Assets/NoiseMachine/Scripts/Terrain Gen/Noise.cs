@@ -91,8 +91,8 @@ public class Noise : MonoBehaviour
         verticesMatrix[x, z] = new Vector3(x * planeScale, GetPerlinValue(xf, zf), z * planeScale);
         verts[i] = verticesMatrix[x, z];
 
-        if (noiseFieldGenerated == false)
-            Debug.Log("Value: " + xf + " / " + zf);
+        //if (noiseFieldGenerated == false)
+        //    Debug.Log("Value: " + xf + " / " + zf);
     }
 
     private void FieldSetup()
