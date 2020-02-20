@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Traker : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Traker : MonoBehaviour
 
     float YCPos;
     float ZCPos;
+
+    public Text distance;
 
     void Start()
     {
@@ -23,6 +26,13 @@ public class Traker : MonoBehaviour
     {
         YCPos = transform.position.y;
         ZCPos = transform.position.z;
+
+        distance.text = (YSPos-YCPos).ToString();
+
+        if (YSPos - YCPos > 250)
+        {
+            print("You Win");
+        }
     }
 
     float GetDistance()
