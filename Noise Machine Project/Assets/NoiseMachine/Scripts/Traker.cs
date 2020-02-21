@@ -20,7 +20,7 @@ public class Traker : MonoBehaviour
     float goalDis;
 
     float timeS;
-    Vector3 lastPoint;
+    Vector3 startPos;
 
     float locDisStart;
 
@@ -37,7 +37,7 @@ public class Traker : MonoBehaviour
 
         goalDis = 250;
         timeS = Time.time;
-        lastPoint = transform.position;
+        startPos = transform.position;
     }
 
     // Update is called once per frame
@@ -49,22 +49,21 @@ public class Traker : MonoBehaviour
         YPOSroc = (YSPos - YCPos);
         ZPOSroc = (ZCPos - ZSPos);
 
-        if (Time.time - timeS > 1)
-        {
 
-            speedometer.GetComponent<Text>().text = (transform.position - lastPoint)*Time.deltaTime * 60 * 60).ToString() + " km/h";
+        print((transform.position - startPos).magnitude * Time.deltaTime);
+        //print(Time.time - timeS);
 
-            timeS = Time.time;
-            lastPoint = transform.position;
-        }
-        speedometer.GetComponent<Text>().text = (totalDis*Time.deltaTime).ToString();
+        speedometer.GetComponent<Text>().text = (Mathf.FloorToInt(GetComponent<Rigidbody>().velocity.magnitude * 3.6F)).ToString() + " km/h";
 
 
-        totalDis = Mathf.Sqrt((YPOSroc * YPOSroc) + (ZPOSroc * ZPOSroc));
+        
+
+
+        totalDis = Mathf.FloorToInt(Mathf.Sqrt((YPOSroc * YPOSroc) + (ZPOSroc * ZPOSroc)));
 
         DistanceTravelled();
 
-        distance.GetComponent<Text>().text = (totalDis).ToString();
+        distance.GetComponent<Text>().text = (totalDis).ToString() + "m";
         //distance.text = (ZPOSroc).ToString();
 
         if (totalDis > goalDis)
