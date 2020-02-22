@@ -22,7 +22,7 @@ public class Steer : MonoBehaviour
     {
         Turn();
         Fall();
-        player.transform.localEulerAngles = angle;
+        player.transform.localEulerAngles = angle; //Fixed rotation in this prototype due to derpy rotation (change "player" to "board" to see difference)
     }
 
     void Turn()
@@ -38,6 +38,9 @@ public class Steer : MonoBehaviour
     void Fall()
     {
         //falls down the mountain in the direction the board is facing
+
+        //turned off for this prototype do to derpy interaction (will propably be remade)
+
         //m_rb.AddForce(transform.forward * (Time.deltaTime * (player.transform.localEulerAngles.x/90) * maxSpeed),ForceMode.Impulse);
         //print(player.transform.localEulerAngles.x / 90); //testing gravity scaling (simulates picking up speed)
     }
