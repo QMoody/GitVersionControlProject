@@ -44,9 +44,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerObject: {fileID: 0}
-  noiseObject: {fileID: 0}
-  AChunk: []
+  noiseObject: {fileID: 7197938629862694555, guid: 991d2ad60bd1b674dbb6b2b8df9f3103,
+    type: 3}
+  chunkAry: []
+  chunkPosAry: []
   chunckSpace: 0
-  chunkLimit: 25
-  chunkScale: 0.5
-  realChunkSize: 20
+  chunkLimit: 9
+  chunkScale: 1
+  realChunkSize: 40
+  chunkSpawnRadius: 3

@@ -401,7 +401,7 @@ PrefabInstance:
     - target: {fileID: 7197938629862694555, guid: 991d2ad60bd1b674dbb6b2b8df9f3103,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7197938629862694549, guid: 991d2ad60bd1b674dbb6b2b8df9f3103,
         type: 3}
@@ -457,6 +457,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7197938629862694548, guid: 991d2ad60bd1b674dbb6b2b8df9f3103,
+        type: 3}
+      propertyPath: planeScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 991d2ad60bd1b674dbb6b2b8df9f3103, type: 3}
@@ -529,34 +534,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
         type: 3}
-      propertyPath: chunkAry.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: chunkPosAry.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
       propertyPath: playerObject
       value: 
       objectReference: {fileID: 593477466}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: noiseObject
-      value: 
-      objectReference: {fileID: 7197938629862694555, guid: 991d2ad60bd1b674dbb6b2b8df9f3103,
-        type: 3}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: chunkLimit
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: chunkSpawnRadius
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 831ae3a6304a00f44aa03bff9166eff2, type: 3}
