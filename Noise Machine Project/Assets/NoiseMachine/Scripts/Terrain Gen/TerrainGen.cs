@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TerrainGen : MonoBehaviour
 {
+    #region Variables
     public GameObject playerObject;
     public GameObject noiseObject;
     public GameObject[] chunkAry;
@@ -15,7 +16,12 @@ public class TerrainGen : MonoBehaviour
     public int realChunkSize;
     private Vector2 playerChunkLoc;
     private Vector2 playerChunkLoc_;
-    
+
+    public int chunkSpawnRadius; //Only odd numbers
+    #endregion
+
+    //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
+
     void Start()
     {
         chunkAry = new GameObject[chunkLimit];
@@ -37,74 +43,89 @@ public class TerrainGen : MonoBehaviour
     
     private void CheckForNewChunk()
     {
+        //Set location of player by chunk rather then real world cords
         playerChunkLoc = new Vector2(Mathf.Round(playerObject.transform.position.x / realChunkSize), Mathf.Round(playerObject.transform.position.z / realChunkSize));
         int pChunkX = Mathf.RoundToInt(playerChunkLoc.x);
         int pChunkZ = Mathf.RoundToInt(playerChunkLoc.y);
-        //Debug.Log(playerChunkLoc);
 
-        //if cords are different check if new area has chunk spawned
+        //If cords are different check if new area has chunks already spawned
         if (playerChunkLoc_ != playerChunkLoc)
         {
-            //Check if current area has chunk spawned
-            bool[,] isChunkSpawned = new bool[3,3];
-            for (int i = 0; i < chunkPosAry.Length; i++)
-            {
-                if (chunkPosAry[i].x == pChunkX && chunkPosAry[i].y == pChunkZ)
-                    isChunkSpawned[1,1] = true;
-                else if (chunkPosAry[i].x + 1 == pChunkX && chunkPosAry[i].y == pChunkZ)
-                    isChunkSpawned[2,1] = true;
-                else if (chunkPosAry[i].x - 1 == pChunkX && chunkPosAry[i].y == pChunkZ)
-                    isChunkSpawned[0,1] = true;
-                else if (chunkPosAry[i].x == pChunkX && chunkPosAry[i].y + 1 == pChunkZ)
-                    isChunkSpawned[1,2] = true;
-                else if (chunkPosAry[i].x == pChunkX && chunkPosAry[i].y - 1 == pChunkZ)
-                    isChunkSpawned[1,0] = true;
-                else if (chunkPosAry[i].x + 1 == pChunkX && chunkPosAry[i].y + 1 == pChunkZ)
-                    isChunkSpawned[2,2] = true;
-                else if (chunkPosAry[i].x + 1 == pChunkX && chunkPosAry[i].y - 1 == pChunkZ)
-                    isChunkSpawned[2,0] = true;
-                else if (chunkPosAry[i].x - 1 == pChunkX && chunkPosAry[i].y + 1 == pChunkZ)
-                    isChunkSpawned[0,2] = true;
-                else if (chunkPosAry[i].x - 1 == pChunkX && chunkPosAry[i].y - 1 == pChunkZ)
-                    isChunkSpawned[0,0] = true;
-            }
+            for (int x = 0; x < chunkSpawnRadius; x++)
+                for (int z = 0; z < chunkSpawnRadius; z++)
+                {
+                    bool hasChunk = false;
+                    for (int i = 0; i < chunkPosAry.Length; i++)
+                        if (chunkPosAry[i] == new Vector2(x - 1 + pChunkX, z - 1 + pChunkZ))
+                        {
+                            hasChunk = true;
+                            break;
+                        }
 
-            for (int x = 0; x < isChunkSpawned.GetLength(0); x++)
-                for (int z = 0; z < isChunkSpawned.GetLength(1); z++)
-                    if (isChunkSpawned[x, z] == false)
-                        CreateChunk(pChunkX, pChunkZ, x - 1, z - 1);
-
-            //        |
-            //+       Y
-            // [2,2][1,2][0,2]
-            // [2,1][1,1][0,1] X -
-            // [2,0][1,0][0,0]
-            //                -
+                    if (hasChunk == false)
+                        CreateChunk(x - 1 + pChunkX, z - 1 + pChunkZ, pChunkX, pChunkZ);
+                }
 
             playerChunkLoc_ = playerChunkLoc;
         }
     }
 
-    private void CreateChunk(int x, int z, int xAdd, int zAdd)
+    private void CreateChunk(int x, int z, int pChunkX, int pChunkZ)
     {
-        Debug.Log(xAdd + " / " + zAdd);
         //Create new chunk
-        GameObject chunk = Instantiate(noiseObject, new Vector3(-10 + (x + xAdd) * realChunkSize, 0, -10 + (z + zAdd) * realChunkSize), Quaternion.Euler(0,0,0));
+        GameObject chunk = Instantiate(noiseObject, new Vector3(-10 + x * realChunkSize, 0, -10 + z * realChunkSize), Quaternion.Euler(0,0,0));
 
         //Check for free chunk array slot
-        bool chunkIsFree = false;
-        for (int i = 0; i < chunkAry.Length; i++)
+        bool chunkIsFree = true;
+        bool arrayIsNull = false;
+        int freeChunkId = 0;
+        for (int i = 0; i < chunkPosAry.Length; i++)
         {
             if (chunkAry[i] == null)
             {
-                chunkAry[i] = chunk;
-                chunkPosAry[i] = new Vector2(x, z);
-                chunkIsFree = true;
+                freeChunkId = i;
+                arrayIsNull = true;
                 break;
             }
         }
 
+        //This needs to be changed to check for the farthest chunk away to destory
+        //See unsed code a bottom of script
+        //Check for which chunk can be replaced
+        if (arrayIsNull == false)
+            for (int i = 0; i < chunkPosAry.Length; i++)
+            {
+                for (int xi = 0; xi < chunkSpawnRadius; xi++)
+                {
+                    for (int zi = 0; zi < chunkSpawnRadius; zi++)
+                    {
+                        if (chunkPosAry[i] == new Vector2(xi - 1 + pChunkX, zi - 1 + pChunkZ))
+                        {
+                            chunkIsFree = false;
+                            break;
+                        }
+                    }
+                    if (chunkIsFree == false)
+                        break;
+                }
+
+                if (chunkIsFree == true)
+                {
+                    freeChunkId = i;
+                    Destroy(chunkAry[freeChunkId]);
+                    break;
+                }
+
+                chunkIsFree = true;
+            }
+
+        //Add new chunk to array
+        chunkAry[freeChunkId] = chunk;
+        chunkPosAry[freeChunkId] = new Vector2(x, z);
+
+
         //Find and delete farthest chunk from player if no free slot is open in the array
+        /*
         if (chunkIsFree == false)
         {
             int farChunkId = 0;
@@ -120,6 +141,7 @@ public class TerrainGen : MonoBehaviour
             chunkAry[farChunkId] = chunk;
             chunkPosAry[farChunkId] = new Vector2(x, z);
         }
+        */
 
         //Set rotation
         //Place in worled based on rotation

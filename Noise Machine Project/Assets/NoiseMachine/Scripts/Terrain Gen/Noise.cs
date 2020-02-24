@@ -58,6 +58,7 @@ public class Noise : MonoBehaviour
 
     public void GenerateNoiseField()
     {
+        //Check for first time noise field generation
         if (noiseFieldGenerated == false)
         {
             FieldSetup();
@@ -72,6 +73,7 @@ public class Noise : MonoBehaviour
 
     void UpdateField()
     {
+        //Update field if checked after first time mesh generation
         int i = 0;
         for (int x = 0; x < planeX; x++)
             for (int z = 0; z < planeZ; z++)
@@ -88,6 +90,7 @@ public class Noise : MonoBehaviour
 
     private void SetVerticies(int i, int x, int z)
     {
+        //Set the mesh field vert points
         int xf = x + (int)transform.position.x * 2;
         int zf = z + (int)transform.position.z * 2;
         verticesMatrix[x, z] = new Vector3(x * planeScale, GetPerlinValue(xf, zf), z * planeScale);
@@ -97,14 +100,15 @@ public class Noise : MonoBehaviour
         //    Debug.Log("Value: " + xf + " / " + zf);
     }
 
+    //First time field setup
     private void FieldSetup()
     {
         MeshFilter mFilter = GetComponent<MeshFilter>();
 
         mesh = new Mesh();
         mFilter.mesh = mesh;
-       
 
+        //Set Verts
         verts = new Vector3[planeX * planeZ];
         verticesMatrix = new Vector3[planeX, planeZ];
         Vector2[] uv = new Vector2[verts.Length];
@@ -121,6 +125,7 @@ public class Noise : MonoBehaviour
         mesh.vertices = verts;
         mesh.uv = uv;
 
+        //Set tris
         int[] tris = new int[(planeX - 1) * (planeZ - 1) * 6];
         int g = 0;
         for (int x = 0; x < planeX - 1; x++)
@@ -140,6 +145,7 @@ public class Noise : MonoBehaviour
 
         mesh.triangles = tris;
 
+        //Set normals
         Vector3[] normals = new Vector3[planeX * planeZ];
         for (int k = 0; k < normals.Length; k++)
             normals[k] = Vector3.forward;
