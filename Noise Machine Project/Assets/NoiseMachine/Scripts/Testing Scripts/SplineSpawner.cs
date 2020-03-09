@@ -66,6 +66,7 @@ public class SplineSpawner : MonoBehaviour
             for (int i = 0; i < colliders.Count; i++, p++)
             {
                 Transform item = Instantiate(colliders[i].transform) as Transform;
+                item.gameObject.name = "NoSpawner " + p.ToString();
                 Vector3 position = spline.GetPoint(p * stepSize);
                 item.transform.localPosition = position;                
                 item.transform.parent = spline.gameObject.transform;

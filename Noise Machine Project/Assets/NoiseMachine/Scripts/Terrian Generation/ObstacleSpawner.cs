@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ObstacleSpawner : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class ObstacleSpawner : MonoBehaviour
         treeWidth = treePrefab.GetComponent<Collider>().bounds.size.x;
         lenghtOfPlayArea = Mathf.Abs(right - left);
         spacing = lenghtOfPlayArea / treeWidth;
-        StartCoroutine(LateFunction(0.1f));
+        //StartCoroutine(LateFunction(0.1f));
     }
 
     IEnumerator LateFunction(float waitTime)
@@ -48,34 +49,42 @@ public class ObstacleSpawner : MonoBehaviour
     {
         float randomPoint = PublicFunction.RoundUp(Random.Range(left, right), treeWidth); //obstacles will have even spacing between them equal to their width, meaning a 2u wide tree can only spawn on a multibale of 2.
         transform.position = new Vector3(randomPoint, transform.position.y, transform.position.z); // The spawner moves to that location
-
-        RaycastHit hit;
-        RaycastHit capsuleHit;
+        
+        // Bit shift the index of the layer (8) to get a bit mask
+        //int layerMask = 1 << 8;
+        RaycastHit rayHit;
         bool dontSpawn = false;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 2000)) //Cast a Raycast to see if any colliders are under that point.
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out rayHit, 2000)) //Cast a Raycast to see if any colliders are under that point.
         {
-            if (Physics.CapsuleCast(transform.position, hit.point + transform.TransformDirection(Vector3.down)*2, 2, transform.TransformDirection(Vector3.down), out capsuleHit, 10))
-            {
-                Debug.Log(hit.collider.gameObject.name);
+            RaycastHit[] capsuleHitArray = Physics.CapsuleCastAll(transform.position, rayHit.point + transform.TransformDirection(Vector3.down) * 2, 2, transform.TransformDirection(Vector3.down), 10);
 
-                if (capsuleHit.collider.gameObject.layer == 8)
+            foreach (RaycastHit hit in capsuleHitArray)
+            {
+                //Debug.Log(rayHit.collider.gameObject.name);
+
+                if (hit.collider.gameObject.layer == 8)
                 {
-                    Debug.Log("Hit Path at " + transform.position);
+                    Debug.Log("Hit Path at " + hit.collider.gameObject.name );
                     dontSpawn = true;
                 }
-                if (capsuleHit.collider.gameObject.tag == "Obstacle")
+                if (hit.collider.gameObject.tag == "Obstacle")
                 {
-                    Debug.Log("Hit another Obstacle at " + transform.position);
+                    Debug.Log("Hit another Obstacle " + hit.collider.gameObject.name);
                     dontSpawn = true;
-                }                
-            }
-            if (!dontSpawn)
-            {
-                GameObject tree = Instantiate(treePrefab, transform.position + transform.TransformDirection(Vector3.down) * hit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
-                treePrefabs.Add(tree);
-                tree.name = "Tree " + treePrefabs.IndexOf(tree).ToString();
-            }
-        }        
+                }
+            }         
+        }
+        else
+        {
+            dontSpawn = true;
+        }
+
+        if (!dontSpawn)
+        {
+            GameObject tree = Instantiate(treePrefab, transform.position + transform.TransformDirection(Vector3.down) * rayHit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
+            treePrefabs.Add(tree);
+            tree.name = "Tree " + treePrefabs.IndexOf(tree).ToString();
+        }
     }
     
     void CleanUp()

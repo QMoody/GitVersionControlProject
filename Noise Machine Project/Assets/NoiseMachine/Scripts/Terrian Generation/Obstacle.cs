@@ -5,23 +5,27 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
     public bool touchingGround = false;
+    public bool tested = false;
 
-    private void OnTriggerStay(Collider other)
+    private void OnCollisionStay(Collision other)
     {
-        //Check to see if the Collider's tag is "Ground"
-        if (other.tag == "Ground")
-        {
-            touchingGround = true;
-        }
-    }
-    
+        if (!tested)
+        { 
+            //Check to see if the Collider's tag is "Ground"
+            if (other.gameObject.tag == "Ground")
+            {
+                touchingGround = true;
+            }
 
-    void Update()
-    {
-        if (!touchingGround)
-        {
-            //Output the message
-            Debug.Log(this.gameObject.name + " is not touching ground",this.gameObject);
+            tested = true;
+
+            if (!touchingGround)
+            {
+                //Output the message
+                Debug.Log(this.gameObject.name + " is not touching ground", this.gameObject);
+            }
         }
+
     }
+
 }
