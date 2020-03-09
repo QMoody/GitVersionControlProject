@@ -35,6 +35,13 @@ public class ObstacleSpawner : MonoBehaviour
         treeWidth = treePrefab.GetComponent<Collider>().bounds.size.x;
         lenghtOfPlayArea = Mathf.Abs(right - left);
         spacing = lenghtOfPlayArea / treeWidth;
+        StartCoroutine(LateFunction(0.1f));
+    }
+
+    IEnumerator LateFunction(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        CleanUp();
     }
 
     void SpawnObstacle()
@@ -44,27 +51,42 @@ public class ObstacleSpawner : MonoBehaviour
 
         RaycastHit hit;
         RaycastHit capsuleHit;
+        bool dontSpawn = false;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, 2000)) //Cast a Raycast to see if any colliders are under that point.
         {
             if (Physics.CapsuleCast(transform.position, hit.point + transform.TransformDirection(Vector3.down)*2, 2, transform.TransformDirection(Vector3.down), out capsuleHit, 10))
             {
-                Debug.Log(capsuleHit.point+","+capsuleHit.normal);
+                Debug.Log(hit.collider.gameObject.name);
+
                 if (capsuleHit.collider.gameObject.layer == 8)
                 {
                     Debug.Log("Hit Path at " + transform.position);
-                    return;
+                    dontSpawn = true;
                 }
                 if (capsuleHit.collider.gameObject.tag == "Obstacle")
                 {
-                    Debug.Log("Hit another Obstacleat " + transform.position);
-                    return;
+                    Debug.Log("Hit another Obstacle at " + transform.position);
+                    dontSpawn = true;
                 }                
             }
-            treePrefabs.Add(Instantiate(treePrefab, transform.position + transform.TransformDirection(Vector3.down)*hit.distance, Quaternion.identity)); //Instantiate an obstacle right on the surrface of that collider and add them to the list
-        }
-        
+            if (!dontSpawn)
+            {
+                GameObject tree = Instantiate(treePrefab, transform.position + transform.TransformDirection(Vector3.down) * hit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
+                treePrefabs.Add(tree);
+                tree.name = "Tree " + treePrefabs.IndexOf(tree).ToString();
+            }
+        }        
     }
     
+    void CleanUp()
+    {
+        foreach(GameObject t in treePrefabs)
+        if (!t.GetComponentInChildren<Obstacle>().touchingGround)
+        {
+            treePrefabs.Remove(t);
+            Destroy(t.gameObject);
+        }
+    }
 
     private void BuildLevel()
     {
@@ -81,10 +103,6 @@ public class ObstacleSpawner : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.anyKeyDown)
-        //{
-        //    SpawnObstacle();
-        //}
         transform.position = new Vector3(transform.position.x, player.transform.position.y + offsetFromPlayer.y, player.transform.position.z + offsetFromPlayer.z);//move with the player
 
         currentDistance = player.transform.position.z; //track the player's distance down the hill
@@ -117,6 +135,7 @@ public class ObstacleSpawner : MonoBehaviour
             yield return new WaitForSeconds(0.01f); // buffer to wait
             yield return new WaitUntil(()=>distanceSinceLastObstacle>=spawnRate); // wait untill the diffrence is greater than the spawn rate or when the player goes far enough 
             DespawnObstacles();
+            //StartCoroutine(LateFunction(0.1f));
         }
     }
 }

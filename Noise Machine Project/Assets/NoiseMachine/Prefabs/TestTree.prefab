@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 4973108985316239738}
   - component: {fileID: 4973108985316239717}
   - component: {fileID: 147951892595749104}
+  - component: {fileID: 2329973201568881389}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Obstacle
@@ -139,3 +140,16 @@ CapsuleCollider:
   m_Height: 2.3987958
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: -0.0009849549, z: -0.00000011920929}
+--- !u!114 &2329973201568881389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4973108985316239719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 716c4a24f0f56084ba181d2e10a8077a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touchingGround: 0
