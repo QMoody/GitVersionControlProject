@@ -17,7 +17,7 @@ public class Traker : MonoBehaviour
     float ZPOSroc;
 
     float totalDis;
-    float goalDis;
+    public float goalDis = 250;
 
     //UI references
     public GameObject distance;
@@ -29,7 +29,6 @@ public class Traker : MonoBehaviour
         YSPos = transform.position.y;
         ZSPos = transform.position.z;
 
-        goalDis = 250; //goal distance
     }
 
     // Update is called once per frame

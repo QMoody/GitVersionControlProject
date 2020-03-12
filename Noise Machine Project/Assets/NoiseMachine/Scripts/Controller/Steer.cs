@@ -10,11 +10,13 @@ public class Steer : MonoBehaviour
     public float maxSpeed;
     private Rigidbody m_rb;
     private Vector3 angle;
+    private float m_drag;
 
     private void Start()
     {
-        m_rb = transform.parent.GetComponent<Rigidbody>();
+        m_rb = transform.GetComponent<Rigidbody>();
         angle = new Vector3();
+        m_drag = m_rb.drag;
     }
 
     // Update is called once per frame
@@ -31,7 +33,7 @@ public class Steer : MonoBehaviour
         {
             //turns based on mouse position on screen
            angle = new Vector3(board.transform.localEulerAngles.x, (Mathf.Atan2(Input.mousePosition.x - Screen.width / 2, Screen.height) * 180 / Mathf.PI), board.transform.localEulerAngles.z);
-           
+           //m_rb.drag = m_drag + angle;
         }
     }
 
@@ -41,7 +43,7 @@ public class Steer : MonoBehaviour
 
         //turned off for this prototype do to derpy interaction (will propably be remade)
 
-        //m_rb.AddForce(transform.forward * (Time.deltaTime * (player.transform.localEulerAngles.x/90) * maxSpeed),ForceMode.Impulse);
+        m_rb.AddForce(transform.forward * (Time.deltaTime * (player.transform.localEulerAngles.x/90) * maxSpeed),ForceMode.Force);
         //print(player.transform.localEulerAngles.x / 90); //testing gravity scaling (simulates picking up speed)
     }
     
