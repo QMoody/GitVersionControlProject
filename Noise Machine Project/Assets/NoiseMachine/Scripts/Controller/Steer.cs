@@ -75,6 +75,14 @@ public class Steer : MonoBehaviour
         Vector3 slopeUp = slopeRot.MultiplyVector(Vector3.up);
     }
 
+    private void Update()
+    {
+        if (Input.GetAxis("Fire1")>=.01)
+        {
+            //Break();
+        }
+    }
+
     void Turn()
     {
         if (m_rb.rotation.eulerAngles.x > 0 ) //stops player from riding up the hill
@@ -107,6 +115,14 @@ public class Steer : MonoBehaviour
             }
             
         }
+    }
+
+    private void Break()
+    {
+        m_rb.drag = 20;
+        //Vector3 breakForce = -m_rb.velocity * Time.deltaTime;
+        //m_rb.AddRelativeForce(breakForce*10, ForceMode.Impulse);
+        //print(breakForce);
     }
 
     void Fall()
