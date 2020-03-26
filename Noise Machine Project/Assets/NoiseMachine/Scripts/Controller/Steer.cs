@@ -111,12 +111,8 @@ public class Steer : MonoBehaviour
 
     void Fall()
     {
-        //falls down the mountain in the direction the board is facing
-
-        //turned off for this prototype do to derpy interaction (will propably be remade)
-
-
-
+        //Applies force to keep the player on the ground
+               
         RaycastHit hit;
 
         if (Physics.Raycast(transform.position + transform.forward *m_co.bounds.size.z/2, transform.TransformDirection(Vector3.down), out hit, 2000)) //Cast a Raycast to see if any colliders are under that point.
@@ -131,7 +127,8 @@ public class Steer : MonoBehaviour
 
     void Go()
     {
+        //Applies force foward
         Vector3 forwardVect = Vector3.Project(m_rb.transform.forward, slopeRot.MultiplyVector(Vector3.forward));
-        m_rb.AddForce(forwardVect * fowardForce);
+        m_rb.AddForce(forwardVect * fowardForce + Vector3.forward);
     }
 }
