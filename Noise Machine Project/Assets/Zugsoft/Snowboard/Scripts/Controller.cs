@@ -73,21 +73,23 @@ public class Controller : MonoBehaviour
 
     void SnowTrail()
     {
-        if (distGround < 0.2f)
-        {
-            _boardNoise.volume = magnitude / 50f;
-            lastTrailId = trail.AddSkidMark(posGround, normalGround, trailWidth, lastTrailId);
-            pe.rateOverTime = magnitude * 20  - 20 ;
-            localRot = transform.localRotation.eulerAngles;
-            localRot.z = (distGroundR - distGroundL) * 100;
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(localRot), Time.deltaTime * 10);
-        }
-        else
-        {
-            _boardNoise.volume = 0;
-            lastTrailId = -1;
-            pe.rateOverTime = 0;
-        }
+        
+            if (distGround < 0.2f)
+            {
+                _boardNoise.volume = magnitude / 50f;
+                lastTrailId = trail.AddSkidMark(posGround, normalGround, trailWidth, lastTrailId);
+                pe.rateOverTime = magnitude * 20 - 20;
+                localRot = transform.localRotation.eulerAngles;
+                localRot.z = (distGroundR - distGroundL) * 100;
+                transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(localRot), Time.deltaTime * 10);
+            }
+            else
+            {
+                _boardNoise.volume = 0;
+                lastTrailId = -1;
+                pe.rateOverTime = 0;
+            }
+        
     }
 
     float pitch;
