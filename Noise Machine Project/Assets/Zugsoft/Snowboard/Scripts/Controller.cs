@@ -38,12 +38,43 @@ public class Controller : MonoBehaviour
 
     Vector3 normalGround, posGround;
 
+    float targetAngle;
+    float degreesFromTargetAngle;
+    float currentAngle;
+    public float inputSensitivity = 10; 
+    float ScreenInput()
+    {
+        //turns based on mouse position on screen
+        
+        targetAngle = (Mathf.Atan2(Input.mousePosition.x - Screen.width / 2, Screen.height) * 180 / Mathf.PI);
+
+        currentAngle = transform.localEulerAngles.y;
+        currentAngle = (currentAngle > 180) ? currentAngle - 360 : currentAngle;
+
+        //the diffrence between target angle and local rotation
+        degreesFromTargetAngle = targetAngle - currentAngle;
+
+        //A float between -1 and 1
+        float steerInput;
+
+        // If the degree diffrence is greater than the InputSensitivity then the maximum input amount is put in
+        if (degreesFromTargetAngle >= inputSensitivity) steerInput = 1;
+        else if (degreesFromTargetAngle <= -inputSensitivity) steerInput = -1;
+        // If the diffrence is negligable, no input
+        else if (degreesFromTargetAngle >= -1 && degreesFromTargetAngle <= 1) steerInput = 0;
+        // otherwise it's a fraction in between the InputSensititvity
+        else steerInput = degreesFromTargetAngle / inputSensitivity;  
+
+        return steerInput;
+    }    
+
     Vector3 localRot;
     void Update()
     {
         //if (Input.GetKeyDown(KeyCode.P)) Application.CaptureScreenshot(System.DateTime.Now.Date.Minute+".png",4);
 
-        tilt = Input.GetAxis("Horizontal");
+        //tilt = Input.GetAxis("Horizontal");
+        tilt = ScreenInput();
 
         if (Physics.Raycast(L.position, -curNormal, out hit))
         {
