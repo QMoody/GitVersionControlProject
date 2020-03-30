@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/NoiseMachine/Scenes/controllerTesting.unity
     guid: 876e9769ce3630848ae54e48670797af
+  - enabled: 1
+    path: Assets/NoiseMachine/Scenes/MainMenu.unity
+    guid: 95f9deb25711da542b1d39ef1f02fdfa
+  - enabled: 1
+    path: Assets/NoiseMachine/Scenes/SceneWNewPlayer.unity
+    guid: 6724ad76a06e66141b55e0174f4c7e7a
   m_configObjects: {}

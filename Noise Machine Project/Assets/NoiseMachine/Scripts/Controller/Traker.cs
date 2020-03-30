@@ -38,6 +38,7 @@ public class Traker : MonoBehaviour
         fastestSpeed = 0;
         totalDis = 0;
         isPaused = false;
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame
@@ -121,6 +122,7 @@ public class Traker : MonoBehaviour
 
     public void GoHome()
     {
+        Paused();
         SceneManager.LoadScene("MainMenu");
     }
 
