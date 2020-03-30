@@ -10,11 +10,14 @@ public class Restart : MonoBehaviour
 
     void Start()
     {
-        if (!GetComponent<Traker>())
+        if (p == null)
         {
-            Debug.LogError("Missing Traker");
+            if (!GetComponent<Traker>())
+            {
+                Debug.LogError("Missing Traker");
+            }
+            p = GetComponent<Traker>();
         }
-        p = GetComponent<Traker>();
     }
 
     
