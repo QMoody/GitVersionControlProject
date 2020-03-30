@@ -5,11 +5,10 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
     public bool touchingGround = false;
-    public bool tested = false;
 
-    private void OnCollisionStay(Collision other)
+    private void OnCollisionEnter(Collision other)
     {
-        if (!tested)
+        if (!touchingGround)
         { 
             //Check to see if the Collider's tag is "Ground"
             if (other.gameObject.tag == "Ground")
@@ -17,12 +16,10 @@ public class Obstacle : MonoBehaviour
                 touchingGround = true;
             }
 
-            tested = true;
-
             if (!touchingGround)
             {
                 //Output the message
-                Debug.Log(this.gameObject.name + " is not touching ground", this.gameObject);
+                Debug.Log(this.gameObject.name + " was hit by " + other.gameObject.name, this.gameObject);
             }
         }
 

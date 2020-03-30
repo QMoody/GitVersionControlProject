@@ -23,6 +23,7 @@ public class Traker : MonoBehaviour
     public GameObject distance;
     public GameObject winText;
     public GameObject speedometer;
+    public float currentSpeed;
 
     void Start()
     {
@@ -34,7 +35,9 @@ public class Traker : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        CurrentSpeed();
+        currentSpeed = (Mathf.FloorToInt(GetComponent<Rigidbody>().velocity.magnitude * 3.6F));
+
+        UpdateCurrentSpeed();
         DistanceTravelled();
 
         if (totalDis > goalDis)
@@ -45,10 +48,10 @@ public class Traker : MonoBehaviour
         }
     }
 
-    void CurrentSpeed() 
+    void UpdateCurrentSpeed() 
     {
         //UI update for players current speed in km/h
-        speedometer.GetComponent<Text>().text = (Mathf.FloorToInt(GetComponent<Rigidbody>().velocity.magnitude * 3.6F)).ToString() + " km/h";
+        speedometer.GetComponent<Text>().text = currentSpeed + " km/h";
 
         //Will be a speedometer arrow that shows that same thing
     }

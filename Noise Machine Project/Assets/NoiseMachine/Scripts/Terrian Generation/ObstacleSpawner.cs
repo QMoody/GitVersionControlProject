@@ -62,14 +62,14 @@ public class ObstacleSpawner : MonoBehaviour
             {
                 //Debug.Log(rayHit.collider.gameObject.name);
 
-                if (hit.collider.gameObject.layer == 8)
-                {
-                    Debug.Log("Hit Path at " + hit.collider.gameObject.name );
-                    dontSpawn = true;
-                }
+                //if (hit.collider.gameObject.layer == 8)
+                //{
+                //    Debug.Log("Hit Path at " + hit.collider.gameObject.name );
+                //    dontSpawn = true;
+                //}
                 if (hit.collider.gameObject.tag == "Obstacle")
                 {
-                    Debug.Log("Hit another Obstacle " + hit.collider.gameObject.name);
+                    //Debug.Log("Hit another Obstacle " + hit.collider.gameObject.name);
                     dontSpawn = true;
                 }
             }         
