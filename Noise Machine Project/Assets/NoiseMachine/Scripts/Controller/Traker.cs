@@ -31,11 +31,12 @@ public class Traker : MonoBehaviour
     public GameObject dTravel;
     public GameObject mSpeed;
 
-    void Start()
+    void Awake()
     {
         YSPos = transform.position.y;
         ZSPos = transform.position.z;
         fastestSpeed = 0;
+        totalDis = 0;
         isPaused = false;
     }
 
@@ -43,7 +44,7 @@ public class Traker : MonoBehaviour
     void FixedUpdate()
     {
         
-            currentSpeed = (Mathf.FloorToInt(GetComponent<Rigidbody>().velocity.magnitude * 3.6F));
+        currentSpeed = (Mathf.FloorToInt(GetComponent<Rigidbody>().velocity.magnitude * 3.6F));
 
         UpdateCurrentSpeed();
         DistanceTravelled();
@@ -54,9 +55,8 @@ public class Traker : MonoBehaviour
             Invoke("Win", 3); //Restarts the game after 3 seconds
 
         }
-        if (Input.GetButtonDown("Jump"))
+        if (isPaused)
         {
-            isPaused = true;
             Paused();
         }
     }
@@ -102,16 +102,24 @@ public class Traker : MonoBehaviour
         PauseMenu.SetActive(true);
         dTravel.GetComponent<Text>().text = "Distance Travelled: " + (totalDis).ToString() + "m";
         mSpeed.GetComponent<Text>().text = "Fastest Speed Recorded: " + (fastestSpeed).ToString() + "km/h";
+    }
 
-        if (Input.GetButtonDown("Jump"))
+    public void PauseGame()
+    {
+        if (isPaused)
         {
             PauseMenu.SetActive(false);
             isPaused = false;
             Time.timeScale = 1;
         }
+        else if (!isPaused)
+        {
+            isPaused = true;
+        }
+        
     }
 
-    void GoHome()
+    public void GoHome()
     {
         SceneManager.LoadScene("MainMenu");
     }
