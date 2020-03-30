@@ -5,7 +5,7 @@ using System.Linq;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-    public GameObject treePrefab;
+    public GameObject[] treePrefabVariants;
     public GameObject player;
     private List<GameObject> treePrefabs;
     public Transform leftMarker;
@@ -33,9 +33,9 @@ public class ObstacleSpawner : MonoBehaviour
         right = rightMarker.position.x;
         BuildLevel();
         StartCoroutine(ObstacleTimer(0.01f)); //start spawning obstacles after 3 seconds;
-        treeWidth = treePrefab.GetComponent<Collider>().bounds.size.x;
+        
         lenghtOfPlayArea = Mathf.Abs(right - left);
-        spacing = lenghtOfPlayArea / treeWidth;
+        //spacing = lenghtOfPlayArea / treeWidth;
         //StartCoroutine(LateFunction(0.1f));
     }
 
@@ -47,6 +47,8 @@ public class ObstacleSpawner : MonoBehaviour
 
     void SpawnObstacle()
     {
+        int treeID = Random.Range(0, treePrefabVariants.Length);
+        treeWidth = treePrefabVariants[treeID].GetComponent<Collider>().bounds.size.x;
         float randomPoint = PublicFunction.RoundUp(Random.Range(left, right), treeWidth); //obstacles will have even spacing between them equal to their width, meaning a 2u wide tree can only spawn on a multibale of 2.
         transform.position = new Vector3(randomPoint, transform.position.y, transform.position.z); // The spawner moves to that location
         
@@ -80,8 +82,8 @@ public class ObstacleSpawner : MonoBehaviour
         }
 
         if (!dontSpawn)
-        {
-            GameObject tree = Instantiate(treePrefab, transform.position + transform.TransformDirection(Vector3.down) * rayHit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
+        {            
+            GameObject tree = Instantiate(treePrefabVariants[treeID], transform.position + transform.TransformDirection(Vector3.down) * rayHit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
             treePrefabs.Add(tree);
             tree.name = "Tree " + treePrefabs.IndexOf(tree).ToString();
         }
