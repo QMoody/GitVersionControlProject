@@ -24,18 +24,26 @@ public class Traker : MonoBehaviour
     public GameObject winText;
     public GameObject speedometer;
     public float currentSpeed;
+    float fastestSpeed;
+
+    bool isPaused;
+    public GameObject PauseMenu;
+    public GameObject dTravel;
+    public GameObject mSpeed;
 
     void Start()
     {
         YSPos = transform.position.y;
         ZSPos = transform.position.z;
-
+        fastestSpeed = 0;
+        isPaused = false;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        currentSpeed = (Mathf.FloorToInt(GetComponent<Rigidbody>().velocity.magnitude * 3.6F));
+        
+            currentSpeed = (Mathf.FloorToInt(GetComponent<Rigidbody>().velocity.magnitude * 3.6F));
 
         UpdateCurrentSpeed();
         DistanceTravelled();
@@ -46,13 +54,21 @@ public class Traker : MonoBehaviour
             Invoke("Win", 3); //Restarts the game after 3 seconds
 
         }
+        if (Input.GetButtonDown("Jump"))
+        {
+            isPaused = true;
+            Paused();
+        }
     }
 
     void UpdateCurrentSpeed() 
     {
         //UI update for players current speed in km/h
         speedometer.GetComponent<Text>().text = currentSpeed + " km/h";
-
+        if (currentSpeed > fastestSpeed)
+        {
+            fastestSpeed = currentSpeed;
+        }
         //Will be a speedometer arrow that shows that same thing
     }
 
@@ -79,4 +95,26 @@ public class Traker : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    void Paused()
+    {
+        Time.timeScale = 0;
+        PauseMenu.SetActive(true);
+        dTravel.GetComponent<Text>().text = "Distance Travelled: " + (totalDis).ToString() + "m";
+        mSpeed.GetComponent<Text>().text = "Fastest Speed Recorded: " + (fastestSpeed).ToString() + "km/h";
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            PauseMenu.SetActive(false);
+            isPaused = false;
+            Time.timeScale = 1;
+        }
+    }
+
+    void GoHome()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+
 }
