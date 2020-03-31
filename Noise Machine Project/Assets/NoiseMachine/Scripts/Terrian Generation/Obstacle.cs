@@ -20,6 +20,7 @@ public class Obstacle : MonoBehaviour
             {
                 //Output the message
                 Debug.Log(this.gameObject.name + " was hit by " + other.gameObject.name, this.gameObject);
+                Traker.inst.AddHit();
             }
         }
     }

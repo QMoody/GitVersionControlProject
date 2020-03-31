@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Analytics;
+using System;
 
 public class Traker : MonoBehaviour
 {
@@ -28,18 +30,18 @@ public class Traker : MonoBehaviour
     public GameObject speedometer;
     public float currentSpeed;
     float fastestSpeed;
-
     bool isPaused;
     public GameObject PauseMenu;
     public GameObject dTravel;
     public GameObject mSpeed;
     public int flagScore;
     public GameObject flagScoreText;
+    private int hitScore;
 
     //Making this a singleton
     private void Awake()
     {
-        if (inst==null)
+        if (inst == null)
         {
             inst = this;
             Debug.Log("Inst is made");
@@ -59,6 +61,32 @@ public class Traker : MonoBehaviour
 
     }
 
+    internal void Lose()
+    {
+        
+        Analytics.CustomEvent("GameOver", new Dictionary<string, object>
+        {
+            { "Time", hitScore },
+            { "FastestSpeed", fastestSpeed },
+            {"DistanceTraveled",totalDis },
+            { "ObstaclesHit", null },
+            { "FlagScore", flagScore }
+        });
+        Paused();
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    internal void AddScore()
+    {
+        flagScore++;
+        flagScoreText.GetComponent<Text>().text = flagScore.ToString();
+    }
+
+    internal void AddHit()
+    {
+        hitScore++;
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -67,7 +95,7 @@ public class Traker : MonoBehaviour
 
         UpdateCurrentSpeed();
         DistanceTravelled();
-        flagScoreText.GetComponent<Text>().text = flagScore.ToString();
+
 
         if (totalDis > goalDis)
         {
@@ -105,7 +133,7 @@ public class Traker : MonoBehaviour
 
 
         //UI update that shows the elevation (distance travelled) of the player moving towards the goal by moving the text displaying the elevation from the start until the goal (happens in the position.y)
-        distance.GetComponent<RectTransform>().position = new Vector3(distance.GetComponent<RectTransform>().position.x, 500 - ( 500 * (totalDis / goalDis)), distance.GetComponent<RectTransform>().position.z);
+        distance.GetComponent<RectTransform>().position = new Vector3(distance.GetComponent<RectTransform>().position.x, 500 - (500 * (totalDis / goalDis)), distance.GetComponent<RectTransform>().position.z);
 
         //UI update that shows the elevation (distance travelled) in text
         distance.GetComponent<Text>().text = (totalDis).ToString() + "m";
@@ -113,6 +141,15 @@ public class Traker : MonoBehaviour
 
     void Win()
     {
+        Analytics.CustomEvent("ReachEnd", new Dictionary<string, object>
+        {
+            { "Time", hitScore },
+            { "FastestSpeed", fastestSpeed },
+            {"DistanceTraveled",totalDis },
+            { "ObstaclesHit", null },
+            { "FlagScore", flagScore }
+        });
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

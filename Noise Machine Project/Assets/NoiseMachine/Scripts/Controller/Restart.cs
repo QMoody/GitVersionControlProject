@@ -42,7 +42,8 @@ public class Restart : MonoBehaviour
         {
             Debug.Log("Hit my head. Going to reload level");
             yield return new WaitForSeconds(1);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            Traker.inst.Lose();
+            
         }
         
     }

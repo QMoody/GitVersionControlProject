@@ -22,7 +22,7 @@ public class Goals : MonoBehaviour
         if (!trigger)
         {
             mesh.material.color = changeColor;
-            Traker.inst.flagScore++;
+            Traker.inst.AddScore();
             trigger = true;
         }
     }
