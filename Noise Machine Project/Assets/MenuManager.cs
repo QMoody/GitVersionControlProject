@@ -21,4 +21,9 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    public void AchievementMenu()
+    {
+        SceneManager.LoadScene("AchievementMenu");
+    }
+
 }
