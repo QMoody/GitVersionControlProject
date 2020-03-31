@@ -23,6 +23,7 @@ public class ObstacleSpawner : MonoBehaviour
     private bool canSpawnObstacle;
     private float lenghtOfPlayArea;
     private float spacing;
+    public bool turnable;
 
     private void Start()
     {
@@ -86,6 +87,10 @@ public class ObstacleSpawner : MonoBehaviour
             GameObject tree = Instantiate(treePrefabVariants[treeID], transform.position + transform.TransformDirection(Vector3.down) * rayHit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
             treePrefabs.Add(tree);
             tree.name = "Tree " + treePrefabs.IndexOf(tree).ToString();
+            if (turnable)
+            {
+                tree.transform.eulerAngles = new Vector3(tree.transform.eulerAngles.x, Random.Range(0.0f, 360.0f), tree.transform.eulerAngles.z);
+            }
         }
     }
     

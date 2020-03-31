@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Traker : MonoBehaviour
 {
+    public static Traker inst = null;    
+
+
     //Initializations for positions used in calculations
     float YSPos;
     float ZSPos;
@@ -30,12 +33,30 @@ public class Traker : MonoBehaviour
     public GameObject PauseMenu;
     public GameObject dTravel;
     public GameObject mSpeed;
+    public int flagScore;
+    public GameObject flagScoreText;
+
+    //Making this a singleton
+    private void Awake()
+    {
+        if (inst==null)
+        {
+            inst = this;
+            Debug.Log("Inst is made");
+        }
+        else if (inst != this)
+        {
+            Debug.LogWarning("Multible Trakers. One was destroy");
+            Destroy(this);
+        }            
+    }
 
     void Start()
     {
         YSPos = transform.position.y;
         ZSPos = transform.position.z;
         fastestSpeed = 0;
+        flagScore = 0;
         isPaused = false;
     }
 
@@ -43,10 +64,11 @@ public class Traker : MonoBehaviour
     void FixedUpdate()
     {
         
-            currentSpeed = (Mathf.FloorToInt(GetComponent<Rigidbody>().velocity.magnitude * 3.6F));
+        currentSpeed = (Mathf.FloorToInt(GetComponent<Rigidbody>().velocity.magnitude * 3.6F));
 
         UpdateCurrentSpeed();
         DistanceTravelled();
+        flagScoreText.GetComponent<Text>().text = flagScore.ToString();
 
         if (totalDis > goalDis)
         {
