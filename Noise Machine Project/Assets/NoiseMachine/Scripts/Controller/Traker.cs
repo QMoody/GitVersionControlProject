@@ -69,7 +69,7 @@ public class Traker : MonoBehaviour
             { "Time", hitScore },
             { "FastestSpeed", fastestSpeed },
             {"DistanceTraveled",totalDis },
-            { "ObstaclesHit", null },
+            { "ObstaclesHit", hitScore },
             { "FlagScore", flagScore }
         });
         Paused();
@@ -146,7 +146,7 @@ public class Traker : MonoBehaviour
             { "Time", hitScore },
             { "FastestSpeed", fastestSpeed },
             {"DistanceTraveled",totalDis },
-            { "ObstaclesHit", null },
+            { "ObstaclesHit", hitScore },
             { "FlagScore", flagScore }
         });
 
