@@ -519,11 +519,11 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 645914906}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &383536389 stripped
+--- !u!114 &383536389
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 383536389, guid: 0e8dd42af0c9e094c85a730c60b29095,
-    type: 3}
-  m_PrefabInstance: {fileID: 645914906}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 383536388}
   m_Enabled: 1
@@ -531,6 +531,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b962d729bfe00a14fb055a7e786cc229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goalDis: 1000
+  distance: {fileID: 392053458}
+  winText: {fileID: 846125279}
+  speedometer: {fileID: 1882720803}
+  currentSpeed: 0
+  PauseMenu: {fileID: 1042367944}
+  dTravel: {fileID: 1330622391}
+  mSpeed: {fileID: 1821447553}
+  flagScore: 0
+  flagScoreText: {fileID: 348221023}
+--- !u!114 &383536396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383536388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f93d9d2db472554abd964aa478d6af2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeTillRestart: 5
+  p: {fileID: 0}
 --- !u!1 &392053458
 GameObject:
   m_ObjectHideFlags: 0
@@ -723,6 +747,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
+--- !u!198 &463150047 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5040873839170245270, guid: 0e8dd42af0c9e094c85a730c60b29095,
+    type: 3}
+  m_PrefabInstance: {fileID: 645914906}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &464801730
 GameObject:
   m_ObjectHideFlags: 0
@@ -1325,37 +1355,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5040873839983020061, guid: 0e8dd42af0c9e094c85a730c60b29095,
         type: 3}
+      propertyPath: ps
+      value: 
+      objectReference: {fileID: 463150047}
+    - target: {fileID: 5040873839983020061, guid: 0e8dd42af0c9e094c85a730c60b29095,
+        type: 3}
       propertyPath: snowParticle
       value: 
       objectReference: {fileID: 945092445}
-    - target: {fileID: 383536389, guid: 0e8dd42af0c9e094c85a730c60b29095, type: 3}
-      propertyPath: distance
-      value: 
-      objectReference: {fileID: 392053458}
-    - target: {fileID: 383536389, guid: 0e8dd42af0c9e094c85a730c60b29095, type: 3}
-      propertyPath: winText
-      value: 
-      objectReference: {fileID: 846125279}
-    - target: {fileID: 383536389, guid: 0e8dd42af0c9e094c85a730c60b29095, type: 3}
-      propertyPath: speedometer
-      value: 
-      objectReference: {fileID: 1882720803}
-    - target: {fileID: 383536389, guid: 0e8dd42af0c9e094c85a730c60b29095, type: 3}
-      propertyPath: PauseMenu
-      value: 
-      objectReference: {fileID: 1042367944}
-    - target: {fileID: 383536389, guid: 0e8dd42af0c9e094c85a730c60b29095, type: 3}
-      propertyPath: dTravel
-      value: 
-      objectReference: {fileID: 1330622391}
-    - target: {fileID: 383536389, guid: 0e8dd42af0c9e094c85a730c60b29095, type: 3}
-      propertyPath: mSpeed
-      value: 
-      objectReference: {fileID: 1821447553}
-    - target: {fileID: 383536389, guid: 0e8dd42af0c9e094c85a730c60b29095, type: 3}
-      propertyPath: flagScoreText
-      value: 
-      objectReference: {fileID: 348221023}
+    - target: {fileID: 5040873839983020061, guid: 0e8dd42af0c9e094c85a730c60b29095,
+        type: 3}
+      propertyPath: turnStrength
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5040873839170245271, guid: 0e8dd42af0c9e094c85a730c60b29095,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e8dd42af0c9e094c85a730c60b29095, type: 3}
 --- !u!1 &667666134
@@ -1445,6 +1462,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3d27e4616cf37e4bb13f2e5efedd523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &812853159 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5040873840381357348, guid: 0e8dd42af0c9e094c85a730c60b29095,
+    type: 3}
+  m_PrefabInstance: {fileID: 645914906}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &812853163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812853159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f93d9d2db472554abd964aa478d6af2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeTillRestart: 5
+  p: {fileID: 383536389}
+--- !u!65 &812853164
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812853159}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000002, y: 0.75368106, z: 1.0000001}
+  m_Center: {x: 0, y: 0.123159565, z: 0}
 --- !u!1 &846125279
 GameObject:
   m_ObjectHideFlags: 0
