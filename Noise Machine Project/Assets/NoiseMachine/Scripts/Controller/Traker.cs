@@ -25,18 +25,24 @@ public class Traker : MonoBehaviour
     public float goalDis = 250;
 
     //UI references
-    public GameObject distance;
+    public Text distance;
     public GameObject winText;
     public GameObject speedometer;
     public float currentSpeed;
     float fastestSpeed;
     bool isPaused;
     public GameObject PauseMenu;
-    public GameObject dTravel;
-    public GameObject mSpeed;
+    public Text dTravel;
+    public Text mSpeed;
+    public Text fScore;
+
     public int flagScore;
     public GameObject flagScoreText;
+
     private int hitScore;
+    private AudioSource[] allAudioSources;
+ 
+    
 
     //Making this a singleton
     private void Awake()
@@ -58,7 +64,7 @@ public class Traker : MonoBehaviour
         totalDis = 0;
         isPaused = false;
         Time.timeScale = 1;
-
+        allAudioSources = FindObjectsOfType<AudioSource>();
     }
 
     internal void Lose()
@@ -136,7 +142,7 @@ public class Traker : MonoBehaviour
         distance.GetComponent<RectTransform>().position = new Vector3(distance.GetComponent<RectTransform>().position.x, 500 - (500 * (totalDis / goalDis)), distance.GetComponent<RectTransform>().position.z);
 
         //UI update that shows the elevation (distance travelled) in text
-        distance.GetComponent<Text>().text = (totalDis).ToString() + "m";
+        distance.text = (totalDis).ToString() + "m";
     }
 
     void Win()
@@ -149,16 +155,25 @@ public class Traker : MonoBehaviour
             { "ObstaclesHit", hitScore },
             { "FlagScore", flagScore }
         });
-
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Paused();
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void Paused()
     {
         Time.timeScale = 0;
+        StopAllAudio();
         PauseMenu.SetActive(true);
-        dTravel.GetComponent<Text>().text = "Distance Travelled: " + (totalDis).ToString() + "m";
-        mSpeed.GetComponent<Text>().text = "Fastest Speed Recorded: " + (fastestSpeed).ToString() + "km/h";
+        dTravel.text = "Distance Travelled: " + (totalDis).ToString() + "m";
+        mSpeed.text = "Fastest Speed Recorded: " + (fastestSpeed).ToString() + "km/h";
+        fScore.text = "Flag Passed Through: " + (flagScore).ToString();
+    }
+    void StopAllAudio()
+    {
+        foreach (AudioSource audioS in allAudioSources)
+        {
+            audioS.Stop();
+        }
     }
 
     public void PauseGame()
@@ -181,6 +196,5 @@ public class Traker : MonoBehaviour
         Paused();
         SceneManager.LoadScene("MainMenu");
     }
-
 
 }
