@@ -49,7 +49,7 @@ MonoBehaviour:
   textureMat: {fileID: 2100000, guid: 2f4028fbed5ab2b4f9301584f73f0426, type: 2}
   planeX: 41
   planeZ: 41
-  planeScale: 0.5
+  planeScale: 1
   perlinFreq: 8.5
   autoUpdate: 0
 --- !u!33 &7197938629862694550

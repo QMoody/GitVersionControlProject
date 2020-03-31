@@ -1,6 +1,8 @@
 Noise Machine Project
 
-ControllerTest scene - uses the mouse to control a character down a slope
+Controller scene is the main mechanics test file
+-Hold down mouse 1 to stear
+-End conditions on falling over or reaching the end
 
-NoiseMap - Creates a noise map and mesh from the noise gameobject, the settings can be 
-edited from the script on the game object (hit "R" when running to create the noise map)
+Noise scene highlights terrain generation
+-Move around tmp player to generate terrain around player
