@@ -38,15 +38,6 @@ public class Traker : MonoBehaviour
     public GameObject flagScoreText;
     private int hitScore;
 
-    public GameObject PauseButton;
-    public Text PauseText;
-
-    float startTime;
-    float endTime;
-
-    public GameObject Achieved;
-    public GameObject Trophy;
-
     //Making this a singleton
     private void Awake()
     {
@@ -60,8 +51,6 @@ public class Traker : MonoBehaviour
             Debug.LogWarning("Multible Trakers. One was destroy");
             Destroy(this);
         }
-
-        startTime = Time.time;
 
         YSPos = transform.position.y;
         ZSPos = transform.position.z;
@@ -77,16 +66,12 @@ public class Traker : MonoBehaviour
         
         Analytics.CustomEvent("GameOver", new Dictionary<string, object>
         {
-            { "Time", Time.time-startTime },
+            { "Time", hitScore },
             { "FastestSpeed", fastestSpeed },
             {"DistanceTraveled",totalDis },
             { "ObstaclesHit", hitScore },
             { "FlagScore", flagScore }
-        }
-        );
-
-        PauseText.GetComponent<Text>().text = "Game Over";
-        PauseButton.SetActive(false);
+        });
         Paused();
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
@@ -114,7 +99,6 @@ public class Traker : MonoBehaviour
 
         if (totalDis > goalDis)
         {
-            endTime = Time.time;
             winText.SetActive(true); //Shows text that you have won
             Invoke("Win", 3); //Restarts the game after 3 seconds
 
@@ -123,8 +107,6 @@ public class Traker : MonoBehaviour
         {
             Paused();
         }
-
-        CheckForAchievements();
     }
 
     void UpdateCurrentSpeed()
@@ -161,17 +143,14 @@ public class Traker : MonoBehaviour
     {
         Analytics.CustomEvent("ReachEnd", new Dictionary<string, object>
         {
-            { "Time", Time.time-startTime },
+            { "Time", hitScore },
             { "FastestSpeed", fastestSpeed },
             {"DistanceTraveled",totalDis },
             { "ObstaclesHit", hitScore },
             { "FlagScore", flagScore }
-        }
-        );
+        });
 
-        PauseText.text = "You Reached The Bottom! Good Job";
-        PauseButton.SetActive(false);
-        Paused();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void Paused()
@@ -197,64 +176,11 @@ public class Traker : MonoBehaviour
 
     }
 
-    public GameObject GetTracker()
-    {
-        return Achieved;
-    }
-
-    public void SetTracker(GameObject t)
-    {
-        Achieved = t;
-    }
-
     public void GoHome()
     {
         Paused();
         SceneManager.LoadScene("MainMenu");
     }
 
-    void ResetTrophy()
-    {
-        Trophy.SetActive(false);
-    }
 
-    public void CheckForAchievements()
-    {
-
-        if (flagScore == 6 && Achieved.GetComponent<AchievementTracker>().Get6Flag() == false)
-        {
-            //get 6 flags
-            Achieved.GetComponent<AchievementTracker>().Set6Flag();
-            Trophy.SetActive(true);
-            Invoke("ResetTrophy", 2);
-        }
-        if (totalDis > 1000 && Achieved.GetComponent<AchievementTracker>().GetWin() == false)
-        {
-            //make it to the bottom for the first time
-            Achieved.GetComponent<AchievementTracker>().SetWin();
-            Trophy.SetActive(true);
-            Invoke("ResetTrophy", 2);
-        }
-        if (hitScore == 0 && totalDis > 1000 && Achieved.GetComponent<AchievementTracker>().GetNotHit() == false)
-        {
-            //get to end without hiting anything
-            Achieved.GetComponent<AchievementTracker>().SetNotHit();
-            Trophy.SetActive(true);
-            Invoke("ResetTrophy", 2);
-        }
-        if (fastestSpeed >= 155 && Achieved.GetComponent<AchievementTracker>().GetCheater() == false)
-        {
-            //fall off side
-            Achieved.GetComponent<AchievementTracker>().SetCheater();
-            Trophy.SetActive(true);
-            Invoke("ResetTrophy", 2);
-        }
-        if (endTime != null && endTime - startTime > 180 && Achieved.GetComponent<AchievementTracker>().GetSlowpoke() == false)
-        {
-            //reach bottom after 3 min
-            Achieved.GetComponent<AchievementTracker>().SetSlowpoke();
-            Trophy.SetActive(true);
-            Invoke("ResetTrophy", 2);
-        }
-    }
 }
