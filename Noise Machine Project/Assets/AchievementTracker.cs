@@ -19,7 +19,8 @@ public class AchievementTracker : MonoBehaviour
 
         //Code to delete new versions of AchievementManager
         var a = GameObject.FindGameObjectsWithTag("Respawn");
-        Destroy(a[1]);
+        if(a.Length<=1)
+            Destroy(a[1]);
         GameObject.Find("Player").GetComponent<Traker>().SetTracker(a[0]);
 
     }
