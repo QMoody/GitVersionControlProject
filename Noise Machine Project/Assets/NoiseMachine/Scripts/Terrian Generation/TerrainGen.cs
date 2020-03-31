@@ -120,7 +120,7 @@ public class TerrainGen : MonoBehaviour
         Debug.Log("UpdateC");
         //Create new chunk
         Vector2 setLoc = new Vector2(-realChunkSize / 2 + x * realChunkSize, -realChunkSize / 2 + z * realChunkSize);
-        chunks[key].chunkObj.transform.position = new Vector3(setLoc.x, z * 4, setLoc.y);
+        chunks[key].chunkObj.transform.position = new Vector3(setLoc.x, z * chunkScale * 16, setLoc.y);
         chunks[key].isInArea = true;
         Noise noise = chunks[key].chunkObj.GetComponent<Noise>();
 
