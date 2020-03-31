@@ -14,8 +14,10 @@ public class TerrainGen : MonoBehaviour
     public GameObject playerObject;
     public GameObject noiseObject;
     public Material planeTexture;
+    public PhysicMaterial physicsMat;
     public float chunckSpace;
     public int chunkLimit;
+    public bool flipTerrainSlope;
 
     Dictionary<Vector2, Chunk> chunks = new Dictionary<Vector2, Chunk>();
 
@@ -27,6 +29,7 @@ public class TerrainGen : MonoBehaviour
     public Vector2 playerChunkLoc;
     public Vector2 playerChunkLoc_;
     public bool isFirstSpawn = true;
+    private float terrainFlipValue;
 
     public int chunkSpawnRadius; //Only odd numbers
     #endregion
@@ -36,6 +39,11 @@ public class TerrainGen : MonoBehaviour
     void Start()
     {
         isFirstSpawn = true;
+
+        if (flipTerrainSlope == true)
+            terrainFlipValue = -1f;
+        else
+            terrainFlipValue = 1f;
 
         realChunkSize = (int)(chunkSize * chunkScale);
         chunkLimit = chunkSpawnRadius * chunkSpawnRadius;
@@ -121,7 +129,7 @@ public class TerrainGen : MonoBehaviour
         Debug.Log("UpdateC");
         //Create new chunk
         Vector2 setLoc = new Vector2(-realChunkSize / 2 + x * realChunkSize, -realChunkSize / 2 + z * realChunkSize);
-        chunks[key].chunkObj.transform.position = new Vector3(setLoc.x, z * chunkScale * 16, setLoc.y);
+        chunks[key].chunkObj.transform.position = new Vector3(setLoc.x, terrainFlipValue * z * chunkScale * 16, setLoc.y);
         chunks[key].isInArea = true;
         Noise noise = chunks[key].chunkObj.GetComponent<Noise>();
 
@@ -146,6 +154,8 @@ public class TerrainGen : MonoBehaviour
         noise.planeScale = chunkScale;
         noise.perlinFreq = perlinFreq;
         noise.textureMat = planeTexture;
+        noise.physMat = physicsMat;
+        noise.chunkFlipValue = terrainFlipValue;
 
         Chunk c = new Chunk();
         c.chunkObj = chunk;

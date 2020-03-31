@@ -8,6 +8,7 @@ public class Noise : MonoBehaviour
     #region Variables
     [Header("Objects & Scripts")]
     public Material textureMat;
+    public PhysicMaterial physMat;
     MeshRenderer m_meshRenderer;
     MeshCollider m_meshCollider;
 
@@ -16,6 +17,7 @@ public class Noise : MonoBehaviour
     public float planeScale;
     public Vector2 planeWorldPos;
     public float perlinFreq;
+    public float chunkFlipValue;
 
     [Header("Change Noise Plane Variables")]
     public bool autoUpdate;
@@ -90,7 +92,7 @@ public class Noise : MonoBehaviour
     private void SetVerticies(int i, int x, int z)
     {
         //Set the mesh field vert points
-        verticesMatrix[x, z] = new Vector3(x * planeScale, GetPerlinValue(x, z) + z / (2.5f / planeScale), z * planeScale);
+        verticesMatrix[x, z] = new Vector3(x * planeScale, GetPerlinValue(x, z) + chunkFlipValue * z / (2.5f / planeScale), z * planeScale);
         verts[i] = verticesMatrix[x, z];
     }
 
@@ -148,6 +150,7 @@ public class Noise : MonoBehaviour
 
         m_meshCollider.sharedMesh = mesh;
         m_meshRenderer.material = textureMat;
+        GetComponent<MeshCollider>().material = physMat;
         mesh.RecalculateNormals();
     }
 }
