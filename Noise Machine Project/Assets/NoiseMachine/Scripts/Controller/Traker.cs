@@ -49,16 +49,14 @@ public class Traker : MonoBehaviour
             Debug.LogWarning("Multible Trakers. One was destroy");
             Destroy(this);
         }
-    }
 
-    void Awake()
-    {
         YSPos = transform.position.y;
         ZSPos = transform.position.z;
         fastestSpeed = 0;
         totalDis = 0;
         isPaused = false;
         Time.timeScale = 1;
+
     }
 
     // Update is called once per frame
