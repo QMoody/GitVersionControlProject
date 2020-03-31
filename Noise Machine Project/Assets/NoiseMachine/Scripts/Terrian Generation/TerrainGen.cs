@@ -15,8 +15,7 @@ public class TerrainGen : MonoBehaviour
     public GameObject noiseObject;
     public Material planeTexture;
     public PhysicMaterial physicsMat;
-    public float chunckSpace;
-    public int chunkLimit;
+    public float terrainSlopeValue;
     public bool flipTerrainSlope;
 
     Dictionary<Vector2, Chunk> chunks = new Dictionary<Vector2, Chunk>();
@@ -24,6 +23,7 @@ public class TerrainGen : MonoBehaviour
     public float chunkScale;
     public int chunkSize; //Numbers that can be divided by 2 and preferably over 20
     private int realChunkSize;
+    private int chunkLimit;
     [Range(0.0f, 100.0f)] public float perlinFreq;
 
     public Vector2 playerChunkLoc;
@@ -65,10 +65,11 @@ public class TerrainGen : MonoBehaviour
 
     private void CheckForNewChunk()
     {
-        //if no object exsits 
+        int chunkOffset = (int)((chunkSpawnRadius - 1) / 2 * -terrainFlipValue);
+        int posOffset = (int)(realChunkSize / 2 * -terrainFlipValue);
 
         //Set location of player by chunk rather then real world cords
-        playerChunkLoc = new Vector2(Mathf.Round(playerObject.transform.position.x / realChunkSize), Mathf.Round(playerObject.transform.position.z / realChunkSize));
+        playerChunkLoc = new Vector2(Mathf.Round(playerObject.transform.position.x / realChunkSize), Mathf.Round((playerObject.transform.position.z - posOffset) / realChunkSize) + chunkOffset);
         int pChunkX = Mathf.RoundToInt(playerChunkLoc.x);
         int pChunkZ = Mathf.RoundToInt(playerChunkLoc.y);
 
@@ -129,7 +130,7 @@ public class TerrainGen : MonoBehaviour
         Debug.Log("UpdateC");
         //Create new chunk
         Vector2 setLoc = new Vector2(-realChunkSize / 2 + x * realChunkSize, -realChunkSize / 2 + z * realChunkSize);
-        chunks[key].chunkObj.transform.position = new Vector3(setLoc.x, terrainFlipValue * z * chunkScale * 16, setLoc.y);
+        chunks[key].chunkObj.transform.position = new Vector3(setLoc.x, terrainFlipValue * z * chunkScale * 16 * terrainSlopeValue, setLoc.y);
         chunks[key].isInArea = true;
         Noise noise = chunks[key].chunkObj.GetComponent<Noise>();
 
@@ -156,6 +157,7 @@ public class TerrainGen : MonoBehaviour
         noise.textureMat = planeTexture;
         noise.physMat = physicsMat;
         noise.chunkFlipValue = terrainFlipValue;
+        noise.terSlopeVal = terrainSlopeValue;
 
         Chunk c = new Chunk();
         c.chunkObj = chunk;
