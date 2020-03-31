@@ -37,6 +37,7 @@ public class Traker : MonoBehaviour
     public int flagScore;
     public GameObject flagScoreText;
     private int hitScore;
+
     public GameObject PauseButton;
     public Text PauseText;
 
@@ -76,14 +77,14 @@ public class Traker : MonoBehaviour
         
         Analytics.CustomEvent("GameOver", new Dictionary<string, object>
         {
-            { "Time", hitScore },
+            { "Time", Time.time-startTime },
             { "FastestSpeed", fastestSpeed },
             {"DistanceTraveled",totalDis },
             { "ObstaclesHit", hitScore },
             { "FlagScore", flagScore }
         }
-        
         );
+
         PauseText.GetComponent<Text>().text = "Game Over";
         PauseButton.SetActive(false);
         Paused();
@@ -124,7 +125,6 @@ public class Traker : MonoBehaviour
         }
 
         CheckForAchievements();
-
     }
 
     void UpdateCurrentSpeed()
@@ -161,18 +161,17 @@ public class Traker : MonoBehaviour
     {
         Analytics.CustomEvent("ReachEnd", new Dictionary<string, object>
         {
-            { "Time", hitScore },
+            { "Time", Time.time-startTime },
             { "FastestSpeed", fastestSpeed },
             {"DistanceTraveled",totalDis },
             { "ObstaclesHit", hitScore },
             { "FlagScore", flagScore }
         }
-        
         );
+
         PauseText.text = "You Reached The Bottom! Good Job";
         PauseButton.SetActive(false);
         Paused();
-        
     }
 
     void Paused()
@@ -221,7 +220,7 @@ public class Traker : MonoBehaviour
 
     public void CheckForAchievements()
     {
-        
+
         if (flagScore == 6 && Achieved.GetComponent<AchievementTracker>().Get6Flag() == false)
         {
             //get 6 flags
@@ -236,12 +235,12 @@ public class Traker : MonoBehaviour
             Trophy.SetActive(true);
             Invoke("ResetTrophy", 2);
         }
-        //if (totalCollisions == 0 && Achieved.GetComponent<AchievementTraker>().GetNotHit() == false)
+        if (hitScore == 0 && totalDis > 1000 && Achieved.GetComponent<AchievementTracker>().GetNotHit() == false)
         {
             //get to end without hiting anything
-            //Achieved.GetComponent<AchievementTraker>().SetNotHit();
-            //Trophy.SetActive(true);
-            //Invoke("ResetTrophy", 2);
+            Achieved.GetComponent<AchievementTracker>().SetNotHit();
+            Trophy.SetActive(true);
+            Invoke("ResetTrophy", 2);
         }
         if (fastestSpeed >= 155 && Achieved.GetComponent<AchievementTracker>().GetCheater() == false)
         {
@@ -250,7 +249,7 @@ public class Traker : MonoBehaviour
             Trophy.SetActive(true);
             Invoke("ResetTrophy", 2);
         }
-        if (endTime != null && endTime-startTime > 180 && Achieved.GetComponent<AchievementTracker>().GetSlowpoke() == false)
+        if (endTime != null && endTime - startTime > 180 && Achieved.GetComponent<AchievementTracker>().GetSlowpoke() == false)
         {
             //reach bottom after 3 min
             Achieved.GetComponent<AchievementTracker>().SetSlowpoke();
