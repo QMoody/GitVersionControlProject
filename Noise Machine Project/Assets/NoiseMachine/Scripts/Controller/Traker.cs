@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Traker : MonoBehaviour
 {
+    public static Traker inst = null;
+
+
     //Initializations for positions used in calculations
     float YSPos;
     float ZSPos;
@@ -30,25 +33,41 @@ public class Traker : MonoBehaviour
     public GameObject PauseMenu;
     public GameObject dTravel;
     public GameObject mSpeed;
+    public int flagScore;
+    public GameObject flagScoreText;
 
-    void Awake()
+    //Making this a singleton
+    private void Awake()
     {
+        if (inst==null)
+        {
+            inst = this;
+            Debug.Log("Inst is made");
+        }
+        else if (inst != this)
+        {
+            Debug.LogWarning("Multible Trakers. One was destroy");
+            Destroy(this);
+        }
+
         YSPos = transform.position.y;
         ZSPos = transform.position.z;
         fastestSpeed = 0;
         totalDis = 0;
         isPaused = false;
         Time.timeScale = 1;
+
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        
+
         currentSpeed = (Mathf.FloorToInt(GetComponent<Rigidbody>().velocity.magnitude * 3.6F));
 
         UpdateCurrentSpeed();
         DistanceTravelled();
+        flagScoreText.GetComponent<Text>().text = flagScore.ToString();
 
         if (totalDis > goalDis)
         {
@@ -62,7 +81,7 @@ public class Traker : MonoBehaviour
         }
     }
 
-    void UpdateCurrentSpeed() 
+    void UpdateCurrentSpeed()
     {
         //UI update for players current speed in km/h
         speedometer.GetComponent<Text>().text = currentSpeed + " km/h";
@@ -89,7 +108,7 @@ public class Traker : MonoBehaviour
         distance.GetComponent<RectTransform>().position = new Vector3(distance.GetComponent<RectTransform>().position.x, 500 - ( 500 * (totalDis / goalDis)), distance.GetComponent<RectTransform>().position.z);
 
         //UI update that shows the elevation (distance travelled) in text
-        distance.GetComponent<Text>().text = (totalDis).ToString() + "m"; 
+        distance.GetComponent<Text>().text = (totalDis).ToString() + "m";
     }
 
     void Win()
@@ -117,7 +136,7 @@ public class Traker : MonoBehaviour
         {
             isPaused = true;
         }
-        
+
     }
 
     public void GoHome()
