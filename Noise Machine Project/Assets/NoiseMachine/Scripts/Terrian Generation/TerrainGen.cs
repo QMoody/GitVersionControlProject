@@ -24,7 +24,7 @@ public class TerrainGen : MonoBehaviour
     public float chunkScale;
     public int chunkSize; //Numbers that can be divided by 2 and preferably over 20
     private int realChunkSize;
-    [Range(0.0f, 10.0f)] public float perlinFreq;
+    [Range(0.0f, 100.0f)] public float perlinFreq;
 
     public Vector2 playerChunkLoc;
     public Vector2 playerChunkLoc_;
