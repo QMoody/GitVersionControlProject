@@ -13,6 +13,7 @@ public class TerrainGen : MonoBehaviour
     #region Variables
     public GameObject playerObject;
     public GameObject noiseObject;
+    public Material planeTexture;
     public float chunckSpace;
     public int chunkLimit;
 
@@ -144,6 +145,7 @@ public class TerrainGen : MonoBehaviour
         noise.planeSize = chunkSize + 1;
         noise.planeScale = chunkScale;
         noise.perlinFreq = perlinFreq;
+        noise.textureMat = planeTexture;
 
         Chunk c = new Chunk();
         c.chunkObj = chunk;

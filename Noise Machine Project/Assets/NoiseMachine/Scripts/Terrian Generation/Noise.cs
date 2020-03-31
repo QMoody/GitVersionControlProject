@@ -84,6 +84,7 @@ public class Noise : MonoBehaviour
 
         mesh.vertices = verts;
         m_meshCollider.sharedMesh = mesh;
+        mesh.RecalculateNormals();
     }
 
     private void SetVerticies(int i, int x, int z)
@@ -147,5 +148,6 @@ public class Noise : MonoBehaviour
 
         m_meshCollider.sharedMesh = mesh;
         m_meshRenderer.material = textureMat;
+        mesh.RecalculateNormals();
     }
 }
