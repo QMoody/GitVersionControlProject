@@ -5158,8 +5158,6 @@ GameObject:
   - component: {fileID: 5040873839983020051}
   - component: {fileID: 5040873839983020048}
   - component: {fileID: 5040873839983020057}
-  - component: {fileID: 383536389}
-  - component: {fileID: 383536396}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -5199,14 +5197,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _boardNoise: {fileID: 5040873839983020051}
   _windNoise: {fileID: 5040873839983020048}
-  turnStrength: 0.15
+  turnStrength: 0.1
   ps: {fileID: 5040873839170245270}
   R: {fileID: 5040873839310823975}
   L: {fileID: 5040873839902570598}
   prefabTrail: {fileID: 114689147733065070, guid: ab70555ac9489ce40b3322374545b275,
     type: 3}
   trailWidth: 0.3
-  inputSensitivity: 10
   snowParticle: {fileID: 0}
 --- !u!136 &5040873839983020050
 CapsuleCollider:
@@ -5430,42 +5427,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &383536389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5040873839983020049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b962d729bfe00a14fb055a7e786cc229, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  goalDis: 1000
-  distance: {fileID: 0}
-  winText: {fileID: 0}
-  speedometer: {fileID: 0}
-  currentSpeed: 0
-  PauseMenu: {fileID: 0}
-  dTravel: {fileID: 0}
-  mSpeed: {fileID: 0}
-  flagScore: 0
-  flagScoreText: {fileID: 0}
---- !u!114 &383536396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5040873839983020049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f93d9d2db472554abd964aa478d6af2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeTillRestart: 5
-  p: {fileID: 0}
 --- !u!1 &5040873840381357348
 GameObject:
   m_ObjectHideFlags: 0
@@ -5477,8 +5438,6 @@ GameObject:
   - component: {fileID: 5040873840381357351}
   - component: {fileID: 5040873840381357344}
   - component: {fileID: 5040873840381357350}
-  - component: {fileID: 812853164}
-  - component: {fileID: 812853163}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -5548,30 +5507,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &812853164
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5040873840381357348}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0000002, y: 0.75368106, z: 1.0000001}
-  m_Center: {x: 0, y: 0.123159565, z: 0}
---- !u!114 &812853163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5040873840381357348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f93d9d2db472554abd964aa478d6af2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeTillRestart: 5
-  p: {fileID: 383536389}

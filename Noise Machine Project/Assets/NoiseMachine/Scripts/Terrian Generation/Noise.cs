@@ -12,17 +12,13 @@ public class Noise : MonoBehaviour
     MeshCollider m_meshCollider;
 
     [Header("Create Noise Plane Variables")]
-    //public float planePosX;
-    //public float planePosZ;
-    public int planeX;
-    public int planeZ;
+    public int planeSize;
     public float planeScale;
-    [Range(0.0f, 10.0f)] public float perlinFreq;
+    public Vector2 planeWorldPos;
+    public float perlinFreq;
 
     [Header("Change Noise Plane Variables")]
     public bool autoUpdate;
-
-    //[Header("Output Variables")] // Do not edit in inspector
 
     [Header("Mesh Variables")]
     Mesh mesh;
@@ -44,7 +40,11 @@ public class Noise : MonoBehaviour
 
     public float GetPerlinValue(int x, int z)
     {
-        Vector2 fracCord = new Vector2(perlinFreq * x / planeX, perlinFreq * z / planeZ);
+        Vector2 fracCord = new Vector2(((float)x / (planeSize - 1)) * perlinFreq + planeWorldPos.x * perlinFreq, ((float)z / (planeSize - 1)) * perlinFreq + planeWorldPos.y * perlinFreq);
+
+        //Debug.Log("[" + x + " / " + (planeSize - 1) + " -/- " + fracCord.x + " -/- " + fracCord.y);
+        //Debug.Log(planeWorldPos.x);
+
         return Mathf.PerlinNoise(fracCord.x, fracCord.y);
     }
 
@@ -53,8 +53,8 @@ public class Noise : MonoBehaviour
         //if (Input.GetKeyDown("r"))
             GenerateNoiseField();
 
-        if (autoUpdate == true && noiseFieldGenerated == true)
-            UpdateField();
+        //if (autoUpdate == true && noiseFieldGenerated == true)
+        //    UpdateField();
     }
 
     public void GenerateNoiseField()
@@ -72,18 +72,15 @@ public class Noise : MonoBehaviour
         }
     }
 
-    void UpdateField()
+    public void UpdateField()
     {
-        //Update field if checked after first time mesh generation
         int i = 0;
-        for (int x = 0; x < planeX; x++)
-            for (int z = 0; z < planeZ; z++)
+        for (int x = 0; x < planeSize; x++)
+            for (int z = 0; z < planeSize; z++)
             {
                 SetVerticies(i, x, z);
                 i++;
             }
-
-        Debug.Log("Updated field");
 
         mesh.vertices = verts;
         m_meshCollider.sharedMesh = mesh;
@@ -92,13 +89,8 @@ public class Noise : MonoBehaviour
     private void SetVerticies(int i, int x, int z)
     {
         //Set the mesh field vert points
-        int xf = x + (int)transform.position.x * 2;
-        int zf = z + (int)transform.position.z * 2;
-        verticesMatrix[x, z] = new Vector3(x * planeScale, GetPerlinValue(xf, zf), z * planeScale);
+        verticesMatrix[x, z] = new Vector3(x * planeScale, GetPerlinValue(x, z) + z / (planeScale * (planeSize - 1)), z * planeScale);
         verts[i] = verticesMatrix[x, z];
-
-        //if (noiseFieldGenerated == false)
-        //    Debug.Log("Value: " + xf + " / " + zf);
     }
 
     //First time field setup
@@ -110,16 +102,16 @@ public class Noise : MonoBehaviour
         mFilter.mesh = mesh;
 
         //Set Verts
-        verts = new Vector3[planeX * planeZ];
-        verticesMatrix = new Vector3[planeX, planeZ];
+        verts = new Vector3[planeSize * planeSize];
+        verticesMatrix = new Vector3[planeSize, planeSize];
         Vector2[] uv = new Vector2[verts.Length];
 
         int i = 0;
-        for (int x = 0; x < planeX; x++)
-            for (int z = 0; z < planeZ; z++)
+        for (int x = 0; x < planeSize; x++)
+            for (int z = 0; z < planeSize; z++)
             {
                 SetVerticies(i, x, z);
-                uv[i] = new Vector2((float)x / planeX, (float)z / planeZ);
+                uv[i] = new Vector2((float)x / planeSize, (float)z / planeSize);
                 i++;
             }
 
@@ -127,19 +119,19 @@ public class Noise : MonoBehaviour
         mesh.uv = uv;
 
         //Set tris
-        int[] tris = new int[(planeX - 1) * (planeZ - 1) * 6];
+        int[] tris = new int[(planeSize - 1) * (planeSize - 1) * 6];
         int g = 0;
-        for (int x = 0; x < planeX - 1; x++)
-            for (int z = 0; z < planeZ - 1; z++)
+        for (int x = 0; x < planeSize - 1; x++)
+            for (int z = 0; z < planeSize - 1; z++)
             {
 
-                tris[g + 0] = planeZ * x + z;
-                tris[g + 1] = planeZ * x + z + 1;
-                tris[g + 2] = planeZ * (x + 1) + z;
+                tris[g + 0] = planeSize * x + z;
+                tris[g + 1] = planeSize * x + z + 1;
+                tris[g + 2] = planeSize * (x + 1) + z;
 
-                tris[g + 3] = planeZ * x + z + 1;
-                tris[g + 4] = planeZ * (x + 1) + z + 1;
-                tris[g + 5] = planeZ * (x + 1) + z;
+                tris[g + 3] = planeSize * x + z + 1;
+                tris[g + 4] = planeSize * (x + 1) + z + 1;
+                tris[g + 5] = planeSize * (x + 1) + z;
 
                 g += 6;
             }
@@ -147,7 +139,7 @@ public class Noise : MonoBehaviour
         mesh.triangles = tris;
 
         //Set normals
-        Vector3[] normals = new Vector3[planeX * planeZ];
+        Vector3[] normals = new Vector3[planeSize * planeSize];
         for (int k = 0; k < normals.Length; k++)
             normals[k] = Vector3.forward;
 
