@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/NoiseMachine/Scenes/SettingsMenu.unity
     guid: 38bd69c067117fd419b8bac0f81088a6
+  - enabled: 1
+    path: Assets/NoiseMachine/Scenes/AchievementMenu.unity
+    guid: 7ada3582cde950c4e830c1b533855ec3
   m_configObjects: {}
