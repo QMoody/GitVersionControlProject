@@ -5,16 +5,47 @@ using UnityEngine.SceneManagement;
 
 public class Restart : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider c)
+    public float timeTillRestart = 5;
+    public Traker p;
+
+    void Start()
     {
-       print(c.gameObject);
-       if (c.gameObject.tag == "Respawn")
+        if (p == null)
         {
+            if (!GetComponent<Traker>())
+            {
+                Debug.LogError("Missing Traker");
+            }
+            p = GetComponent<Traker>();
+        }
+    }
+
+    
+
+    private void OnCollisionEnter(Collision c)
+    {
+       //print(c.gameObject);
+       if (c.gameObject.tag == "Obstacle")
+       {
+
             //end run
             //display score
             //reload scene
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            StartCoroutine("TestIfStopped");
+       }
+    }
+
+    IEnumerator TestIfStopped()
+    {
+        yield return new WaitForSeconds(timeTillRestart);
+        if (p.currentSpeed <= 5)
+        {
+            Debug.Log("Hit my head. Going to reload level");
+            yield return new WaitForSeconds(1);
+            Traker.inst.Lose();
+            
         }
+        
     }
 
 }
