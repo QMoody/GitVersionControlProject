@@ -107,6 +107,7 @@ public class Noise : MonoBehaviour
         MeshFilter mFilter = GetComponent<MeshFilter>();
 
         mesh = new Mesh();
+        mesh.name = "UniqueMesh";
         mFilter.mesh = mesh;
 
         //Set Verts
