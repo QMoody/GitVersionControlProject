@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using ObjectPooler.Application;
 
 public class ObstacleSpawner : MonoBehaviour
-{
-    public GameObject[] obstaclePrefabVariants;
+{    
+    public enum ObstacleType { Tree, Rock, Flag };
+    private List<ObjectPooler.Domain.ObjectPoolItem> obstacleVariants;
+    public ObstacleType obstacleType;
     public GameObject player;
     private List<GameObject> obstaclePrefabs;
     public Transform leftMarker;
@@ -24,33 +27,49 @@ public class ObstacleSpawner : MonoBehaviour
     private float lenghtOfPlayArea;
     private float spacing;
     public bool turnable;
+    ObjectPoolerManager OP;
 
-    private void Start()
+    void Awake()
     {
-        obstaclePrefabs = new List<GameObject>(0);
+        OP = ObjectPoolerManager.SharedInstance;
         currentDistance = player.transform.position.z;
         distanceAtLastObstacle = player.transform.position.z;
         left = leftMarker.position.x;
         right = rightMarker.position.x;
+        obstaclePrefabs = new List<GameObject>(0);
+    }
+    private void Start()
+    {
         BuildLevel();
         StartCoroutine(ObstacleTimer(0.01f)); //start spawning obstacles after 3 seconds;
-        
         lenghtOfPlayArea = Mathf.Abs(right - left);
         //spacing = lenghtOfPlayArea / treeWidth;
         //StartCoroutine(LateFunction(0.1f));
-    }
 
-    IEnumerator LateFunction(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-        CleanUp();
+        switch (obstacleType)
+        {
+            case ObstacleType.Tree:
+                obstacleVariants = OP.trees;
+                obstacleWidth = 2.9f;
+                break;
+            case ObstacleType.Rock:
+                obstacleVariants = OP.rocks;
+                obstacleWidth = 1.6f;
+                break;
+            case ObstacleType.Flag:
+                obstacleVariants = OP.flags;
+                obstacleWidth = 1.6f;
+                break;
+        }
+        obCount = obstacleVariants.Count;
     }
-
+    int obID;
+    float randomPoint;
+    int obCount;
     void SpawnObstacle()
     {
-        int obID = Random.Range(0, obstaclePrefabVariants.Length);
-        obstacleWidth = obstaclePrefabVariants[obID].GetComponent<Collider>().bounds.size.x;
-        float randomPoint = PublicFunction.RoundUp(Random.Range(left, right), obstacleWidth); //obstacles will have even spacing between them equal to their width, meaning a 2u wide tree can only spawn on a multibale of 2.
+        obID = Random.Range(0, obCount);
+        randomPoint = PublicFunction.RoundUp(Random.Range(left, right), obstacleWidth); //obstacles will have even spacing between them equal to their width, meaning a 2u wide tree can only spawn on a multibale of 2.
         transform.position = new Vector3(randomPoint, transform.position.y, transform.position.z); // The spawner moves to that location
         
         // Bit shift the index of the layer (8) to get a bit mask
@@ -83,10 +102,10 @@ public class ObstacleSpawner : MonoBehaviour
         }
 
         if (!dontSpawn)
-        {            
-            GameObject ob = Instantiate(obstaclePrefabVariants[obID], transform.position + transform.TransformDirection(Vector3.down) * rayHit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
+        {
+            GameObject ob = OP.SpawnFromPool(obstacleType.ToString() + obID.ToString(), transform.position + transform.TransformDirection(Vector3.down) * rayHit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
             obstaclePrefabs.Add(ob);
-            ob.name = obstaclePrefabVariants[obID].name.ToString() + " " + obstaclePrefabs.IndexOf(ob).ToString();
+            ob.name = obstacleType.ToString() + obID.ToString();
             if (turnable)
             {
                 ob.transform.eulerAngles = new Vector3(ob.transform.eulerAngles.x, Random.Range(0.0f, 360.0f), ob.transform.eulerAngles.z);
@@ -94,15 +113,7 @@ public class ObstacleSpawner : MonoBehaviour
         }
     }
     
-    void CleanUp()
-    {
-        foreach(GameObject t in obstaclePrefabs)
-        if (!t.GetComponentInChildren<Obstacle>().touchingGround)
-        {
-            obstaclePrefabs.Remove(t);
-            Destroy(t.gameObject);
-        }
-    }
+
 
     private void BuildLevel()
     {
@@ -125,15 +136,16 @@ public class ObstacleSpawner : MonoBehaviour
         distanceSinceLastObstacle = currentDistance - distanceAtLastObstacle; // track the diffrence between the distance the player had last time an obstacle was spawned and now
     }
 
+    float distanceAway;
+
     void DespawnObstacles()
     {
         foreach (GameObject ob in obstaclePrefabs.ToList()) // for every obstacle in the list
         {
-            float distanceAway = (transform.position.z - ob.transform.position.z); //calculate the distance way
+            distanceAway = (transform.position.z - ob.transform.position.z); //calculate the distance way
             if (distanceAway > offsetFromPlayer.z * 1.5) // if it's far behind the player
             {
-                Destroy(ob); //DESTROY IT
-                obstaclePrefabs.Remove(ob); //and remove the null refrence.
+                OP.ReleaseBackToPool(ob.name, ob);    
             }
         }
     }
@@ -172,6 +184,22 @@ public class PublicFunction
         else
             return numToRound + multiple - remainder;
     }
+
+    //void CleanUp()
+    //{
+    //    foreach(GameObject t in obstaclePrefabs)
+    //    if (!t.GetComponentInChildren<Obstacle>().touchingGround)
+    //    {
+    //        obstaclePrefabs.Remove(t);
+    //        Destroy(t.gameObject);
+    //    }
+    //}
+
+    //IEnumerator LateFunction(float waitTime)
+    //{
+    //    yield return new WaitForSeconds(waitTime);
+    //    CleanUp();
+    //}
 
     //public static Vector3 RoundUp(Vector3 numToRound, float multiple)
     //{

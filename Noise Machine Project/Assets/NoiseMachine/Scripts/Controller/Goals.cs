@@ -17,6 +17,12 @@ public class Goals : MonoBehaviour
         trigger = false;
     }
 
+    public void OnEnable()
+    {
+        mesh.material.color = startColor;
+        trigger = false;
+    }
+
     public void Touched()
     {
         if (!trigger)
