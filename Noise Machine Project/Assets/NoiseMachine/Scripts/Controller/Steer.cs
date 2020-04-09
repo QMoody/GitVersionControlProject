@@ -133,7 +133,7 @@ public class Steer : MonoBehaviour
 
         if (Physics.Raycast(transform.position + transform.forward *m_co.bounds.size.z/2, transform.TransformDirection(Vector3.down), out hit, 2000)) //Cast a Raycast to see if any colliders are under that point.
         {
-            Debug.DrawRay(transform.position + transform.forward * m_co.bounds.size.z / 2, transform.TransformDirection(Vector3.down));
+            //Debug.DrawRay(transform.position + transform.forward * m_co.bounds.size.z / 2, transform.TransformDirection(Vector3.down));
             m_rb.AddForce(hit.normal * -1 * fallForce, ForceMode.Force);
         }
 

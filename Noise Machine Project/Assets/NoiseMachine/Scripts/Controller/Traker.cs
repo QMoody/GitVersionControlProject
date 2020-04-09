@@ -23,6 +23,7 @@ public class Traker : MonoBehaviour
 
     float totalDis;
     public float goalDis = 250;
+    Vector2 currentPos;
 
     //UI references
     public GameObject distance;
@@ -53,7 +54,6 @@ public class Traker : MonoBehaviour
         if (inst == null)
         {
             inst = this;
-            Debug.Log("Inst is made");
         }
         else if (inst != this)
         {
@@ -69,7 +69,7 @@ public class Traker : MonoBehaviour
         totalDis = 0;
         isPaused = false;
         Time.timeScale = 1;
-
+        currentPos = distance.GetComponent<RectTransform>().position;
     }
 
     internal void Lose()
@@ -149,9 +149,9 @@ public class Traker : MonoBehaviour
 
         totalDis = Mathf.FloorToInt(Mathf.Sqrt((YPOSroc * YPOSroc) + (ZPOSroc * ZPOSroc)));
 
-
         //UI update that shows the elevation (distance travelled) of the player moving towards the goal by moving the text displaying the elevation from the start until the goal (happens in the position.y)
-        distance.GetComponent<RectTransform>().position = new Vector3(distance.GetComponent<RectTransform>().position.x, 500 - (500 * (totalDis / goalDis)), distance.GetComponent<RectTransform>().position.z);
+        currentPos.y = 300 - (300 * (totalDis / goalDis));
+        distance.GetComponent<RectTransform>().position = currentPos;
 
         //UI update that shows the elevation (distance travelled) in text
         distance.GetComponent<Text>().text = (totalDis).ToString() + "m";
@@ -220,7 +220,6 @@ public class Traker : MonoBehaviour
 
     public void CheckForAchievements()
     {
-
         if (flagScore == 6 && Achieved.GetComponent<AchievementTracker>().Get6Flag() == false)
         {
             //get 6 flags
@@ -249,7 +248,7 @@ public class Traker : MonoBehaviour
             Trophy.SetActive(true);
             Invoke("ResetTrophy", 2);
         }
-        if (endTime != null && endTime - startTime > 180 && Achieved.GetComponent<AchievementTracker>().GetSlowpoke() == false)
+        if (endTime - startTime > 180 && Achieved.GetComponent<AchievementTracker>().GetSlowpoke() == false)
         {
             //reach bottom after 3 min
             Achieved.GetComponent<AchievementTracker>().SetSlowpoke();

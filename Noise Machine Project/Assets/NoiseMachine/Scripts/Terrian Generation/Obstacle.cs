@@ -19,7 +19,7 @@ public class Obstacle : MonoBehaviour
             if (!touchingGround)
             {
                 //Output the message
-                Debug.Log(this.gameObject.name + " was hit by " + other.gameObject.name, this.gameObject);
+                //Debug.Log(this.gameObject.name + " was hit by " + other.gameObject.name, this.gameObject);
                 Traker.inst.AddHit();
             }
         }
@@ -40,7 +40,7 @@ public class Obstacle : MonoBehaviour
                 //Output the message
                 //SendMessage("Touched",null,SendMessageOptions.DontRequireReceiver);
                 SendMessage("Touched");
-                Debug.Log(this.gameObject.name + " was hit by " + other.gameObject.name, this.gameObject);
+                //Debug.Log(this.gameObject.name + " was hit by " + other.gameObject.name, this.gameObject);
             }
         }
 

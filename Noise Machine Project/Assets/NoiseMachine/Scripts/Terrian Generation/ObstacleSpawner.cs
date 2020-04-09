@@ -5,14 +5,14 @@ using System.Linq;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-    public GameObject[] treePrefabVariants;
+    public GameObject[] obstaclePrefabVariants;
     public GameObject player;
-    private List<GameObject> treePrefabs;
+    private List<GameObject> obstaclePrefabs;
     public Transform leftMarker;
     public Transform rightMarker;
     private float left;
     private float right;
-    private float treeWidth;
+    private float obstacleWidth;
     public Vector3 offsetFromPlayer;
     public float spawnRate;
     public int objectsPerSpawn;
@@ -27,7 +27,7 @@ public class ObstacleSpawner : MonoBehaviour
 
     private void Start()
     {
-        treePrefabs = new List<GameObject>(0);
+        obstaclePrefabs = new List<GameObject>(0);
         currentDistance = player.transform.position.z;
         distanceAtLastObstacle = player.transform.position.z;
         left = leftMarker.position.x;
@@ -48,9 +48,9 @@ public class ObstacleSpawner : MonoBehaviour
 
     void SpawnObstacle()
     {
-        int treeID = Random.Range(0, treePrefabVariants.Length);
-        treeWidth = treePrefabVariants[treeID].GetComponent<Collider>().bounds.size.x;
-        float randomPoint = PublicFunction.RoundUp(Random.Range(left, right), treeWidth); //obstacles will have even spacing between them equal to their width, meaning a 2u wide tree can only spawn on a multibale of 2.
+        int obID = Random.Range(0, obstaclePrefabVariants.Length);
+        obstacleWidth = obstaclePrefabVariants[obID].GetComponent<Collider>().bounds.size.x;
+        float randomPoint = PublicFunction.RoundUp(Random.Range(left, right), obstacleWidth); //obstacles will have even spacing between them equal to their width, meaning a 2u wide tree can only spawn on a multibale of 2.
         transform.position = new Vector3(randomPoint, transform.position.y, transform.position.z); // The spawner moves to that location
         
         // Bit shift the index of the layer (8) to get a bit mask
@@ -84,22 +84,22 @@ public class ObstacleSpawner : MonoBehaviour
 
         if (!dontSpawn)
         {            
-            GameObject tree = Instantiate(treePrefabVariants[treeID], transform.position + transform.TransformDirection(Vector3.down) * rayHit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
-            treePrefabs.Add(tree);
-            tree.name = "Tree " + treePrefabs.IndexOf(tree).ToString();
+            GameObject ob = Instantiate(obstaclePrefabVariants[obID], transform.position + transform.TransformDirection(Vector3.down) * rayHit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
+            obstaclePrefabs.Add(ob);
+            ob.name = obstaclePrefabVariants[obID].name.ToString() + " " + obstaclePrefabs.IndexOf(ob).ToString();
             if (turnable)
             {
-                tree.transform.eulerAngles = new Vector3(tree.transform.eulerAngles.x, Random.Range(0.0f, 360.0f), tree.transform.eulerAngles.z);
+                ob.transform.eulerAngles = new Vector3(ob.transform.eulerAngles.x, Random.Range(0.0f, 360.0f), ob.transform.eulerAngles.z);
             }
         }
     }
     
     void CleanUp()
     {
-        foreach(GameObject t in treePrefabs)
+        foreach(GameObject t in obstaclePrefabs)
         if (!t.GetComponentInChildren<Obstacle>().touchingGround)
         {
-            treePrefabs.Remove(t);
+            obstaclePrefabs.Remove(t);
             Destroy(t.gameObject);
         }
     }
@@ -127,13 +127,13 @@ public class ObstacleSpawner : MonoBehaviour
 
     void DespawnObstacles()
     {
-        for (int t = 0; t < treePrefabs.Count; t++) // for every tree in the list
+        foreach (GameObject ob in obstaclePrefabs.ToList()) // for every obstacle in the list
         {
-            float distanceAway = (transform.position.z - treePrefabs[t].transform.position.z); //calculate the distance way
+            float distanceAway = (transform.position.z - ob.transform.position.z); //calculate the distance way
             if (distanceAway > offsetFromPlayer.z * 1.5) // if it's far behind the player
             {
-                Destroy(treePrefabs[t]); //DESTROY IT
-                treePrefabs.Remove(treePrefabs[t]); //and remove the null refrence.
+                Destroy(ob); //DESTROY IT
+                obstaclePrefabs.Remove(ob); //and remove the null refrence.
             }
         }
     }
