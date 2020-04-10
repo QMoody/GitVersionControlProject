@@ -26,6 +26,7 @@ public class TerrainGen : MonoBehaviour
     private int realChunkSize;
     [Range(0.0f, 10.0f)] public float perlinFreq;
     public float heightScale;
+    public float terrainSlopeValue;
 
     public Vector2 playerChunkLoc;
     public Vector2 playerChunkLoc_;
@@ -131,7 +132,7 @@ public class TerrainGen : MonoBehaviour
         Debug.Log("UpdateC");
         //Create new chunk
         Vector2 setLoc = new Vector2(-realChunkSize / 2 + x * realChunkSize, -realChunkSize / 2 + z * realChunkSize);
-        chunks[key].chunkObj.transform.position = new Vector3(setLoc.x, terrainFlipValue * z * chunkScale * 16, setLoc.y);
+        chunks[key].chunkObj.transform.position = new Vector3(setLoc.x, terrainFlipValue * z * chunkScale * ((chunkSize / 10) * 4) * terrainSlopeValue, setLoc.y);
         chunks[key].isInArea = true;
         Noise noise = chunks[key].chunkObj.GetComponent<Noise>();
 
@@ -159,6 +160,7 @@ public class TerrainGen : MonoBehaviour
         noise.physMat = physicsMat;
         noise.chunkFlipValue = terrainFlipValue;
         noise.heightScale = heightScale;
+        noise.terSlopeVal = terrainSlopeValue;
 
         Chunk c = new Chunk();
         c.chunkObj = chunk;

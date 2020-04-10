@@ -627,32 +627,7 @@ PrefabInstance:
     - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
         type: 3}
       propertyPath: playerObject
-      value:
+      value: 
       objectReference: {fileID: 593477466}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: chunkScale
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: planeTexture
-      value:
-      objectReference: {fileID: 2100000, guid: 88d28176a6fb2494a8967b2290c7cd78, type: 2}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: flipTerrainSlope
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: heightScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: chunkSpawnRadius
-      value: 5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 831ae3a6304a00f44aa03bff9166eff2, type: 3}
