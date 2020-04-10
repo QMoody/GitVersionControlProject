@@ -16,7 +16,7 @@ public class TerrainGen : MonoBehaviour
     public Material planeTexture;
     public PhysicMaterial physicsMat;
     public float chunckSpace;
-    public int chunkLimit;
+    int chunkLimit;
     public bool flipTerrainSlope;
 
     Dictionary<Vector2, Chunk> chunks = new Dictionary<Vector2, Chunk>();
@@ -66,10 +66,11 @@ public class TerrainGen : MonoBehaviour
 
     private void CheckForNewChunk()
     {
-        //if no object exsits 
+        int chunkOffset = (int)((chunkSpawnRadius - 1) / 2 * -terrainFlipValue);
+        int posOffset = (int)(realChunkSize / 2 * -terrainFlipValue);
 
         //Set location of player by chunk rather then real world cords
-        playerChunkLoc = new Vector2(Mathf.Round(playerObject.transform.position.x / realChunkSize), Mathf.Round(playerObject.transform.position.z / realChunkSize));
+        playerChunkLoc = new Vector2(Mathf.Round(playerObject.transform.position.x / realChunkSize), Mathf.Round((playerObject.transform.position.z - posOffset) / realChunkSize) + chunkOffset);
         int pChunkX = Mathf.RoundToInt(playerChunkLoc.x);
         int pChunkZ = Mathf.RoundToInt(playerChunkLoc.y);
 

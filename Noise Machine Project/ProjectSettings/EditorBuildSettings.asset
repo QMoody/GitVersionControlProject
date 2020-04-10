@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/NoiseMachine/Scenes/MainMenu.unity
     guid: 95f9deb25711da542b1d39ef1f02fdfa
   - enabled: 1
-    path: Assets/NoiseMachine/Scenes/SceneWNewPlayer.unity
+    path: Assets/NoiseMachine/Scenes/SceneWPlayerController.unity
     guid: 6724ad76a06e66141b55e0174f4c7e7a
   - enabled: 1
     path: Assets/NoiseMachine/Scenes/SettingsMenu.unity
