@@ -17,7 +17,7 @@ public class Trail : MonoBehaviour
         public int LastIndex;
     };
 
-    const int MAX_MARKS = 128;
+    const int MAX_MARKS = 20;
     public float width = 0.35f; 
     const float GROUND_OFFSET = 0.02f;  
     const float MIN_DISTANCE = 1.0f; 

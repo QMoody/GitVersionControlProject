@@ -5,15 +5,21 @@ using UnityEngine;
 public class Goals : MonoBehaviour
 {
     public MeshRenderer mesh;
-    public Color startColor;
-    public Color changeColor;
+    public Material startColor;
+    public Material changeColor;
     bool trigger;
 
     // Start is called before the first frame update
     void Start()
     {
         if (startColor == null)
-            startColor = mesh.material.color;
+            startColor = mesh.material;
+        trigger = false;
+    }
+
+    public void OnEnable()
+    {
+        mesh.material = startColor;
         trigger = false;
     }
 
@@ -21,7 +27,7 @@ public class Goals : MonoBehaviour
     {
         if (!trigger)
         {
-            mesh.material.color = changeColor;
+            mesh.material = changeColor;
             Traker.inst.AddScore();
             trigger = true;
         }

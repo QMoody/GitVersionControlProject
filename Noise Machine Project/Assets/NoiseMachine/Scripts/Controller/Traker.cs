@@ -21,7 +21,8 @@ public class Traker : MonoBehaviour
     float YPOSroc;
     float ZPOSroc;
 
-    float totalDis;
+    [HideInInspector]
+    public float totalDis;
     public float goalDis = 250;
     Vector2 currentPos;
 

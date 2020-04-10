@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using ObjectPooler.Application;
 
 public class ObstacleSpawner : MonoBehaviour
-{
-    public GameObject[] obstaclePrefabVariants;
+{    
+    public enum ObstacleType { Tree, Rock, Flag};
+    private List<ObjectPooler.Domain.ObjectPoolItem> obstacleVariants;
+    public ObstacleType obstacleType;
     public GameObject player;
-    private List<GameObject> obstaclePrefabs;
+    private List<GameObject> currentObstacles;
     public Transform leftMarker;
     public Transform rightMarker;
     private float left;
     private float right;
     private float obstacleWidth;
     public Vector3 offsetFromPlayer;
+    private Vector3 startPosition;
     public float spawnRate;
     public int objectsPerSpawn;
     public float spawnAcceleration;
@@ -24,33 +28,50 @@ public class ObstacleSpawner : MonoBehaviour
     private float lenghtOfPlayArea;
     private float spacing;
     public bool turnable;
+    ObjectPoolerManager OP;
 
-    private void Start()
+    private void Awake()
     {
-        obstaclePrefabs = new List<GameObject>(0);
+        OP = ObjectPoolerManager.SharedInstance;
+        startPosition = player.transform.position;        
         currentDistance = player.transform.position.z;
         distanceAtLastObstacle = player.transform.position.z;
         left = leftMarker.position.x;
-        right = rightMarker.position.x;
+        right = rightMarker.position.x;  
+        currentObstacles = new List<GameObject>(0);
         BuildLevel();
         StartCoroutine(ObstacleTimer(0.01f)); //start spawning obstacles after 3 seconds;
-        
         lenghtOfPlayArea = Mathf.Abs(right - left);
+        distanceAheadOfPlayer = PublicFunction.DistanceInYnZ(startPosition, transform.position);
         //spacing = lenghtOfPlayArea / treeWidth;
         //StartCoroutine(LateFunction(0.1f));
-    }
 
-    IEnumerator LateFunction(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-        CleanUp();
+        switch (obstacleType)
+        {
+            case ObstacleType.Tree:
+                obstacleVariants = OP.trees;
+                obstacleWidth = 3.2f;
+                break;
+            case ObstacleType.Rock:
+                obstacleVariants = OP.rocks;
+                obstacleWidth = 1.6f;
+                break;
+            case ObstacleType.Flag:
+                obstacleVariants = OP.flags;
+                obstacleWidth = 1.6f;
+                break;
+        }
+        obCount = obstacleVariants.Count;
     }
+    int obID;
+    float randomPoint;
+    int obCount;
+    private float distanceAheadOfPlayer;
 
     void SpawnObstacle()
     {
-        int obID = Random.Range(0, obstaclePrefabVariants.Length);
-        obstacleWidth = obstaclePrefabVariants[obID].GetComponent<Collider>().bounds.size.x;
-        float randomPoint = PublicFunction.RoundUp(Random.Range(left, right), obstacleWidth); //obstacles will have even spacing between them equal to their width, meaning a 2u wide tree can only spawn on a multibale of 2.
+        obID = Random.Range(0, obCount);
+        randomPoint = PublicFunction.RoundUp(Random.Range(left, right), obstacleWidth); //obstacles will have even spacing between them equal to their width, meaning a 2u wide tree can only spawn on a multibale of 2.
         transform.position = new Vector3(randomPoint, transform.position.y, transform.position.z); // The spawner moves to that location
         
         // Bit shift the index of the layer (8) to get a bit mask
@@ -81,26 +102,16 @@ public class ObstacleSpawner : MonoBehaviour
         {
             dontSpawn = true;
         }
-
+        GameObject ob;
         if (!dontSpawn)
-        {            
-            GameObject ob = Instantiate(obstaclePrefabVariants[obID], transform.position + transform.TransformDirection(Vector3.down) * rayHit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
-            obstaclePrefabs.Add(ob);
-            ob.name = obstaclePrefabVariants[obID].name.ToString() + " " + obstaclePrefabs.IndexOf(ob).ToString();
+        {
+            ob = OP.SpawnFromPool(obstacleType.ToString() + obID.ToString(), transform.position + transform.TransformDirection(Vector3.down) * rayHit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
+            currentObstacles.Add(ob);            
+            ob.name = obstacleType.ToString() + obID.ToString();
             if (turnable)
             {
                 ob.transform.eulerAngles = new Vector3(ob.transform.eulerAngles.x, Random.Range(0.0f, 360.0f), ob.transform.eulerAngles.z);
             }
-        }
-    }
-    
-    void CleanUp()
-    {
-        foreach(GameObject t in obstaclePrefabs)
-        if (!t.GetComponentInChildren<Obstacle>().touchingGround)
-        {
-            obstaclePrefabs.Remove(t);
-            Destroy(t.gameObject);
         }
     }
 
@@ -110,7 +121,8 @@ public class ObstacleSpawner : MonoBehaviour
         for (int i = 0; i < prePlacedObsticals; i++)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, spawnRate * i);
-            for(int t = 0; t <= objectsPerSpawn - 1; t++)
+            distanceAheadOfPlayer = Mathf.Sqrt(Mathf.Pow(startPosition.y - transform.position.y, 2) + Mathf.Pow(startPosition.z - transform.position.z, 2));
+            for (int t = 0; t <= objectsPerSpawn - 1; t++)
             {
                 SpawnObstacle();
             }              
@@ -121,19 +133,24 @@ public class ObstacleSpawner : MonoBehaviour
     {
         transform.position = new Vector3(transform.position.x, player.transform.position.y + offsetFromPlayer.y, player.transform.position.z + offsetFromPlayer.z);//move with the player
 
-        currentDistance = player.transform.position.z; //track the player's distance down the hill
-        distanceSinceLastObstacle = currentDistance - distanceAtLastObstacle; // track the diffrence between the distance the player had last time an obstacle was spawned and now
+        distanceSinceLastObstacle = Traker.inst.totalDis - distanceAtLastObstacle; // track the diffrence between the distance the player had last time an obstacle was spawned and now
     }
+
+
 
     void DespawnObstacles()
     {
-        foreach (GameObject ob in obstaclePrefabs.ToList()) // for every obstacle in the list
+        foreach (GameObject ob in currentObstacles.ToList()) // for every obstacle in the list
         {
-            float distanceAway = (transform.position.z - ob.transform.position.z); //calculate the distance way
-            if (distanceAway > offsetFromPlayer.z * 1.5) // if it's far behind the player
+            float distanceAway = (Traker.inst.totalDis - PublicFunction.DistanceInYnZ(startPosition,ob.transform.position)); //calculate the distance way
+            if (distanceAway > distanceAheadOfPlayer/10) // if it's far behind the player
             {
-                Destroy(ob); //DESTROY IT
-                obstaclePrefabs.Remove(ob); //and remove the null refrence.
+                currentObstacles.Remove(ob);
+                OP.ReleaseBackToPool(ob.name, ob);    
+            }
+            else
+            {
+                break;
             }
         }
     }
@@ -147,13 +164,42 @@ public class ObstacleSpawner : MonoBehaviour
             {
                 SpawnObstacle();
             }
-            distanceAtLastObstacle = player.transform.position.z; //track where the player's distance now 
-            yield return new WaitForSeconds(0.01f); // buffer to wait
+            distanceAtLastObstacle = Traker.inst.totalDis; //track where the player's distance now 
+            yield return new WaitForFixedUpdate(); // buffer to wait
             yield return new WaitUntil(()=>distanceSinceLastObstacle>=spawnRate); // wait untill the diffrence is greater than the spawn rate or when the player goes far enough 
             DespawnObstacles();
-            //StartCoroutine(LateFunction(0.1f));
         }
     }
+    //void CleanUp()
+    //{
+    //    foreach(GameObject t in obstaclePrefabs)
+    //    if (!t.GetComponentInChildren<Obstacle>().touchingGround)
+    //    {
+    //        obstaclePrefabs.Remove(t);
+    //        Destroy(t.gameObject);
+    //    }
+    //}
+
+    //IEnumerator LateFunction(float waitTime)
+    //{
+    //    yield return new WaitForSeconds(waitTime);
+    //    CleanUp();
+    //}
+
+    //public static Vector3 RoundUp(Vector3 numToRound, float multiple)
+    //{
+    //    if (multiple == 0)
+    //        return numToRound;
+
+    //    Vector3 remainder = new Vector3(Mathf.Abs(numToRound.x) % multiple, Mathf.Abs(numToRound.y) % multiple, Mathf.Abs(numToRound.z) % multiple);
+    //    if (remainder == Vector3.zero)
+    //        return numToRound;
+
+    //    if (numToRound < Vector3.zero)
+    //        return -(new Vector3(Mathf.Abs(numToRound.x) - remainder.x, Mathf.Abs(numToRound.y) - remainder.y, Mathf.Abs(numToRound.z) - remainder.z);
+    //    else
+    //        return numToRound + multiple - remainder;
+    //}
 }
 
 public class PublicFunction
@@ -173,18 +219,9 @@ public class PublicFunction
             return numToRound + multiple - remainder;
     }
 
-    //public static Vector3 RoundUp(Vector3 numToRound, float multiple)
-    //{
-    //    if (multiple == 0)
-    //        return numToRound;
-
-    //    Vector3 remainder = new Vector3(Mathf.Abs(numToRound.x) % multiple, Mathf.Abs(numToRound.y) % multiple, Mathf.Abs(numToRound.z) % multiple);
-    //    if (remainder == Vector3.zero)
-    //        return numToRound;
-
-    //    if (numToRound < Vector3.zero)
-    //        return -(new Vector3(Mathf.Abs(numToRound.x) - remainder.x, Mathf.Abs(numToRound.y) - remainder.y, Mathf.Abs(numToRound.z) - remainder.z);
-    //    else
-    //        return numToRound + multiple - remainder;
-    //}
+    public static float DistanceInYnZ(Vector3 a, Vector3 b)
+    {
+        return Mathf.Sqrt(Mathf.Pow(a.y - b.y, 2) + Mathf.Pow(a.z - b.z, 2));
+    }
+    
 }
