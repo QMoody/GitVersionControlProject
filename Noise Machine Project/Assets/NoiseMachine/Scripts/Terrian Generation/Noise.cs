@@ -15,6 +15,7 @@ public class Noise : MonoBehaviour
     [Header("Create Noise Plane Variables")]
     public int planeSize;
     public float planeScale;
+    public float heightScale;
     public Vector2 planeWorldPos;
     public float perlinFreq;
     public float chunkFlipValue;
@@ -92,7 +93,7 @@ public class Noise : MonoBehaviour
     private void SetVerticies(int i, int x, int z)
     {
         //Set the mesh field vert points
-        verticesMatrix[x, z] = new Vector3(x * planeScale, GetPerlinValue(x, z) + chunkFlipValue * z / (2.5f / planeScale), z * planeScale);
+        verticesMatrix[x, z] = new Vector3(x * planeScale, (heightScale * GetPerlinValue(x, z)) + chunkFlipValue * z / (2.5f / planeScale), z * planeScale);
         verts[i] = verticesMatrix[x, z];
     }
 

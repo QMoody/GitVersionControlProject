@@ -25,6 +25,7 @@ public class TerrainGen : MonoBehaviour
     public int chunkSize; //Numbers that can be divided by 2 and preferably over 20
     private int realChunkSize;
     [Range(0.0f, 10.0f)] public float perlinFreq;
+    public float heightScale;
 
     public Vector2 playerChunkLoc;
     public Vector2 playerChunkLoc_;
@@ -156,6 +157,7 @@ public class TerrainGen : MonoBehaviour
         noise.textureMat = planeTexture;
         noise.physMat = physicsMat;
         noise.chunkFlipValue = terrainFlipValue;
+        noise.heightScale = heightScale;
 
         Chunk c = new Chunk();
         c.chunkObj = chunk;

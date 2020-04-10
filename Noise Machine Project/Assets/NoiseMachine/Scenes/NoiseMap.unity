@@ -644,5 +644,10 @@ PrefabInstance:
       propertyPath: flipTerrainSlope
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
+        type: 3}
+      propertyPath: heightScale
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 831ae3a6304a00f44aa03bff9166eff2, type: 3}
