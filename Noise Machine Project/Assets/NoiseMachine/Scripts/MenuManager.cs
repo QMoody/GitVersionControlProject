@@ -8,7 +8,7 @@ public class MenuManager : MonoBehaviour
     
     public void PlayGame()
     {
-        SceneManager.LoadScene("SceneWNewPlayer");
+        SceneManager.LoadScene("SceneWPlayerModel");
     }
 
     public void SettingsMenu()

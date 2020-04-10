@@ -50,7 +50,7 @@ public class ObstacleSpawner : MonoBehaviour
         {
             case ObstacleType.Tree:
                 obstacleVariants = OP.trees;
-                obstacleWidth = 2.9f;
+                obstacleWidth = 3.2f;
                 break;
             case ObstacleType.Rock:
                 obstacleVariants = OP.rocks;
