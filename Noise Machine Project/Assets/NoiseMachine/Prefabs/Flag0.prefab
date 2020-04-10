@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mesh: {fileID: 3867959626772528862}
-  startColor: {r: 0.754717, g: 0.2750089, b: 0.16731933, a: 1}
-  changeColor: {r: 0.99765015, g: 1, b: 0, a: 1}
+  startColor: {fileID: 2100000, guid: 1b4779e9d5f61b64e98fd5a101002bbd, type: 2}
+  changeColor: {fileID: 2100000, guid: 521d47fecac66f342a2f32a28629e66d, type: 2}
 --- !u!1001 &6823230320679670539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -257,6 +257,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.02
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: d59c5da7c33fcd94597ac6d7b692cb83,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b4779e9d5f61b64e98fd5a101002bbd, type: 2}
+    - target: {fileID: -1504981713932161579, guid: d59c5da7c33fcd94597ac6d7b692cb83,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: ab81b26af7d408d4da28d51b04e1692c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d59c5da7c33fcd94597ac6d7b692cb83, type: 3}
 --- !u!4 &2002499974005323793 stripped

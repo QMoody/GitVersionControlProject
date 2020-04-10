@@ -45,10 +45,7 @@ namespace ObjectPooler.Application
                 Debug.LogWarning("Multible ObjectPoolerManager. One was destroy");
                 Destroy(this);
             }
-        }
 
-        public void Start()
-        {
             _allObjects.Add(trees);
             _allObjects.Add(rocks);
             _allObjects.Add(flags);

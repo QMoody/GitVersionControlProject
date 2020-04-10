@@ -3,7 +3,12 @@ guid: 7adc3af408884b04aa256912347e7181
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Noise_(2)Mat
+    second: {fileID: 2100000, guid: 08cd68e5be435e84d9a0a9a5dac000a5, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

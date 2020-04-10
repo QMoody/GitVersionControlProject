@@ -10,7 +10,7 @@ public class ObstacleSpawner : MonoBehaviour
     private List<ObjectPooler.Domain.ObjectPoolItem> obstacleVariants;
     public ObstacleType obstacleType;
     public GameObject player;
-    private List<GameObject> obstaclePrefabs;
+    private List<GameObject> currentObstacles;
     public Transform leftMarker;
     public Transform rightMarker;
     private float left;
@@ -30,18 +30,15 @@ public class ObstacleSpawner : MonoBehaviour
     public bool turnable;
     ObjectPoolerManager OP;
 
-    void Awake()
+    private void Awake()
     {
-        OP = ObjectPoolerManager.SharedInstance;      
-    }
-    private void Start()
-    {
+        OP = ObjectPoolerManager.SharedInstance;
         startPosition = player.transform.position;        
         currentDistance = player.transform.position.z;
         distanceAtLastObstacle = player.transform.position.z;
         left = leftMarker.position.x;
         right = rightMarker.position.x;  
-        obstaclePrefabs = new List<GameObject>(0);
+        currentObstacles = new List<GameObject>(0);
         BuildLevel();
         StartCoroutine(ObstacleTimer(0.01f)); //start spawning obstacles after 3 seconds;
         lenghtOfPlayArea = Mathf.Abs(right - left);
@@ -109,7 +106,7 @@ public class ObstacleSpawner : MonoBehaviour
         if (!dontSpawn)
         {
             ob = OP.SpawnFromPool(obstacleType.ToString() + obID.ToString(), transform.position + transform.TransformDirection(Vector3.down) * rayHit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
-            obstaclePrefabs.Add(ob);            
+            currentObstacles.Add(ob);            
             ob.name = obstacleType.ToString() + obID.ToString();
             if (turnable)
             {
@@ -143,12 +140,12 @@ public class ObstacleSpawner : MonoBehaviour
 
     void DespawnObstacles()
     {
-        foreach (GameObject ob in obstaclePrefabs.ToList()) // for every obstacle in the list
+        foreach (GameObject ob in currentObstacles.ToList()) // for every obstacle in the list
         {
             float distanceAway = (Traker.inst.totalDis - PublicFunction.DistanceInYnZ(startPosition,ob.transform.position)); //calculate the distance way
             if (distanceAway > distanceAheadOfPlayer/10) // if it's far behind the player
             {
-                obstaclePrefabs.Remove(ob);
+                currentObstacles.Remove(ob);
                 OP.ReleaseBackToPool(ob.name, ob);    
             }
             else

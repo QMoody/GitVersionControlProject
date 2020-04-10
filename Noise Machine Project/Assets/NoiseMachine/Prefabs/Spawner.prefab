@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 50666035563043564}
   - component: {fileID: 50666035563043563}
-  - component: {fileID: 50666035563043566}
   m_Layer: 9
   m_Name: Spawner
   m_TagString: Untagged
@@ -44,35 +43,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19b2c2a7f2a1fd0498b64aa1d771467c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treePrefab: {fileID: 751458554515068170, guid: f758dd501f71e9044b55d1b392553152,
-    type: 3}
+  obstacleType: 0
   player: {fileID: 0}
   leftMarker: {fileID: 0}
   rightMarker: {fileID: 0}
-  offsetFromPlayer: {x: 0, y: 5, z: 70}
+  offsetFromPlayer: {x: 0, y: 5, z: 100}
   spawnRate: 5
   objectsPerSpawn: 1
   spawnAcceleration: 0
---- !u!114 &50666035563043566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 50666035563043562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d4d31ce3ee59b04c855c1d7d3715bc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spline: {fileID: 7181554824721274471, guid: ecf30ba9ded3d6c4b81f39d65585ca6c, type: 3}
-  colliderPrefab: {fileID: 9173958720267785366, guid: 99b1ae4181c1f4a44a898faced86dd32,
-    type: 3}
-  colliders: []
-  startPoint: {fileID: 0}
-  leftMarker: {fileID: 0}
-  rightMarker: {fileID: 0}
-  colliderSize: 7
-  xSpacing: 2
-  zSpacing: 20
-  frequency: 2.5
+  turnable: 1

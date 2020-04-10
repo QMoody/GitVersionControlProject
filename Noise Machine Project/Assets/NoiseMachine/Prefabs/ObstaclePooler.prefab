@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4643389886592790609
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4643389886592790615}
+  - component: {fileID: 4643389886592790608}
+  m_Layer: 0
+  m_Name: ObstaclePooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4643389886592790615
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4643389886592790609}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4643389886592790608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4643389886592790609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8682a6dc3f462ab4884b3fed7c44ae90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trees:
+  - poolItemName: Tree0
+    prefab: {fileID: 751458554515068170, guid: ef879ff9f74432d479170cc23c4d15e2, type: 3}
+    parent: {fileID: 0}
+    size: 1
+    autoResize: 1
+  - poolItemName: Tree1
+    prefab: {fileID: 751458554515068170, guid: a9dab330f5f87cb4b95d84b99386306b, type: 3}
+    parent: {fileID: 0}
+    size: 1
+    autoResize: 1
+  - poolItemName: Tree2
+    prefab: {fileID: 751458554515068170, guid: 05add1b696ecc2f4382af3d37555750b, type: 3}
+    parent: {fileID: 0}
+    size: 1
+    autoResize: 1
+  - poolItemName: Tree3
+    prefab: {fileID: 751458554515068170, guid: 6a8ce3f549fd3634dad52691c3c11aa9, type: 3}
+    parent: {fileID: 0}
+    size: 1
+    autoResize: 1
+  - poolItemName: Tree4
+    prefab: {fileID: 751458554515068170, guid: 1a450375fcfb66c41a0a697918e10b8b, type: 3}
+    parent: {fileID: 0}
+    size: 1
+    autoResize: 1
+  - poolItemName: Tree5
+    prefab: {fileID: 751458554515068170, guid: 228ff33bc9e9b004485890ab37365658, type: 3}
+    parent: {fileID: 0}
+    size: 1
+    autoResize: 1
+  rocks:
+  - poolItemName: Rock0
+    prefab: {fileID: 751458554515068170, guid: 6330431346120b545bd83783485c9e76, type: 3}
+    parent: {fileID: 0}
+    size: 1
+    autoResize: 1
+  - poolItemName: Rock1
+    prefab: {fileID: 751458554515068170, guid: ba927cca68887834bbd63777f87d103b, type: 3}
+    parent: {fileID: 0}
+    size: 1
+    autoResize: 1
+  - poolItemName: Rock2
+    prefab: {fileID: 751458554515068170, guid: 9a6e55f48728b3044abd03fdcad3007f, type: 3}
+    parent: {fileID: 0}
+    size: 1
+    autoResize: 1
+  - poolItemName: Rock3
+    prefab: {fileID: 751458554515068170, guid: 6bcd1a158e6dc5949805982ae3555b30, type: 3}
+    parent: {fileID: 0}
+    size: 1
+    autoResize: 1
+  flags:
+  - poolItemName: Flag0
+    prefab: {fileID: 751458554515068170, guid: 6331d3e8247ef3544ba4c2ddd3b6b516, type: 3}
+    parent: {fileID: 0}
+    size: 1
+    autoResize: 1

@@ -96,7 +96,7 @@ public class Controller : MonoBehaviour
     }
 
     public Transform snowParticle;
-    Vector3 offsetSnowParticle = new Vector3(0, 20, 0);
+    Vector3 offsetSnowParticle = new Vector3(0, 20, 40);
     void SnowParticle()
     {
         snowParticle.position = transform.position + offsetSnowParticle;
