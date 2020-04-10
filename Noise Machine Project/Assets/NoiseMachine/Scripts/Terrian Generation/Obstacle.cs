@@ -39,7 +39,7 @@ public class Obstacle : MonoBehaviour
             {
                 //Output the message
                 //SendMessage("Touched",null,SendMessageOptions.DontRequireReceiver);
-                SendMessage("Touched");
+                SendMessage("Touched",null,SendMessageOptions.DontRequireReceiver);
                 //Debug.Log(this.gameObject.name + " was hit by " + other.gameObject.name, this.gameObject);
             }
         }

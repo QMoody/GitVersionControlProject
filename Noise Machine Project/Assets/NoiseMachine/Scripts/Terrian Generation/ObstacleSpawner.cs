@@ -6,7 +6,7 @@ using ObjectPooler.Application;
 
 public class ObstacleSpawner : MonoBehaviour
 {    
-    public enum ObstacleType { Tree, Rock, Flag };
+    public enum ObstacleType { Tree, Rock, Flag};
     private List<ObjectPooler.Domain.ObjectPoolItem> obstacleVariants;
     public ObstacleType obstacleType;
     public GameObject player;
@@ -17,6 +17,7 @@ public class ObstacleSpawner : MonoBehaviour
     private float right;
     private float obstacleWidth;
     public Vector3 offsetFromPlayer;
+    private Vector3 startPosition;
     public float spawnRate;
     public int objectsPerSpawn;
     public float spawnAcceleration;
@@ -31,18 +32,20 @@ public class ObstacleSpawner : MonoBehaviour
 
     void Awake()
     {
-        OP = ObjectPoolerManager.SharedInstance;
-        currentDistance = player.transform.position.z;
-        distanceAtLastObstacle = player.transform.position.z;
-        left = leftMarker.position.x;
-        right = rightMarker.position.x;
-        obstaclePrefabs = new List<GameObject>(0);
+        OP = ObjectPoolerManager.SharedInstance;      
     }
     private void Start()
     {
+        startPosition = player.transform.position;        
+        currentDistance = player.transform.position.z;
+        distanceAtLastObstacle = player.transform.position.z;
+        left = leftMarker.position.x;
+        right = rightMarker.position.x;  
+        obstaclePrefabs = new List<GameObject>(0);
         BuildLevel();
         StartCoroutine(ObstacleTimer(0.01f)); //start spawning obstacles after 3 seconds;
         lenghtOfPlayArea = Mathf.Abs(right - left);
+        distanceAheadOfPlayer = PublicFunction.DistanceInYnZ(startPosition, transform.position);
         //spacing = lenghtOfPlayArea / treeWidth;
         //StartCoroutine(LateFunction(0.1f));
 
@@ -66,6 +69,8 @@ public class ObstacleSpawner : MonoBehaviour
     int obID;
     float randomPoint;
     int obCount;
+    private float distanceAheadOfPlayer;
+
     void SpawnObstacle()
     {
         obID = Random.Range(0, obCount);
@@ -100,11 +105,11 @@ public class ObstacleSpawner : MonoBehaviour
         {
             dontSpawn = true;
         }
-
+        GameObject ob;
         if (!dontSpawn)
         {
-            GameObject ob = OP.SpawnFromPool(obstacleType.ToString() + obID.ToString(), transform.position + transform.TransformDirection(Vector3.down) * rayHit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
-            obstaclePrefabs.Add(ob);
+            ob = OP.SpawnFromPool(obstacleType.ToString() + obID.ToString(), transform.position + transform.TransformDirection(Vector3.down) * rayHit.distance, Quaternion.identity); //Instantiate an obstacle right on the surrface of that collider and add them to the list
+            obstaclePrefabs.Add(ob);            
             ob.name = obstacleType.ToString() + obID.ToString();
             if (turnable)
             {
@@ -112,8 +117,6 @@ public class ObstacleSpawner : MonoBehaviour
             }
         }
     }
-    
-
 
     private void BuildLevel()
     {
@@ -121,7 +124,8 @@ public class ObstacleSpawner : MonoBehaviour
         for (int i = 0; i < prePlacedObsticals; i++)
         {
             transform.position = new Vector3(transform.position.x, transform.position.y, spawnRate * i);
-            for(int t = 0; t <= objectsPerSpawn - 1; t++)
+            distanceAheadOfPlayer = Mathf.Sqrt(Mathf.Pow(startPosition.y - transform.position.y, 2) + Mathf.Pow(startPosition.z - transform.position.z, 2));
+            for (int t = 0; t <= objectsPerSpawn - 1; t++)
             {
                 SpawnObstacle();
             }              
@@ -132,20 +136,24 @@ public class ObstacleSpawner : MonoBehaviour
     {
         transform.position = new Vector3(transform.position.x, player.transform.position.y + offsetFromPlayer.y, player.transform.position.z + offsetFromPlayer.z);//move with the player
 
-        currentDistance = player.transform.position.z; //track the player's distance down the hill
-        distanceSinceLastObstacle = currentDistance - distanceAtLastObstacle; // track the diffrence between the distance the player had last time an obstacle was spawned and now
+        distanceSinceLastObstacle = Traker.inst.totalDis - distanceAtLastObstacle; // track the diffrence between the distance the player had last time an obstacle was spawned and now
     }
 
-    float distanceAway;
+
 
     void DespawnObstacles()
     {
         foreach (GameObject ob in obstaclePrefabs.ToList()) // for every obstacle in the list
         {
-            distanceAway = (transform.position.z - ob.transform.position.z); //calculate the distance way
-            if (distanceAway > offsetFromPlayer.z * 1.5) // if it's far behind the player
+            float distanceAway = (Traker.inst.totalDis - PublicFunction.DistanceInYnZ(startPosition,ob.transform.position)); //calculate the distance way
+            if (distanceAway > distanceAheadOfPlayer/10) // if it's far behind the player
             {
+                obstaclePrefabs.Remove(ob);
                 OP.ReleaseBackToPool(ob.name, ob);    
+            }
+            else
+            {
+                break;
             }
         }
     }
@@ -159,32 +167,12 @@ public class ObstacleSpawner : MonoBehaviour
             {
                 SpawnObstacle();
             }
-            distanceAtLastObstacle = player.transform.position.z; //track where the player's distance now 
-            yield return new WaitForSeconds(0.01f); // buffer to wait
+            distanceAtLastObstacle = Traker.inst.totalDis; //track where the player's distance now 
+            yield return new WaitForFixedUpdate(); // buffer to wait
             yield return new WaitUntil(()=>distanceSinceLastObstacle>=spawnRate); // wait untill the diffrence is greater than the spawn rate or when the player goes far enough 
             DespawnObstacles();
-            //StartCoroutine(LateFunction(0.1f));
         }
     }
-}
-
-public class PublicFunction
-{
-    public static float RoundUp(float numToRound, float multiple)
-    {
-        if (multiple == 0)
-            return numToRound;
-
-        float remainder = Mathf.Abs(numToRound) % multiple;
-        if (remainder == 0)
-            return numToRound;
-
-        if (numToRound < 0)
-            return -(Mathf.Abs(numToRound) - remainder);
-        else
-            return numToRound + multiple - remainder;
-    }
-
     //void CleanUp()
     //{
     //    foreach(GameObject t in obstaclePrefabs)
@@ -215,4 +203,28 @@ public class PublicFunction
     //    else
     //        return numToRound + multiple - remainder;
     //}
+}
+
+public class PublicFunction
+{
+    public static float RoundUp(float numToRound, float multiple)
+    {
+        if (multiple == 0)
+            return numToRound;
+
+        float remainder = Mathf.Abs(numToRound) % multiple;
+        if (remainder == 0)
+            return numToRound;
+
+        if (numToRound < 0)
+            return -(Mathf.Abs(numToRound) - remainder);
+        else
+            return numToRound + multiple - remainder;
+    }
+
+    public static float DistanceInYnZ(Vector3 a, Vector3 b)
+    {
+        return Mathf.Sqrt(Mathf.Pow(a.y - b.y, 2) + Mathf.Pow(a.z - b.z, 2));
+    }
+    
 }

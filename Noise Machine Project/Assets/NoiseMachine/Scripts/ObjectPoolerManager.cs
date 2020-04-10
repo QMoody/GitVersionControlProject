@@ -18,7 +18,6 @@ namespace ObjectPooler.Application
         public List<ObjectPoolItem> rocks;
         public List<ObjectPoolItem> flags;
 
-
         //this is needed to run loop over grouped items
         private List<List<ObjectPoolItem>> _allObjects = new List<List<ObjectPoolItem>>();
         
@@ -153,6 +152,7 @@ namespace ObjectPooler.Application
             GameObject obj = Instantiate(prefab, parent);
             obj.transform.position = Vector3.zero;
             objectPool.Enqueue(obj);
+            obj.SetActive(false);
         }
     }
 }
