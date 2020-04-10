@@ -46,11 +46,15 @@ MonoBehaviour:
   playerObject: {fileID: 0}
   noiseObject: {fileID: 7197938629862694555, guid: 991d2ad60bd1b674dbb6b2b8df9f3103,
     type: 3}
+  planeTexture: {fileID: 2100000, guid: 88d28176a6fb2494a8967b2290c7cd78, type: 2}
+  physicsMat: {fileID: 0}
   chunckSpace: 0
   chunkLimit: 9
+  flipTerrainSlope: 1
   chunkScale: 0.25
   chunkSize: 40
   perlinFreq: 4.67
+  heightScale: 1
   playerChunkLoc: {x: 0, y: 0}
   playerChunkLoc_: {x: 0, y: 0}
   isFirstSpawn: 1

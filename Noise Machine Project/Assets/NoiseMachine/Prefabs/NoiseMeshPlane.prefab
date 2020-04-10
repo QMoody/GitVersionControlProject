@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7197938629862694544}
   m_Layer: 0
   m_Name: NoiseMeshPlane
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,10 +47,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureMat: {fileID: 2100000, guid: 2f4028fbed5ab2b4f9301584f73f0426, type: 2}
-  planeX: 41
-  planeZ: 41
+  physMat: {fileID: 0}
+  planeSize: 0
   planeScale: 1
+  heightScale: 0
+  planeWorldPos: {x: 0, y: 0}
   perlinFreq: 8.5
+  chunkFlipValue: 0
   autoUpdate: 0
 --- !u!33 &7197938629862694550
 MeshFilter:
