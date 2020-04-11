@@ -5084,7 +5084,7 @@ GameObject:
   - component: {fileID: 1918206427}
   m_Layer: 0
   m_Name: Player 2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5380,19 +5380,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   totalDis: 0
   goalDis: 1000
-  distance: {fileID: 0}
-  winText: {fileID: 0}
-  speedometer: {fileID: 0}
   currentSpeed: 0
-  PauseMenu: {fileID: 0}
-  dTravel: {fileID: 0}
-  mSpeed: {fileID: 0}
   flagScore: 0
-  flagScoreText: {fileID: 0}
-  PauseButton: {fileID: 0}
-  PauseText: {fileID: 0}
   Achieved: {fileID: 0}
-  Trophy: {fileID: 0}
+  CM: {fileID: 0}
 --- !u!136 &803934258
 CapsuleCollider:
   m_ObjectHideFlags: 0
