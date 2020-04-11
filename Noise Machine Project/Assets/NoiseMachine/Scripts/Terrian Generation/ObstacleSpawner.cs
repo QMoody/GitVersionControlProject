@@ -158,7 +158,7 @@ public class ObstacleSpawner : MonoBehaviour
     IEnumerator ObstacleTimer(float time)
     {
         yield return new WaitForSeconds(time);
-        while (true)
+        while (Traker.inst.totalDis <= Traker.inst.goalDis)
         {
             for (int t = 0; t <= objectsPerSpawn-1; t++)
             {
@@ -169,6 +169,7 @@ public class ObstacleSpawner : MonoBehaviour
             yield return new WaitUntil(()=>distanceSinceLastObstacle>=spawnRate); // wait untill the diffrence is greater than the spawn rate or when the player goes far enough 
             DespawnObstacles();
         }
+        yield break;
     }
     //void CleanUp()
     //{
