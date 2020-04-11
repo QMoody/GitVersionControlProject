@@ -120,6 +120,7 @@ public class Traker : MonoBehaviour
             Invoke("Win", 3); //Restarts the game after 3 seconds
 
         }
+
         if (isPaused)
         {
             Paused();
@@ -177,6 +178,7 @@ public class Traker : MonoBehaviour
 
     void Paused()
     {
+        print("qqqqqqqqqqq");
         Time.timeScale = 0;
         PauseMenu.SetActive(true);
         dTravel.GetComponent<Text>().text = "Distance Travelled: " + (totalDis).ToString() + "m";
