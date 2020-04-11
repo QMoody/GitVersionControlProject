@@ -22,7 +22,7 @@ public class AchievementTracker : MonoBehaviour
         if (a.Length >= 2)
         {
             Destroy(a[1]);
-            GameObject.Find("Player").GetComponent<Traker>().SetTracker(a[0]);
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Traker>().SetTracker(a[0]);
         }
 
     }

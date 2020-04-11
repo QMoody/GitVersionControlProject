@@ -1084,6 +1084,56 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: MainMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 435014327778395254, guid: 583ce3adb80fa6a45a6900de957e522a,
+        type: 3}
+      propertyPath: speedometer
+      value: 
+      objectReference: {fileID: 1768416954}
+    - target: {fileID: 435014327778395254, guid: 583ce3adb80fa6a45a6900de957e522a,
+        type: 3}
+      propertyPath: distanceDisplay
+      value: 
+      objectReference: {fileID: 427533853}
+    - target: {fileID: 435014327778395254, guid: 583ce3adb80fa6a45a6900de957e522a,
+        type: 3}
+      propertyPath: winText
+      value: 
+      objectReference: {fileID: 1108165365}
+    - target: {fileID: 435014327778395254, guid: 583ce3adb80fa6a45a6900de957e522a,
+        type: 3}
+      propertyPath: PauseMenu
+      value: 
+      objectReference: {fileID: 1992330319}
+    - target: {fileID: 435014327778395254, guid: 583ce3adb80fa6a45a6900de957e522a,
+        type: 3}
+      propertyPath: dTravel
+      value: 
+      objectReference: {fileID: 1980398324}
+    - target: {fileID: 435014327778395254, guid: 583ce3adb80fa6a45a6900de957e522a,
+        type: 3}
+      propertyPath: mSpeed
+      value: 
+      objectReference: {fileID: 730301752}
+    - target: {fileID: 435014327778395254, guid: 583ce3adb80fa6a45a6900de957e522a,
+        type: 3}
+      propertyPath: flagScoreText
+      value: 
+      objectReference: {fileID: 1659765537}
+    - target: {fileID: 435014327778395254, guid: 583ce3adb80fa6a45a6900de957e522a,
+        type: 3}
+      propertyPath: PauseButton
+      value: 
+      objectReference: {fileID: 903802294}
+    - target: {fileID: 435014327778395254, guid: 583ce3adb80fa6a45a6900de957e522a,
+        type: 3}
+      propertyPath: PauseText
+      value: 
+      objectReference: {fileID: 316993668}
+    - target: {fileID: 435014327778395254, guid: 583ce3adb80fa6a45a6900de957e522a,
+        type: 3}
+      propertyPath: Trophy
+      value: 
+      objectReference: {fileID: 46118556}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 583ce3adb80fa6a45a6900de957e522a, type: 3}
 --- !u!1 &1059890434 stripped
@@ -1225,6 +1275,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: -649295857625848244, guid: 0d7761b499b105548a3ab7a494d200de, type: 3}
+--- !u!114 &1183258059 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 435014327778395254, guid: 583ce3adb80fa6a45a6900de957e522a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1031357195}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22312ba66b6fc914e888a49fddaafeca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1225717864
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2246,6 +2308,59 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5040873839983020049, guid: 5a655a6802a01d8459760f25cc14d254,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
+      propertyPath: distance
+      value: 
+      objectReference: {fileID: 427533853}
+    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
+      propertyPath: winText
+      value: 
+      objectReference: {fileID: 1108165365}
+    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
+      propertyPath: speedometer
+      value: 
+      objectReference: {fileID: 1768416954}
+    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
+      propertyPath: PauseMenu
+      value: 
+      objectReference: {fileID: 1992330319}
+    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
+      propertyPath: dTravel
+      value: 
+      objectReference: {fileID: 1980398324}
+    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
+      propertyPath: mSpeed
+      value: 
+      objectReference: {fileID: 730301752}
+    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
+      propertyPath: flagScoreText
+      value: 
+      objectReference: {fileID: 1659765537}
+    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
+      propertyPath: PauseButton
+      value: 
+      objectReference: {fileID: 903802294}
+    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
+      propertyPath: PauseText
+      value: 
+      objectReference: {fileID: 316993668}
+    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
+      propertyPath: Achieved
+      value: 
+      objectReference: {fileID: 1640694295}
+    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
+      propertyPath: Trophy
+      value: 
+      objectReference: {fileID: 46118556}
+    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
+      propertyPath: CM
+      value: 
+      objectReference: {fileID: 1183258059}
     - target: {fileID: 5040873839983020062, guid: 5a655a6802a01d8459760f25cc14d254,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2306,50 +2421,6 @@ PrefabInstance:
       propertyPath: snowParticle
       value: 
       objectReference: {fileID: 945092445}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: distance
-      value: 
-      objectReference: {fileID: 427533853}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: winText
-      value: 
-      objectReference: {fileID: 1108165365}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: speedometer
-      value: 
-      objectReference: {fileID: 1768416954}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: PauseMenu
-      value: 
-      objectReference: {fileID: 1992330319}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: dTravel
-      value: 
-      objectReference: {fileID: 1980398324}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: mSpeed
-      value: 
-      objectReference: {fileID: 730301752}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: flagScoreText
-      value: 
-      objectReference: {fileID: 1659765537}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: PauseButton
-      value: 
-      objectReference: {fileID: 903802294}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: PauseText
-      value: 
-      objectReference: {fileID: 316993668}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: Achieved
-      value: 
-      objectReference: {fileID: 1640694295}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: Trophy
-      value: 
-      objectReference: {fileID: 46118556}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
 --- !u!1001 &2085735486

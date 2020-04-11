@@ -168,7 +168,6 @@ public class Traker : MonoBehaviour
 
     void Paused()
     {
-        print("qqqqqqqqqqq");
         Time.timeScale = 0;
         CM.PauseMenu.SetActive(true);
         CM.dTravel.GetComponent<Text>().text = "Distance Travelled: " + (totalDis).ToString() + "m";
