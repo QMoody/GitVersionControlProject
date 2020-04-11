@@ -26,28 +26,18 @@ public class Traker : MonoBehaviour
     public float goalDis = 250;
     Vector2 currentPos;
 
-    //UI references
-    public GameObject distance;
-    public GameObject winText;
-    public GameObject speedometer;
     public float currentSpeed;
     float fastestSpeed;
     bool isPaused;
-    public GameObject PauseMenu;
-    public GameObject dTravel;
-    public GameObject mSpeed;
     public int flagScore;
-    public GameObject flagScoreText;
     private int hitScore;
-
-    public GameObject PauseButton;
-    public Text PauseText;
 
     float startTime;
     float endTime;
 
     public GameObject Achieved;
-    public GameObject Trophy;
+
+    public CanvasManager CM;
 
     //Making this a singleton
     private void Awake()
@@ -70,7 +60,7 @@ public class Traker : MonoBehaviour
         totalDis = 0;
         isPaused = false;
         Time.timeScale = 1;
-        currentPos = distance.GetComponent<RectTransform>().position;
+        currentPos = CM.distanceDisplay.GetComponent<RectTransform>().position;
     }
 
     internal void Lose()
@@ -86,8 +76,8 @@ public class Traker : MonoBehaviour
         }
         );
 
-        PauseText.GetComponent<Text>().text = "Game Over";
-        PauseButton.SetActive(false);
+        CM.PauseText.text = "Game Over";
+        CM.PauseButton.SetActive(false);
         Paused();
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
@@ -95,7 +85,7 @@ public class Traker : MonoBehaviour
     internal void AddScore()
     {
         flagScore++;
-        flagScoreText.GetComponent<Text>().text = flagScore.ToString();
+        CM.flagScoreText.GetComponent<Text>().text = flagScore.ToString();
     }
 
     internal void AddHit()
@@ -116,7 +106,7 @@ public class Traker : MonoBehaviour
         if (totalDis > goalDis)
         {
             endTime = Time.time;
-            winText.SetActive(true); //Shows text that you have won
+            CM.winText.SetActive(true); //Shows text that you have won
             Invoke("Win", 3); //Restarts the game after 3 seconds
 
         }
@@ -132,7 +122,7 @@ public class Traker : MonoBehaviour
     void UpdateCurrentSpeed()
     {
         //UI update for players current speed in km/h
-        speedometer.GetComponent<Text>().text = currentSpeed + " km/h";
+        CM.speedometer.GetComponent<Text>().text = currentSpeed + " km/h";
         if (currentSpeed > fastestSpeed)
         {
             fastestSpeed = currentSpeed;
@@ -153,10 +143,10 @@ public class Traker : MonoBehaviour
 
         //UI update that shows the elevation (distance travelled) of the player moving towards the goal by moving the text displaying the elevation from the start until the goal (happens in the position.y)
         currentPos.y = 300 - (300 * (totalDis / goalDis));
-        distance.GetComponent<RectTransform>().position = currentPos;
+        CM.distanceDisplay.GetComponent<RectTransform>().position = currentPos;
 
         //UI update that shows the elevation (distance travelled) in text
-        distance.GetComponent<Text>().text = (totalDis).ToString() + "m";
+        CM.distanceDisplay.GetComponent<Text>().text = (totalDis).ToString() + "m";
     }
 
     void Win()
@@ -171,8 +161,8 @@ public class Traker : MonoBehaviour
         }
         );
 
-        PauseText.text = "You Reached The Bottom! Good Job";
-        PauseButton.SetActive(false);
+        CM.PauseText.text = "You Reached The Bottom! Good Job";
+        CM.PauseButton.SetActive(false);
         Paused();
     }
 
@@ -180,16 +170,16 @@ public class Traker : MonoBehaviour
     {
         print("qqqqqqqqqqq");
         Time.timeScale = 0;
-        PauseMenu.SetActive(true);
-        dTravel.GetComponent<Text>().text = "Distance Travelled: " + (totalDis).ToString() + "m";
-        mSpeed.GetComponent<Text>().text = "Fastest Speed Recorded: " + (fastestSpeed).ToString() + "km/h";
+        CM.PauseMenu.SetActive(true);
+        CM.dTravel.GetComponent<Text>().text = "Distance Travelled: " + (totalDis).ToString() + "m";
+        CM.mSpeed.GetComponent<Text>().text = "Fastest Speed Recorded: " + (fastestSpeed).ToString() + "km/h";
     }
 
     public void PauseGame()
     {
         if (isPaused)
         {
-            PauseMenu.SetActive(false);
+            CM.PauseMenu.SetActive(false);
             isPaused = false;
             Time.timeScale = 1;
         }
@@ -218,7 +208,13 @@ public class Traker : MonoBehaviour
 
     void ResetTrophy()
     {
-        Trophy.SetActive(false);
+        CM.Trophy.SetActive(false);
+    }
+
+    void ShowTrophy()
+    {
+        CM.Trophy.SetActive(true);
+        Invoke("ResetTrophy", 2);
     }
 
     public void CheckForAchievements()
@@ -227,36 +223,31 @@ public class Traker : MonoBehaviour
         {
             //get 6 flags
             Achieved.GetComponent<AchievementTracker>().Set6Flag();
-            Trophy.SetActive(true);
-            Invoke("ResetTrophy", 2);
+            ShowTrophy();
         }
         if (totalDis > 1000 && Achieved.GetComponent<AchievementTracker>().GetWin() == false)
         {
             //make it to the bottom for the first time
             Achieved.GetComponent<AchievementTracker>().SetWin();
-            Trophy.SetActive(true);
-            Invoke("ResetTrophy", 2);
+            ShowTrophy();
         }
         if (hitScore == 0 && totalDis > 1000 && Achieved.GetComponent<AchievementTracker>().GetNotHit() == false)
         {
             //get to end without hiting anything
             Achieved.GetComponent<AchievementTracker>().SetNotHit();
-            Trophy.SetActive(true);
-            Invoke("ResetTrophy", 2);
+            ShowTrophy();
         }
         if (fastestSpeed >= 155 && Achieved.GetComponent<AchievementTracker>().GetCheater() == false)
         {
             //fall off side
             Achieved.GetComponent<AchievementTracker>().SetCheater();
-            Trophy.SetActive(true);
-            Invoke("ResetTrophy", 2);
+            ShowTrophy();
         }
         if (endTime - startTime > 180 && Achieved.GetComponent<AchievementTracker>().GetSlowpoke() == false)
         {
             //reach bottom after 3 min
             Achieved.GetComponent<AchievementTracker>().SetSlowpoke();
-            Trophy.SetActive(true);
-            Invoke("ResetTrophy", 2);
+            ShowTrophy();
         }
     }
 }
