@@ -29,6 +29,7 @@ public class TerrainGen : MonoBehaviour
     public float terrainSlopeValue;
 
     public Vector2 playerChunkLoc;
+    [HideInInspector]
     public Vector2 playerChunkLoc_;
     public bool isFirstSpawn = true;
     private float terrainFlipValue;
@@ -64,23 +65,37 @@ public class TerrainGen : MonoBehaviour
     {
         CheckForNewChunk();
     }
+    int chunkOffset;
+    int posOffset;
+
+    int pChunkX;
+    int pChunkZ;
+
+    int radiusStart;
+    int radiusEnd;
+
+    int il;
+    Vector2[] newChunkLocAry;
+    Vector2[] keyList;
+    Vector2 tmpKey;
+    Chunk tmpChunk;
 
     private void CheckForNewChunk()
     {
-        int chunkOffset = (int)((chunkSpawnRadius - 1) / 2 * -terrainFlipValue);
-        int posOffset = (int)(realChunkSize / 2 * -terrainFlipValue);
+        chunkOffset = (int)((chunkSpawnRadius - 1) / 2 * -terrainFlipValue);
+        posOffset = (int)(realChunkSize / 2 * -terrainFlipValue);
 
         //Set location of player by chunk rather then real world cords
         playerChunkLoc = new Vector2(Mathf.Round(playerObject.transform.position.x / realChunkSize), Mathf.Round((playerObject.transform.position.z - posOffset) / realChunkSize) + chunkOffset);
-        int pChunkX = Mathf.RoundToInt(playerChunkLoc.x);
-        int pChunkZ = Mathf.RoundToInt(playerChunkLoc.y);
+        pChunkX = Mathf.RoundToInt(playerChunkLoc.x);
+        pChunkZ = Mathf.RoundToInt(playerChunkLoc.y);
 
-        int radiusStart = -(chunkSpawnRadius - 1) / 2;
-        int radiusEnd = (chunkSpawnRadius - 1) / 2;
+        radiusStart = -(chunkSpawnRadius - 1) / 2;
+        radiusEnd = (chunkSpawnRadius - 1) / 2;
 
-        Chunk tmpChunk = null;
-        int il = 0;
-        Vector2[] newChunkLocAry = new Vector2[chunkLimit];
+        tmpChunk = null;
+        il = 0;
+        newChunkLocAry = new Vector2[chunkLimit];
         if (playerChunkLoc_ != playerChunkLoc)
         {
             foreach (KeyValuePair<Vector2, Chunk> entry in chunks)
@@ -103,12 +118,12 @@ public class TerrainGen : MonoBehaviour
 
                 }
 
-            Vector2[] keyList = new Vector2[il];
+            keyList = new Vector2[il];
             for (int i = 0; i < il; i++)
             {
-                Debug.Log("Loc");
+                //Debug.Log("Loc");
 
-                Vector2 tmpKey = new Vector2(100, 100);
+                tmpKey = new Vector2(100, 100);
                 foreach (KeyValuePair<Vector2, Chunk> entry in chunks)
                 {
                     if (chunks[entry.Key].isInArea == false)
@@ -127,16 +142,19 @@ public class TerrainGen : MonoBehaviour
         }
     }
 
+    Noise updatingNoise;
+    Vector2 setUpdatedLoc;
+
     private void UpdateChunk(Vector2 key, int x, int z, int pChunkX, int pChunkZ)
     {
-        Debug.Log("UpdateC");
+        //Debug.Log("UpdateC");
         //Create new chunk
-        Vector2 setLoc = new Vector2(-realChunkSize / 2 + x * realChunkSize, -realChunkSize / 2 + z * realChunkSize);
-        chunks[key].chunkObj.transform.position = new Vector3(setLoc.x, terrainFlipValue * z * chunkScale * ((chunkSize / 10) * 4) * terrainSlopeValue, setLoc.y);
+        setUpdatedLoc = new Vector2(-realChunkSize / 2 + x * realChunkSize, -realChunkSize / 2 + z * realChunkSize);
+        chunks[key].chunkObj.transform.position = new Vector3(setUpdatedLoc.x, terrainFlipValue * z * chunkScale * ((chunkSize / 10) * 4) * terrainSlopeValue, setUpdatedLoc.y);
         chunks[key].isInArea = true;
-        Noise noise = chunks[key].chunkObj.GetComponent<Noise>();
+        updatingNoise = chunks[key].chunkObj.GetComponent<Noise>();
 
-        noise.planeWorldPos = new Vector2(x, z);
+        updatingNoise.planeWorldPos = new Vector2(x, z);
         //if (isFirstSpawn == false)
         //    noise.UpdateField();
 
@@ -144,23 +162,23 @@ public class TerrainGen : MonoBehaviour
         chunks.Remove(key);
 
         if (isFirstSpawn == false)
-            noise.UpdateField();
+            updatingNoise.UpdateField();
     }
 
     void CreateChunks(int i)
     {
         GameObject chunk = Instantiate(noiseObject);
 
-        Noise noise = chunk.GetComponent<Noise>();
+        Noise newNoise = chunk.GetComponent<Noise>();
 
-        noise.planeSize = chunkSize + 1;
-        noise.planeScale = chunkScale;
-        noise.perlinFreq = perlinFreq;
-        noise.textureMat = planeTexture;
-        noise.physMat = physicsMat;
-        noise.chunkFlipValue = terrainFlipValue;
-        noise.heightScale = heightScale;
-        noise.terSlopeVal = terrainSlopeValue;
+        newNoise.planeSize = chunkSize + 1;
+        newNoise.planeScale = chunkScale;
+        newNoise.perlinFreq = perlinFreq;
+        newNoise.textureMat = planeTexture;
+        newNoise.physMat = physicsMat;
+        newNoise.chunkFlipValue = terrainFlipValue;
+        newNoise.heightScale = heightScale;
+        newNoise.terSlopeVal = terrainSlopeValue;
 
         Chunk c = new Chunk();
         c.chunkObj = chunk;

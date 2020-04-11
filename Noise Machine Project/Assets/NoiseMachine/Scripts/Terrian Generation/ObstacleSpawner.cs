@@ -30,7 +30,7 @@ public class ObstacleSpawner : MonoBehaviour
     public bool turnable;
     ObjectPoolerManager OP;
 
-    private void Awake()
+    private void Start()
     {
         OP = ObjectPoolerManager.SharedInstance;
         startPosition = player.transform.position;        
@@ -39,29 +39,31 @@ public class ObstacleSpawner : MonoBehaviour
         left = leftMarker.position.x;
         right = rightMarker.position.x;  
         currentObstacles = new List<GameObject>(0);
-        BuildLevel();
-        StartCoroutine(ObstacleTimer(0.01f)); //start spawning obstacles after 3 seconds;
-        lenghtOfPlayArea = Mathf.Abs(right - left);
-        distanceAheadOfPlayer = PublicFunction.DistanceInYnZ(startPosition, transform.position);
-        //spacing = lenghtOfPlayArea / treeWidth;
-        //StartCoroutine(LateFunction(0.1f));
 
         switch (obstacleType)
         {
             case ObstacleType.Tree:
                 obstacleVariants = OP.trees;
-                obstacleWidth = 3.2f;
+                obstacleWidth = 6.4f;
                 break;
             case ObstacleType.Rock:
                 obstacleVariants = OP.rocks;
-                obstacleWidth = 1.6f;
+                obstacleWidth = 3.2f;
                 break;
             case ObstacleType.Flag:
                 obstacleVariants = OP.flags;
-                obstacleWidth = 1.6f;
+                obstacleWidth = 3.2f;
                 break;
         }
+
         obCount = obstacleVariants.Count;
+        StartCoroutine(ObstacleTimer(0.01f)); //start spawning obstacles after 1 milli-second;
+        lenghtOfPlayArea = Mathf.Abs(right - left);
+        distanceAheadOfPlayer = PublicFunction.DistanceInYnZ(startPosition, transform.position);
+        //spacing = lenghtOfPlayArea / treeWidth;
+        //StartCoroutine(LateFunction(0.1f));
+
+
     }
     int obID;
     float randomPoint;
@@ -155,10 +157,11 @@ public class ObstacleSpawner : MonoBehaviour
         }
     }
 
-    IEnumerator ObstacleTimer(float time)
+    IEnumerator ObstacleTimer(float delay)
     {
-        yield return new WaitForSeconds(time);
-        while (true)
+        yield return new WaitForSeconds(delay);
+        BuildLevel();
+        while (Traker.inst.totalDis <= Traker.inst.goalDis)
         {
             for (int t = 0; t <= objectsPerSpawn-1; t++)
             {
@@ -169,6 +172,7 @@ public class ObstacleSpawner : MonoBehaviour
             yield return new WaitUntil(()=>distanceSinceLastObstacle>=spawnRate); // wait untill the diffrence is greater than the spawn rate or when the player goes far enough 
             DespawnObstacles();
         }
+        yield break;
     }
     //void CleanUp()
     //{
