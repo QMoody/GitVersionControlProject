@@ -867,7 +867,7 @@ PrefabInstance:
     - target: {fileID: 50666035563043563, guid: 3863a0a636c0e9145a0c8e3f37f660e3,
         type: 3}
       propertyPath: offsetFromPlayer.z
-      value: 100
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 50666035563043563, guid: 3863a0a636c0e9145a0c8e3f37f660e3,
         type: 3}
@@ -1291,7 +1291,7 @@ PrefabInstance:
     - target: {fileID: 50666035563043563, guid: 3863a0a636c0e9145a0c8e3f37f660e3,
         type: 3}
       propertyPath: offsetFromPlayer.z
-      value: 100
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 50666035563043563, guid: 3863a0a636c0e9145a0c8e3f37f660e3,
         type: 3}
@@ -1676,6 +1676,11 @@ PrefabInstance:
       propertyPath: rightMarker
       value: 
       objectReference: {fileID: 1264682774}
+    - target: {fileID: 50666035563043563, guid: 3863a0a636c0e9145a0c8e3f37f660e3,
+        type: 3}
+      propertyPath: offsetFromPlayer.z
+      value: 70
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3863a0a636c0e9145a0c8e3f37f660e3, type: 3}
 --- !u!1001 &1913638994
@@ -1794,7 +1799,7 @@ PrefabInstance:
     - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
         type: 3}
       propertyPath: chunkSpawnRadius
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
         type: 3}
