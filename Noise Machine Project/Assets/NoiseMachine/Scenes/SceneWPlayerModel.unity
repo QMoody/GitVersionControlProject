@@ -286,6 +286,41 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: -5369054052160471680, guid: b7e718fbfb2c3d34f9c2c47062eed801, type: 3}
+--- !u!1 &306077086 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8715579963329273994, guid: 831ae3a6304a00f44aa03bff9166eff2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1913638994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &306077089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 306077086}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32801412dee6ea440a61f2f13c3117ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObject: {fileID: 1918206425}
+  noiseObject: {fileID: 7197938629862694555, guid: 991d2ad60bd1b674dbb6b2b8df9f3103,
+    type: 3}
+  planeTexture: {fileID: 2100000, guid: 55003d8793f84ef45899029379d6f732, type: 2}
+  physicsMat: {fileID: 13400000, guid: 71f564447a86e0a448a9a86d5be46227, type: 2}
+  chunckSpace: 0
+  flipTerrainSlope: 1
+  chunkScale: 2
+  chunkSize: 30
+  perlinFreq: 2.33
+  heightScale: 9
+  terrainSlopeValue: 1
+  playerChunkLoc: {x: 3000, y: 300}
+  playerChunkLoc_: {x: 0, y: 0}
+  isFirstSpawn: 1
+  chunkSpawnWidth: 3
+  chunkSpawnDepth: 5
 --- !u!114 &316993668 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7126558439052191434, guid: 583ce3adb80fa6a45a6900de957e522a,
@@ -572,12 +607,12 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: f065d10fa19aaaa458b96dd6ca9c3f43,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -364.3
+      value: -354
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: f065d10fa19aaaa458b96dd6ca9c3f43,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 988.7
+      value: 1070
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: f065d10fa19aaaa458b96dd6ca9c3f43,
         type: 3}
@@ -1307,7 +1342,7 @@ PrefabInstance:
     - target: {fileID: 8014139606612289932, guid: be66e1f42837d78419cedca087687cea,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -376
+      value: -365.7
       objectReference: {fileID: 0}
     - target: {fileID: 8014139606612289932, guid: be66e1f42837d78419cedca087687cea,
         type: 3}
@@ -1946,70 +1981,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
         type: 3}
-      propertyPath: physicsMat
-      value: 
-      objectReference: {fileID: 13400000, guid: 71f564447a86e0a448a9a86d5be46227,
-        type: 2}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: planeTexture
-      value: 
-      objectReference: {fileID: 2100000, guid: 55003d8793f84ef45899029379d6f732, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
         type: 3}
       propertyPath: playerObject
       value: 
       objectReference: {fileID: 1918206425}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: heightScale
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: chunkScale
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: playerChunkLoc.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: playerChunkLoc.y
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: playerChunkLoc_.y
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: chunkSize
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: chunkSpawnRadius
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: perlinFreq
-      value: 2.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: playerChunkLoc_.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8715579963329273995, guid: 831ae3a6304a00f44aa03bff9166eff2,
-        type: 3}
-      propertyPath: terrainSlopeValue
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 831ae3a6304a00f44aa03bff9166eff2, type: 3}
 --- !u!1 &1918206425 stripped
@@ -2308,55 +2287,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player 2
       objectReference: {fileID: 0}
-    - target: {fileID: 5040873839983020049, guid: 5a655a6802a01d8459760f25cc14d254,
-        type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: distance
-      value: 
-      objectReference: {fileID: 427533853}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: winText
-      value: 
-      objectReference: {fileID: 1108165365}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: speedometer
-      value: 
-      objectReference: {fileID: 1768416954}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: PauseMenu
-      value: 
-      objectReference: {fileID: 1992330319}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: dTravel
-      value: 
-      objectReference: {fileID: 1980398324}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: mSpeed
-      value: 
-      objectReference: {fileID: 730301752}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: flagScoreText
-      value: 
-      objectReference: {fileID: 1659765537}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: PauseButton
-      value: 
-      objectReference: {fileID: 903802294}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: PauseText
-      value: 
-      objectReference: {fileID: 316993668}
     - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
       propertyPath: Achieved
       value: 
       objectReference: {fileID: 1640694295}
-    - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
-      propertyPath: Trophy
-      value: 
-      objectReference: {fileID: 46118556}
     - target: {fileID: 1918206427, guid: 5a655a6802a01d8459760f25cc14d254, type: 3}
       propertyPath: CM
       value: 
@@ -2443,7 +2377,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 714e7f856dd731746906f692c63cb9a9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -358
+      value: -347.7
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 714e7f856dd731746906f692c63cb9a9,
         type: 3}

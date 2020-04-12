@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Chunk
-{
-    public bool isInArea;
-    public GameObject chunkObj;
-}
 
-public class TerrainGen : MonoBehaviour
+public class TerrainGenRect : MonoBehaviour
 {
     #region Variables
     public GameObject playerObject;
@@ -34,7 +29,8 @@ public class TerrainGen : MonoBehaviour
     public bool isFirstSpawn = true;
     private float terrainFlipValue;
 
-    public int chunkSpawnRadius; //Only odd numbers
+    public int chunkSpawnWidth;
+    public int chunkSpawnDepth;//Only odd numbers
     #endregion
 
     //--//--//--//--//--//--//--//--//--//--//--//--//--//--//--//
@@ -49,7 +45,7 @@ public class TerrainGen : MonoBehaviour
             terrainFlipValue = 1f;
 
         realChunkSize = (int)(chunkSize * chunkScale);
-        chunkLimit = chunkSpawnRadius * chunkSpawnRadius;
+        chunkLimit = chunkSpawnDepth * chunkSpawnWidth;
 
         playerChunkLoc_ = new Vector2(1000, 1000);
 
@@ -65,14 +61,17 @@ public class TerrainGen : MonoBehaviour
     {
         CheckForNewChunk();
     }
-    int chunkOffset;
+    int chunkOffsetDepth;
+    int chunkOffsetWidth;
     int posOffset;
 
     int pChunkX;
     int pChunkZ;
 
-    int radiusStart;
-    int radiusEnd;
+    int areaFront;
+    int areaBack;
+    int areaLeft;
+    int areaRight;
 
     int il;
     Vector2[] newChunkLocAry;
@@ -82,16 +81,19 @@ public class TerrainGen : MonoBehaviour
 
     private void CheckForNewChunk()
     {
-        chunkOffset = (int)((chunkSpawnRadius - 1) / 2 * -terrainFlipValue);
+        chunkOffsetDepth = (int)((chunkSpawnDepth - 1) / 2 * -terrainFlipValue);
+        chunkOffsetWidth = (int)((chunkSpawnWidth - 1) / 2 * -terrainFlipValue);
         posOffset = (int)(realChunkSize / 2 * -terrainFlipValue);
 
         //Set location of player by chunk rather then real world cords
-        playerChunkLoc = new Vector2(Mathf.Round(playerObject.transform.position.x / realChunkSize), Mathf.Round((playerObject.transform.position.z - posOffset) / realChunkSize) + chunkOffset);
+        playerChunkLoc = new Vector2(Mathf.Round(playerObject.transform.position.x / realChunkSize), Mathf.Round((playerObject.transform.position.z - posOffset) / realChunkSize) + chunkOffsetDepth);
         pChunkX = Mathf.RoundToInt(playerChunkLoc.x);
         pChunkZ = Mathf.RoundToInt(playerChunkLoc.y);
 
-        radiusStart = -(chunkSpawnRadius - 1) / 2;
-        radiusEnd = (chunkSpawnRadius - 1) / 2;
+        areaFront = -(chunkSpawnDepth - 1) / 2;
+        areaBack = (chunkSpawnDepth - 1) / 2;
+        areaLeft = -(chunkSpawnWidth - 1) / 2;
+        areaRight = (chunkSpawnWidth - 1) / 2;
 
         tmpChunk = null;
         il = 0;
@@ -103,10 +105,10 @@ public class TerrainGen : MonoBehaviour
                 chunks[entry.Key].isInArea = false;
             }
 
-            for (int x = 0; x < chunkSpawnRadius; x++)
-                for (int z = 0; z < chunkSpawnRadius; z++)
+            for (int x = 0; x < chunkSpawnWidth; x++)
+                for (int z = 0; z < chunkSpawnDepth; z++)
                 {
-                    if (chunks.TryGetValue(new Vector2(radiusStart + x + pChunkX, radiusStart + z + pChunkZ), out tmpChunk))
+                    if (chunks.TryGetValue(new Vector2(areaLeft + x + pChunkX, areaFront + z + pChunkZ), out tmpChunk))
                     {
                         tmpChunk.isInArea = true;
                     }
@@ -132,7 +134,7 @@ public class TerrainGen : MonoBehaviour
                         break;
                     }
                 }
-                UpdateChunk(tmpKey, (int)newChunkLocAry[i].x + pChunkX + radiusStart, (int)newChunkLocAry[i].y + pChunkZ + radiusStart, pChunkX, pChunkZ);
+                UpdateChunk(tmpKey, (int)newChunkLocAry[i].x + pChunkX + areaFront, (int)newChunkLocAry[i].y + pChunkZ + areaFront, pChunkX, pChunkZ);
             }
 
             //for (int i = 0; i < il; i++)
