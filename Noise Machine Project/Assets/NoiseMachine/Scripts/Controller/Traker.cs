@@ -111,6 +111,11 @@ public class Traker : MonoBehaviour
 
         }
 
+        if (Input.GetKeyDown("escape"))
+        {
+            PauseGame();
+        }
+
         if (isPaused)
         {
             Paused();
@@ -236,7 +241,7 @@ public class Traker : MonoBehaviour
             Achieved.GetComponent<AchievementTracker>().SetNotHit();
             ShowTrophy();
         }
-        if (fastestSpeed >= 155 && Achieved.GetComponent<AchievementTracker>().GetCheater() == false)
+        if (fastestSpeed >= 100 && Achieved.GetComponent<AchievementTracker>().GetCheater() == false)
         {
             //fall off side
             Achieved.GetComponent<AchievementTracker>().SetCheater();

@@ -40,7 +40,7 @@ public class Restart : MonoBehaviour
         yield return new WaitForSeconds(timeTillRestart);
         if (p.currentSpeed <= 5)
         {
-            Debug.Log("Hit my head. Going to reload level");
+            //Debug.Log("Hit my head. Going to reload level");
             yield return new WaitForSeconds(1);
             Traker.inst.Lose();
             
