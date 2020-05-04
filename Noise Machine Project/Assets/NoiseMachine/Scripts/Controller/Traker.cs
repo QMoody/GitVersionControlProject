@@ -23,6 +23,7 @@ public class Traker : MonoBehaviour
 
     [HideInInspector]
     public float totalDis;
+    public bool endless;
     public float goalDis = 250;
     Vector2 currentPos;
 
@@ -39,6 +40,10 @@ public class Traker : MonoBehaviour
 
     public CanvasManager CM;
 
+    Controller controller;
+    
+
+
     //Making this a singleton
     private void Awake()
     {
@@ -52,6 +57,8 @@ public class Traker : MonoBehaviour
             Destroy(this);
         }
 
+        controller = GetComponent<Controller>();
+
         startTime = Time.time;
 
         YSPos = transform.position.y;
@@ -61,6 +68,11 @@ public class Traker : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1;
         currentPos = CM.distanceDisplay.GetComponent<RectTransform>().position;
+    }
+
+    internal void Ragdoll()
+    {
+        controller.Ragdoll();
     }
 
     internal void Lose()
@@ -102,13 +114,15 @@ public class Traker : MonoBehaviour
         UpdateCurrentSpeed();
         DistanceTravelled();
 
-
-        if (totalDis > goalDis)
+        if (!endless)
         {
-            endTime = Time.time;
-            CM.winText.SetActive(true); //Shows text that you have won
-            Invoke("Win", 3); //Restarts the game after 3 seconds
+            if (totalDis > goalDis)
+            {
+                endTime = Time.time;
+                CM.winText.SetActive(true); //Shows text that you have won
+                Invoke("Win", 3); //Restarts the game after 3 seconds
 
+            }
         }
 
         if (Input.GetKeyDown("escape"))
@@ -147,8 +161,12 @@ public class Traker : MonoBehaviour
         totalDis = Mathf.FloorToInt(Mathf.Sqrt((YPOSroc * YPOSroc) + (ZPOSroc * ZPOSroc)));
 
         //UI update that shows the elevation (distance travelled) of the player moving towards the goal by moving the text displaying the elevation from the start until the goal (happens in the position.y)
-        currentPos.y = 300 - (300 * (totalDis / goalDis));
-        CM.distanceDisplay.GetComponent<RectTransform>().position = currentPos;
+        if (!endless)
+        {
+            currentPos.y = 300 - (300 * (totalDis / goalDis));
+
+            CM.distanceDisplay.GetComponent<RectTransform>().position = currentPos;
+        }
 
         //UI update that shows the elevation (distance travelled) in text
         CM.distanceDisplay.GetComponent<Text>().text = (totalDis).ToString() + "m";

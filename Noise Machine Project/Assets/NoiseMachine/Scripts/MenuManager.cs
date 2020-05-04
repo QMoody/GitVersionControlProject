@@ -11,6 +11,11 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("SceneWPlayerModel");
     }
 
+    public void PlayGame2()
+    {
+        SceneManager.LoadScene("EndlessScene");
+    }
+
     public void SettingsMenu()
     {
         SceneManager.LoadScene("SettingsMenu");

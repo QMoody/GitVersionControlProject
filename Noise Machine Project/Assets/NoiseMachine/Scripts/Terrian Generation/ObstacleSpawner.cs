@@ -17,9 +17,10 @@ public class ObstacleSpawner : MonoBehaviour
     private float right;
     private float obstacleWidth;
     public Vector3 offsetFromPlayer;
-    private Vector3 startPosition;
+    private Vector3 startPosition;    
     public float spawnRate;
     public int objectsPerSpawn;
+    //for ever 100 spawns, the spawn rate will increase by this much
     public float spawnAcceleration;
     private float currentDistance;
     private float distanceAtLastObstacle;
@@ -36,8 +37,8 @@ public class ObstacleSpawner : MonoBehaviour
         startPosition = player.transform.position;        
         currentDistance = player.transform.position.z;
         distanceAtLastObstacle = player.transform.position.z;
-        left = leftMarker.position.x;
-        right = rightMarker.position.x;  
+        objectsPerSpawnIncreaseRate = objectsPerSpawn;
+        ChangePlayArea();
         currentObstacles = new List<GameObject>(0);
 
         switch (obstacleType)
@@ -58,13 +59,21 @@ public class ObstacleSpawner : MonoBehaviour
 
         obCount = obstacleVariants.Count;
         StartCoroutine(ObstacleTimer(0.01f)); //start spawning obstacles after 1 milli-second;
-        lenghtOfPlayArea = Mathf.Abs(right - left);
+        
         distanceAheadOfPlayer = PublicFunction.DistanceInYnZ(startPosition, transform.position);
         //spacing = lenghtOfPlayArea / treeWidth;
         //StartCoroutine(LateFunction(0.1f));
 
 
     }
+
+    void ChangePlayArea()
+    {
+        left = leftMarker.position.x;
+        right = rightMarker.position.x;
+        lenghtOfPlayArea = Mathf.Abs(right - left);
+    }
+
     int obID;
     float randomPoint;
     int obCount;
@@ -156,21 +165,39 @@ public class ObstacleSpawner : MonoBehaviour
             }
         }
     }
+    bool keepSpawning;
+    private float objectsPerSpawnIncreaseRate;
 
     IEnumerator ObstacleTimer(float delay)
     {
         yield return new WaitForSeconds(delay);
         BuildLevel();
-        while (Traker.inst.totalDis <= Traker.inst.goalDis)
+        keepSpawning = true;
+        while (keepSpawning)
         {
+            if (!Traker.inst.endless)
+            {
+                if(Traker.inst.totalDis >= Traker.inst.goalDis)
+                {
+                    keepSpawning = false;
+                }
+            }
+
             for (int t = 0; t <= objectsPerSpawn-1; t++)
             {
                 SpawnObstacle();
             }
             distanceAtLastObstacle = Traker.inst.totalDis; //track where the player's distance now 
             yield return new WaitForFixedUpdate(); // buffer to wait
+            if (spawnAcceleration != 0 && spawnRate>=0)
+            {
+                spawnRate -= spawnAcceleration/100;
+                objectsPerSpawnIncreaseRate += spawnAcceleration / 1000;
+                objectsPerSpawn = Mathf.RoundToInt(objectsPerSpawnIncreaseRate);
+            }
             yield return new WaitUntil(()=>distanceSinceLastObstacle>=spawnRate); // wait untill the diffrence is greater than the spawn rate or when the player goes far enough 
             DespawnObstacles();
+            ChangePlayArea();
         }
         yield break;
     }

@@ -102,6 +102,17 @@ public class Controller : MonoBehaviour
         snowParticle.position = transform.position + offsetSnowParticle;
     }
 
+    public SphereCollider headCollider;
+    public CapsuleCollider bodyCollider;
+
+    public void Ragdoll()
+    {
+        headCollider.isTrigger = false;
+        bodyCollider.isTrigger = false;
+        rg.drag = 0.4f;
+        this.enabled = false;
+    }
+
     void SnowTrail()
     {
         

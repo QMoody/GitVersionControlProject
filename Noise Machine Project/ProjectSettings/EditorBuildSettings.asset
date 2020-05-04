@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/NoiseMachine/Scenes/AchievementMenu.unity
     guid: 7ada3582cde950c4e830c1b533855ec3
+  - enabled: 1
+    path: Assets/NoiseMachine/Scenes/EndlessScene.unity
+    guid: c9c9edb2fab66d942bda8ddfe89a4ac0
   m_configObjects: {}
